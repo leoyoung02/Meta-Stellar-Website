@@ -1,0 +1,128 @@
+<script lang='ts'>
+	import Greeting from "../components/greeting.svelte";
+    import OfficeImg from "$lib/images/wallet.webp";
+    import { onMount } from "svelte";
+    import ChatBox from "./components/ChatBox.svelte";
+    let titles = {
+        wallet: "Wallet",
+        news: "News",
+        docs: "Documentation",
+        chat: "Chat"
+    }
+    let screen:'lg'|'md'|'sm'|'xs' = 'lg';
+    let screens = {
+        lg: 1200,
+        md: 992,
+        sm: 768,
+        xs: 576
+    }
+
+    function handleResize(){
+        if(window.innerWidth > screens.md){
+            screen = 'lg';
+            titles.docs = "Documentation";
+        }
+        if(window.innerWidth < screens.lg){
+            screen = 'md';
+            titles.docs = "Docs";
+        }
+        if(window.innerWidth < screens.md){
+            screen = 'sm';
+        }
+        if(window.innerWidth < screens.sm){
+            screen = 'xs';
+        }
+    }
+    onMount(() => {
+        handleResize();
+    });
+</script>
+<svelte:window on:resize={handleResize} />
+<Greeting />
+<ChatBox />
+{#if screen === 'lg' || screen === 'md'}
+<div id="midContainer"  class="uk-container">
+	
+	<div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
+		<div id="webWalelt" class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-2-3">
+            <h3>{titles.wallet}</h3>
+            <img class="uk-animation-reverse uk-transform-origin-top-right" src={OfficeImg} alt="off the office">
+        </div>
+		<div class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-expand">
+            <h3 class="uk-card-title ">{titles.news}</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+    </div>
+    <br>
+    <div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-1-4">
+            <h3 class="uk-card-title ">{titles.docs}</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+		<div class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-expand">
+            <h3 class="uk-card-title ">{titles.chat}</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+
+	</div>
+</div>
+{:else}
+<div id="midContainer"  class="uk-container">
+	
+	<div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
+		<div id="webWalelt" class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-expand">
+            <h3>{titles.wallet}</h3>
+            <img class="uk-animation-reverse uk-transform-origin-top-right" src={OfficeImg} alt="off the office">
+        </div>
+    </div>
+    <br>
+    <div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
+		<div class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-expand">
+            <h3 class="uk-card-title ">{titles.news}</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+    </div>
+    <br>
+    <div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
+        <div class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-1-2">
+            <h3 class="uk-card-title ">{titles.docs}</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+		<div class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-expand">
+            <h3 class="uk-card-title ">{titles.chat}</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+        </div>
+
+	</div>
+</div>
+
+{/if}
+
+<style>
+	.uk-flex{
+		gap: 10px;
+    }
+    .uk-card{
+        cursor: pointer;
+    }
+    .uk-card:hover{
+        animation: both 3s float infinite;
+    }
+
+    @keyframes float {
+	0% {
+		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+		transform: translatey(0px) scale(1);
+	}
+	50% {
+		box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
+		transform: translatey(-5px) scale(1.01);
+
+	}
+	100% {
+		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
+		transform: translatey(0px) scale(1);
+	}
+}
+
+</style>
