@@ -1,4 +1,6 @@
 <script lang='ts'>
+    // import Card from '@metastellar/ui-library/Card.svelte';
+    // import CardItem from '@metastellar/ui-library/CardItem.svelte';
 	import Greeting from "../components/greeting.svelte";
     import OfficeImg from "$lib/images/wallet.webp";
     import { onMount } from "svelte";
@@ -68,7 +70,6 @@
 </div>
 {:else}
 <div id="midContainer"  class="uk-container">
-	
 	<div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
 		<div id="webWalelt" class="uk-card uk-card-default uk-card-hover uk-card-body uk-width-expand">
             <h3>{titles.wallet}</h3>
@@ -125,4 +126,7 @@
 	}
 }
 
+    .uk-container:has(.uk-card:hover) .uk-card:not(:hover) {
+        filter: blur(5px);
+    }
 </style>
