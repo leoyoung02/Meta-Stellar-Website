@@ -2,11 +2,14 @@
 
 <script lang='ts'>
     import LOGO from '$lib/images/metastellar.png';
+    import RING from '$lib/images/ring.png'
+    import RINGFOREGROUND from '$lib/images/ring_foreground.png'
     import { fly, fade} from 'svelte/transition';
     import { onMount } from 'svelte';
     import { cubicOut } from 'svelte/easing';
 
 	let visible = true;
+    export let chatLoading = true;
     let chatHead:any;
     onMount(() => {
         console.log(chatHead);
@@ -14,22 +17,73 @@
     });
     let chatOpen = false;
 
+    function syncRotations(){
+        let elements = Array.from(document.getElementsByClassName('spinning')  as HTMLCollectionOf<HTMLElement>);
+        for(let i = 0; i<elements.length; i++){
+            const el = elements[i];
+            el.style.animation = 'none';
+            el.offsetHeight; /* trigger reflow */
+            el.style.animation = null;
+            
+        }
+    }
+
+    function handleHoverIn(){
+        let chatHeadImage = document.getElementById('chatHead');
+        let ringImage = document.getElementById('chatRing');
+        let ringForeground = document.getElementById('chatRingForeground');
+
+       
+        if(ringForeground){
+            ringForeground.style.transitionDuration = "0.45s";
+            ringForeground.style.opacity = '0';
+        }
+        if(chatHeadImage){
+            chatHeadImage.style.scale = "1.1";
+        }
+        if(ringImage){
+            ringImage.style.transitionDuration = "0.45s";
+            ringImage.style.scale = "1.2"
+            ringImage.style.opacity = "0.6"
+        }
+
+    }
+
+    function handleHoverOut(){
+        let chatHeadImage = document.getElementById('chatHead');
+        let ringImage = document.getElementById('chatRing');
+        let ringForeground = document.getElementById('chatRingForeground');
+        if(ringForeground && !chatOpen){
+            ringForeground.style.opacity = '0.6';
+        }
+        if(chatHeadImage){
+            chatHeadImage.style.scale = "1.0";
+        }
+        if(ringImage){
+            ringImage.style.scale = "1.0";
+            ringImage.style.animation = 'none';
+        }
+        syncRotations();
+    }
+
     function toggleChat(){
         chatOpen = !chatOpen;
         let chatHeadBubble = document.getElementById('chatHeadBubble');
-        let chatHeadImage = document.getElementById('chatHead');
+        let chatLOGO = document.getElementById('chatLOGO')
+        let chatRingForeground = document.getElementById('chatRingForeground');
+        let chatRing = document.getElementById('chatRing')
         if(chatOpen){
-            chatHeadImage.style.transitionDuration = "0.45s";
+            chatLOGO.style.transitionDuration = "0.45s";
             chatHeadBubble.style.right = "250px";
             setTimeout(() => {
-                chatHeadImage.style.width = "60px";
-                chatHeadImage.style.height = "60px";
-                chatHeadImage.style.padding = "5px";
-                chatHeadBubble.style.right = "275px";
+                chatHeadBubble.style.transform = "Scale(0.6)";
+                chatLOGO.style.padding = "5px";
+                chatHeadBubble.style.right = "260px";
+                chatRingForeground.style.display = 'none';
                 
                 chatHeadBubble.style.transitionDuration = "0.2s";
                 
-                chatHeadBubble.style.bottom = "92vh";
+                chatHeadBubble.style.bottom = "85vh";
             }, 400);
             
         }
@@ -38,11 +92,16 @@
             chatHeadBubble.style.right = "2em";
 
             setTimeout(() => {
-                chatHeadImage.style.width = "100px";
-                chatHeadImage.style.height = "100px";
-                chatHeadBubble.style.transitionDuration = "0.45s";
-                chatHeadImage.style.padding = "10px";
+                chatHeadBubble.style.transform = "Scale(1)";
+                chatLOGO.style.width = "75px";
+                chatLOGO.style.height = "75px";
+                chatLOGO.style.transitionDuration = "0.45s";
+                chatLOGO.style.padding = "10px";
                 chatHeadBubble.style.bottom = "2em";  
+                chatRingForeground.style.display = 'inherit';
+                chatRingForeground.style.transform = "rotate(30deg)";
+                chatRing.style.transform = "rotate(30deg)";
+                syncRotations();
             }, 400);
             
         }
@@ -67,7 +126,20 @@
 
 
 <a id="chatHeadBubble" class='chatHeadContainer' href="#" uk-toggle="target: #offcanvas-flip" type="button" on:click={toggleChat}>
-    <img id="chatHead" src = {LOGO} alt="metastellar logo"/>
+    <div role="dialog" on:mouseenter={handleHoverIn} on:mouseleave={handleHoverOut} id="chatLOGO">
+        
+        {#if !chatLoading}
+            <img id="chatRing" src={RING} alt="RingLOGO"/>
+        {:else}
+            <img id="chatRing" class="spinning" src={RING} alt="RingLOGO"/>
+        {/if}
+            <img id="chatHead" src = {LOGO} alt="metastellar logo"/>
+        {#if !chatLoading}
+            <img id="chatRingForeground" src={RINGFOREGROUND} alt="RingLOGO"/>
+        {:else}
+            <img id="chatRingForeground" class="spinning" src={RINGFOREGROUND} alt="RingLOGO"/>
+        {/if}
+    </div>
 </a>
 
 
@@ -87,18 +159,56 @@
                 transition:all 0.4s ease;
 
     }
-    #chatHead{
-        background-color: black;
-        border-radius: 100%;
-        padding:10px;
+    #chatLOGO{
+        position: relative;
         width: 100px;
         height: 100px;
-        cursor: pointer;
         filter: drop-shadow(1px 11px 11px #333333);
         animation-name: chatHeadAnimation;
         animation-duration: 5s;
         animation-timing-function: ease-in-out;
         animation-iteration-count: infinite;
+    }
+    #chatRing{
+        position:absolute;
+        border-radius: 100%;
+        right: 25%;
+        bottom: 25%;
+        width: 70px;
+        height: 70px;
+        cursor: pointer;
+        transform: rotate(30deg);
+        filter: drop-shadow(1px 11px 11px #333333);
+    }
+    #chatRingForeground{
+        position:absolute;
+        border-radius: 100%;
+        transform: rotate(30deg);
+        right: 25%;
+        bottom: 25%;
+        width: 70px;
+        height: 70px;
+        cursor: pointer;
+        opacity: 0.6;
+
+    }
+
+    .spinning{
+        animation-name: spinning;
+        animation-duration: 5s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+    #chatHead{
+        position:absolute;
+        right:25%;
+        bottom: 25%;
+        border-radius: 100%;
+        
+        width:75px;
+        height: 75px;
+        cursor: pointer;
+
     }
     #chatHead:hover{
         transform: scale(1.1);
@@ -109,6 +219,7 @@
         display: flex;
         justify-content: flex-end;
     }
+    
     .uk-offcanvas-bar{
         z-index: 99999;
         width: 350px;
@@ -134,6 +245,31 @@
     .chatTitle{
         text-align: center;
         transform:translateY(-50%);
+    }
+
+    @keyframes spinning {
+        0%{
+            transform: rotate(0deg) scale(1);
+        }
+        50%{
+            transform: rotate(180deg) scale(1.1);
+            
+        }
+        100%{
+            transform: rotate(360deg) scale(1);
+        }
+    }
+
+    @keyframes bellyBreath{
+        0%{
+            transform: scale(1);
+        }
+        50%{
+            transform: scale(1.5);
+        }
+        100%{
+            transform: scale(1);
+        }
     }
     
     @keyframes chatHeadAnimation {
