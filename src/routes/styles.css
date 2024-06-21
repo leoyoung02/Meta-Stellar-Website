@@ -99,3 +99,17 @@ button:focus:not(:focus-visible) {
 	width: 1px;
 	white-space: nowrap;
 }
+
+
+.flex-col {
+	flex-direction: column;
+}
+
+.flex-col-reverse {
+	flex-direction: column-reverse;
+}
+
+.flex-row {
+	flex-direction: row;
+
+}
