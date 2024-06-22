@@ -32,6 +32,7 @@
 		"@metastellar/ui-library": "^0.0.8",
 		"@stellar/stellar-sdk": "^12.1.0",
 		"dotenv": "^16.4.5",
+		"flowbite-svelte": "^0.46.4",
 		"mongodb": "^6.6.2",
 		"pg": "^8.11.5",
 		"stellar-snap": "^1.0.0"

@@ -2000,22 +2000,9 @@
   optionalDependencies:
     sodium-native "^4.1.1"
 
-"@stellar/stellar-sdk@^12.0.1":
+"@stellar/stellar-sdk@^12.0.1", "@stellar/stellar-sdk@^12.1.0":
   version "12.1.0"
   resolved "https://registry.npmjs.org/@stellar/stellar-sdk/-/stellar-sdk-12.1.0.tgz"
-  integrity sha512-Va0hu9SaPezmMbO5eMwL5D15Wrx1AGWRtxayUDRWV2Fr3ynY58mvCZS1vsgNQ4kE8MZe3nBVKv6T9Kzqwgx1PQ==
-  dependencies:
-    "@stellar/stellar-base" "^12.0.1"
-    axios "^1.7.2"
-    bignumber.js "^9.1.2"
-    eventsource "^2.0.2"
-    randombytes "^2.1.0"
-    toml "^3.0.0"
-    urijs "^1.19.1"
-
-"@stellar/stellar-sdk@^12.1.0":
-  version "12.1.0"
-  resolved "https://registry.yarnpkg.com/@stellar/stellar-sdk/-/stellar-sdk-12.1.0.tgz#eafe064d36696ada5b7bd7e871f7199b6ed39222"
   integrity sha512-Va0hu9SaPezmMbO5eMwL5D15Wrx1AGWRtxayUDRWV2Fr3ynY58mvCZS1vsgNQ4kE8MZe3nBVKv6T9Kzqwgx1PQ==
   dependencies:
     "@stellar/stellar-base" "^12.0.1"
@@ -3746,6 +3733,16 @@ flat@^5.0.2:
 flowbite-svelte@^0.46.1:
   version "0.46.4"
   resolved "https://registry.npmjs.org/flowbite-svelte/-/flowbite-svelte-0.46.4.tgz"
+  integrity sha512-67OYCGH1Jk4ttMqQqKFU3J3Wudajl2TNVzO8Yzqx3meIlT2yGrszIeWwhnSzS0+En2P7Sl60kmJvCHeHIjyEMA==
+  dependencies:
+    "@floating-ui/dom" "^1.6.5"
+    apexcharts "^3.49.1"
+    flowbite "^2.3.0"
+    tailwind-merge "^2.3.0"
+
+flowbite-svelte@^0.46.4:
+  version "0.46.4"
+  resolved "https://registry.yarnpkg.com/flowbite-svelte/-/flowbite-svelte-0.46.4.tgz#c762f193887907e9ef69e5f10be5d29c5c445d8b"
   integrity sha512-67OYCGH1Jk4ttMqQqKFU3J3Wudajl2TNVzO8Yzqx3meIlT2yGrszIeWwhnSzS0+En2P7Sl60kmJvCHeHIjyEMA==
   dependencies:
     "@floating-ui/dom" "^1.6.5"
