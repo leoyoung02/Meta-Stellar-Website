@@ -47,6 +47,7 @@
 		<ul class="uk-navbar-nav">
 			
 			<li id="logo" data-uk-hover class="uk-width-auto">
+				<a href="/">
 				{#if logo==='video'}	
 					<video bind:this={videoRef} class="uk-width-2-3 uk-logo" on:ended={endVideo} muted={true} autoplay src={VideoLogo} >
 						<track kind="captions" />
@@ -54,9 +55,9 @@
 				{/if}
 				{#if logo==='img'}
 					<img class="uk-logo uk-width-2-3" src={svgLogo} alt="Metastellar Logo"/>
-				{/if}
+				{/if}</a>
 			</li>
-			<li data-uk-hover class="uk-width-1-6"><a href="#">Wallet</a></li>
+			<li data-uk-hover class="uk-width-1-6"><a href="wallet">Wallet</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="#">FAQ</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="#">Docs</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="#">chat</a></li>
