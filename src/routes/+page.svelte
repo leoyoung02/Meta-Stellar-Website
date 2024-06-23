@@ -3,7 +3,7 @@
 	import Greeting from "../components/greeting.svelte";
     import OfficeImg from "$lib/images/wallet.webp";
     import { onMount } from "svelte";
-    import ChatBox from "./components/ChatBox.svelte";
+    import ChatBox from "./components/Chat/index.svelte";
     let titles = {
         wallet: "Wallet",
         news: "News",
