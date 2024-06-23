@@ -20,6 +20,12 @@ export class App {
       this._interval = 0;
       this.onMouseMoveHandler = (x, y) => {};
       this.onMouseDownHandler = (x, y) => {};
+      this.onMouseUpHandler = (x,y) => {};
+
+      this.onTouchDownHandler = (x, y) => {};
+      this.onTouchMoveHandler = (x, y) => {};
+      this.onTouchUpHandler = (x, y) => {};
+
       this.start = this.start.bind(this);
       this._onMouseEventHandlerWrapper = this._onMouseEventHandlerWrapper.bind(
       this);
@@ -39,7 +45,12 @@ export class App {
         this._onMouseEventHandlerWrapper(e, this.onMouseMoveHandler);
       },
       false);
-  
+      this._canvas.addEventListener(
+        "touchmove",
+        e => {
+          this._onMouseEventHandlerWrapper(e, this.onTouchMoveHandler);
+        },
+      false);
   
       this._canvas.addEventListener(
       "mousedown",
@@ -47,12 +58,32 @@ export class App {
         this._onMouseEventHandlerWrapper(e, this.onMouseDownHandler);
       },
       false);
+      this._canvas.addEventListener(
+        "touchstart",
+        e => {
+          this._onMouseEventHandlerWrapper(e, this.onTouchDownHandler);
+        },
+        false);
+
+      this._canvas.addEventListener(
+        "mouseup",
+        (e) => {
+          this._onMouseEventHandlerWrapper(e, this.onMouseUpHandler);
+        }
+      )
+      this._canvas.addEventListener(
+        "touchend",
+        (e) => {
+          this._onMouseEventHandlerWrapper(e, this.onTouchUpHandler);
+        }
+      )
   
   
       this._onRequestAnimationFrame();
     }
   
     _onMouseEventHandlerWrapper(e, callback) {
+
       let element = this._canvas;
       let offsetX = 0;
       let offsetY = 0;
@@ -63,10 +94,22 @@ export class App {
           offsetY += element.offsetTop;
         } while (element = element.offsetParent);
       }
-  
-      const x = e.pageX - offsetX;
-      const y = e.pageY - offsetY;
-  
+      let x;
+      let y;
+      
+      
+      if(e.touches !== undefined && e.touches.length > 0){
+        console.log("touch event");
+        console.log(e.touches);
+        x = e.touches[0].pageX;
+        y = e.touches[0].pageY;
+      }
+      else{
+        
+        x = e.pageX - offsetX;
+        y = e.pageY - offsetY;
+        
+      }
       callback(x, y);
     }
   
@@ -97,7 +140,13 @@ export default class CanvasRenderer{
     updateHandlerArray:Function[] = [];
     drawHandlerArray:Function[] = [];
     _renderer:App|null = null;
-    mouseMoveHandler: Function = (x:number,y:number)=>{}; 
+    mouseMoveHandlerArray: Function[] = [];
+    mouseDownHandlerArray: Function[] = [];
+    mouseUpHandlerArray: Function[] = [];
+
+    touchDownHandlerArray: Function[] = [];
+    touchMoveHandlerArray: Function[] = [];
+    touchUpHandlerArray: Function[] = [];
 
     constructor( canvas:HTMLCanvasElement, context:CanvasRenderingContext2D, frameRate = 60){
         this.canvas = canvas;
@@ -114,7 +163,23 @@ export default class CanvasRenderer{
     }
 
     addMouseMove(func:Function){
-        this.mouseMoveHandler = func;
+        this.mouseMoveHandlerArray.push(func);
+    }
+    addMouseDown(func:Function){
+      this.mouseDownHandlerArray.push(func);
+    }
+    addMouseUp(func:Function){
+      this.mouseUpHandlerArray.push(func);
+    }
+
+    addTouchDown(func:Function){
+      this.touchDownHandlerArray.push(func);
+    }
+    addTouchMove(func:Function){
+      this.touchMoveHandlerArray.push(func);
+    }
+    addTouchUp(func:Function){
+      this.touchUpHandlerArray.push(func);
     }
 
     start(){
@@ -134,7 +199,14 @@ export default class CanvasRenderer{
             getCombinedFunc(this.updateHandlerArray), 
             getCombinedFunc(this.drawHandlerArray), this.frameRate
         );
-        this._renderer.onMouseMoveHandler = this.mouseMoveHandler
+        this._renderer.onMouseMoveHandler = getCombinedFunc(this.mouseMoveHandlerArray);
+        this._renderer.onMouseDownHandler = getCombinedFunc(this.mouseDownHandlerArray);
+        this._renderer.onMouseUpHandler = getCombinedFunc(this.mouseUpHandlerArray);
+        
+        this._renderer.onTouchDownHandler = getCombinedFunc(this.touchDownHandlerArray);
+        this._renderer.onTouchMoveHandler = getCombinedFunc(this.touchMoveHandlerArray);
+        this._renderer.onTouchUpHandler = getCombinedFunc(this.touchUpHandlerArray);
+        
         this._renderer.start();
     }
 

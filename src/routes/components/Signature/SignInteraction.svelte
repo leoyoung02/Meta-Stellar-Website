@@ -1,9 +1,10 @@
 <script lang='ts'>
     import { onMount } from "svelte";
-    import {createRope} from './rope';
+    import {canvasRope} from './rope';
     import RenderMaker from './CanvasRenderer';
+    import {Pen} from './drawpen';
     import StellarTOKENSPNG from './images/stellarTokens_transparent.png';
-    import PenImg from './images/pen3.png';
+
     import windowsImg from './images/windows.webp'
     import checkmark from './images/checkmark.png'
 
@@ -26,18 +27,15 @@
         img1.onload = () => {
             backgroundImage = img1;
         }
-        const img2 = document.createElement('img');
-        img2.src = PenImg;
-        img2.onload = () =>{
-            penImage = img2;
-        }
         const img3 = document.createElement('img');
         img3.src = checkmark;
         img3.onload = () =>{
             checkmarkImage = img3;
         }
         context = canvas.getContext('2d') as CanvasRenderingContext2D;
-        const ropeFuncs = createRope(canvas, context, {x:100,y:600}, {x:50, y:50});
+
+        //const rope = new canvasRope(canvas, context, {x:100,y:600}, {x:50, y:50}, {maxX:800, maxY:600});
+        
         let renderMaker = new RenderMaker(canvas, context, 60);
         function drawBackground(canvas:HTMLCanvasElement, context:CanvasRenderingContext2D, dts?:number){
             try{
@@ -54,11 +52,21 @@
                 //ignore before image is loaded
             }
         }
-        renderMaker.addDrawFunc(drawBackground);
-        renderMaker.addDrawFunc(ropeFuncs.draw);
+        let pen = new Pen(canvas, context, 0, 270, 340, 320);
 
-        renderMaker.addUpdateFunc(ropeFuncs.update);
-        renderMaker.addMouseMove(ropeFuncs.mouseHandler);
+        renderMaker.addDrawFunc(drawBackground);
+        renderMaker.addDrawFunc(pen.draw.bind(pen));
+        //renderMaker.addDrawFunc(rope.draw.bind(rope));
+
+        //renderMaker.addUpdateFunc(rope.tick.bind(rope));
+        renderMaker.addUpdateFunc(pen.update.bind(pen));
+        //renderMaker.addMouseMove(rope.onMouseMove.bind(rope));
+        renderMaker.addMouseMove(pen.onMouseMove.bind(pen));
+        renderMaker.addMouseDown(pen.onMouseDown.bind(pen));
+        renderMaker.addMouseUp(pen.onMouseUp.bind(pen));
+        renderMaker.addTouchDown(pen.onTouchDown.bind(pen));
+        renderMaker.addTouchMove(pen.onTouchMove.bind(pen));
+        renderMaker.addTouchUp(pen.onTouchUp.bind(pen));
         renderMaker.start()
     })
 

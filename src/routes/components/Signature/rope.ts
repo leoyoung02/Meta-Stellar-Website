@@ -41,99 +41,11 @@ class Vector2 {
       return Vector2.zero();
     }
     return { x: v.x / mag, y: v.y / mag };
-  }}
-
-
-class App {
-  constructor(
-  window,
-  canvas,
-  context,
-  updateHandler,
-  drawHandler,
-  frameRate = 60)
-  {
-    this._window = window;
-    this._canvas = canvas;
-    this._context = context;
-    this._updateHandler = updateHandler;
-    this._drawHandler = drawHandler;
-    this._frameRate = frameRate;
-    this._lastTime = 0;
-    this._currentTime = 0;
-    this._deltaTime = 0;
-    this._interval = 0;
-    this.onMouseMoveHandler = (x, y) => {};
-    this.onMouseDownHandler = (x, y) => {};
-    this.start = this.start.bind(this);
-    this._onMouseEventHandlerWrapper = this._onMouseEventHandlerWrapper.bind(
-    this);
-
-    this._onRequestAnimationFrame = this._onRequestAnimationFrame.bind(this);
   }
-
-  start() {
-    this._lastTime = new Date().getTime();
-    this._currentTime = 0;
-    this._deltaTime = 0;
-    this._interval = 1000 / this._frameRate;
-
-    this._canvas.addEventListener(
-    "mousemove",
-    e => {
-      this._onMouseEventHandlerWrapper(e, this.onMouseMoveHandler);
-    },
-    false);
+}
 
 
-    this._canvas.addEventListener(
-    "mousedown",
-    e => {
-      this._onMouseEventHandlerWrapper(e, this.onMouseDownHandler);
-    },
-    false);
 
-
-    this._onRequestAnimationFrame();
-  }
-
-  _onMouseEventHandlerWrapper(e, callback) {
-    let element = this._canvas;
-    let offsetX = 0;
-    let offsetY = 0;
-
-    if (element.offsetParent) {
-      do {
-        offsetX += element.offsetLeft;
-        offsetY += element.offsetTop;
-      } while (element = element.offsetParent);
-    }
-
-    const x = e.pageX - offsetX;
-    const y = e.pageY - offsetY;
-
-    callback(x, y);
-  }
-
-  _onRequestAnimationFrame() {
-    this._window.requestAnimationFrame(this._onRequestAnimationFrame);
-
-    this._currentTime = new Date().getTime();
-    this._deltaTime = this._currentTime - this._lastTime;
-
-    if (this._deltaTime > this._interval) {
-
-      //delta time in seconds
-      const dts = this._deltaTime * 0.001;
-
-      this._updateHandler(dts);
-
-      this._context.clearRect(0, 0, this._canvas.width, this._canvas.height);
-      this._drawHandler(this._canvas, this._context, dts);
-
-      this._lastTime = this._currentTime - this._deltaTime % this._interval;
-    }
-  }}
 
 //each rope part is one of these
 //uses a high precison varient of Störmer–Verlet integration
@@ -289,6 +201,8 @@ export interface Point{
   y:number
 }
 export interface Arguments {
+  start?:Point,
+  end?:Point,
   resolution?: number, //8
   mass?: number,
   damping?: number,
@@ -296,94 +210,141 @@ export interface Arguments {
   solverIterations?: number,
   ropeColour?: string | CanvasGradient,
   ropeSize?: number ;
+  maxX?: number | null;
+  maxY?: number | null;
 }
 
-export function createRope(canvas:HTMLCanvasElement, context:CanvasRenderingContext2D, start:Point, end:Point, params?:Arguments){
- 
-  
+export class canvasRope{
+  canvas:HTMLCanvasElement;
+  context:CanvasRenderingContext2D;
+  start:Point;
+  end:Point;
+  args:Arguments;
+  points: RopePoint[];
+  rope:Rope;
+  animationTicker:number =0;
+  state:"idle" | "active" | "drawing" = "idle";
+  constructor(canvas:HTMLCanvasElement, context:CanvasRenderingContext2D, start:Point, end:Point, params?:Arguments){
+    this.canvas = canvas;
+    this.context = context;
+    this.start = start;
+    this.end = end;
+    this.args = {
+        start: { x: 100, y: canvas.height / 2 },
+        end: { x: canvas.width - 100, y: canvas.height / 2 },
+        resolution: 8,
+        mass: 0.88,
+        damping: 0.95,
+        gravity: { x: 0, y: 3000 },
+        solverIterations: 500,
+        ropeColour: "white",
+        ropeSize: 4,
+        maxX: null,
+        maxY: null
 
-  
-  
-  const args = {
-      start: { x: 100, y: canvas.height / 2 },
-      end: { x: canvas.width - 100, y: canvas.height / 2 },
-      resolution: 8,
-      mass: 0.88,
-      damping: 0.95,
-      gravity: { x: 0, y: 3000 },
-      solverIterations: 500,
-      ropeColour: "white",
-      ropeSize: 4
-  }
-  if(typeof Args == 'object'){
-    let keys:Array<string> = Array.from(Object.keys(params))
-    for(let i=0; i<keys.length; i++){
-      args[keys[i]] = params[keys[i]];
     }
+    if(typeof this.args == 'object'){
+      let keys:Array<string> = Array.from(Object.keys(params));
+      console.log(keys)
+      for(let i=0; i<keys.length; i++){
+        this.args[keys[i]] = params[keys[i]];
+      }
+    }
+    this.args.start = start;
+    this.args.end = end;
+
+  this.points = Rope.generate(
+  this.args.start,
+  this.args.end,
+  this.args.resolution,
+  this.args.mass,
+  this.args.damping);
+
+
+  this.rope = new Rope(this.points, this.args.solverIterations);
   }
-  args.start = start;
-  args.end = end;
-
-  const points = Rope.generate(
-  args.start,
-  args.end,
-  args.resolution,
-  args.mass,
-  args.damping);
-
-
-  let rope = new Rope(points, args.solverIterations);
-
-  const tick = dt => {
-    rope.update(args.gravity, dt);
+  
+  tick(dt:number){
+    this.rope.update(this.args.gravity, dt);
   };
 
-  const drawRopePoints = (context, points, colour, width) => {
-    for (let i = 0; i < points.length; i++) {
-      let p = points[i];
-      if(i == 0){
-        ctx.beginPath();
-        ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-        ctx.stroke();
-      }
-      const prev = i > 0 ? points[i - 1] : null;
+  
+  drawRopePoints(colour, width){
+    this.animationTicker += 1;
+    let currentBoog = this.animationTicker%(this.points.length-1);
+    this.context.fillStyle = "white";
+    for (let i = 0; i < this.points.length; i++) {
+      let p = this.points[i];
+
+      const prev = i > 0 ? this.points[i - 1] : null;
 
       if (prev) {
-        context.beginPath();
-        context.moveTo(prev.pos.x, prev.pos.y);
-        context.lineTo(p.pos.x, p.pos.y);
-        context.lineWidth = width;
-        context.strokeStyle = colour;
-        context.stroke();
+        this.context.beginPath();
+        this.context.moveTo(prev.pos.x, prev.pos.y);
+        this.context.lineTo(p.pos.x, p.pos.y);
+        this.context.lineWidth = width;
+        this.context.strokeStyle = colour;
+        this.context.stroke();
       }
+      if(i == this.points.length-1){
+        this.context.fillStyle = "black";
+        this.context.beginPath();
+        this.context.arc(p.pos.x, p.pos.y, 40, 0, 2 * Math.PI);
+        this.context.fill();
+      }
+    }
+    if(this.state === 'drawing'){
+      let p = this.points[currentBoog]
+        this.context.fillStyle = "black";
+        this.context.beginPath();
+        
+        this.context.arc(p.pos.x, p.pos.y, 15, 0, 2 * Math.PI);
+        
+
+        this.context.fill();
     }
   };
 
   //render a rope using the verlet points
-  const draw = (canvas, context, dt) => {
-    drawRopePoints(context, points, args.ropeColour, args.ropeSize);
+  draw(canvas:HTMLCanvasElement, context:CanvasRenderingContext2D, dt:number){
+    this.drawRopePoints(this.args.ropeColour, this.args.ropeSize);
   };
 
-  function generateMouseMove(rope:Rope){
-    const bigRope = rope
-    const onMouseMove = (x, y) => {
-      console.log(x,y);
-      try{
-        let point = rope.getPoint(0);
+  onMouseMove(x:number, y:number){
+    if(this.state === "idle"){
+      return;
+    }
+
+      if(this.args.maxX){
+        if(x > this.args.maxX){
+          x = this.args.maxX
+        }
+      }
+      if(this.args.maxY){
+        if(y>this.args.maxY){
+          y = this.args.maxY;
+        }
+      }
+      
+        let point = this.rope.getPoint(0);
         point.pos.x = x;
         point.pos.y = y;
-      }
-      catch(e){
-        console.log(e);
-      }
     };
-    return onMouseMove.bind(rope);
-  }
-  let point = rope.getPoint(0);
-  point.pos.x = 42;
-  point.pos.y = 310;
-  //const app = new App(window, canvas, context, tick, draw, 60);
 
-  
-  return {canvas, context, update:tick, draw:draw, mouseHandler:generateMouseMove(rope)}
-}
+    setStartPoint(point:Point){
+      let ropePoint = this.rope.getPoint(0);
+      ropePoint.pos.x = point.x;
+      ropePoint.pos.y = point.y;
+    }
+    setAnchorPoint(point:Point){
+      let ropePoint = this.rope.getPoint(this.points.length-1);
+      ropePoint.pos.x = point.x;
+      ropePoint.pos.y = point.y;
+    }
+    
+  }
+  //let point = rope.getPoint(0);
+  //point.pos.x = 42;
+  //point.pos.y = 310;
+
+  //const app = new App(window, canvas, context, tick, draw, 60);
