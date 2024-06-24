@@ -1,23 +1,23 @@
 <script lang="ts">
     import * as StellarSdk from '@stellar/stellar-sdk';
-    import {Horizon} from '@stellar/stellar-sdk';
     import {Card} from '@metastellar/ui-library';
-    
+    import {Chasing} from 'svelte-loading-spinners'
     import copy from "copy-to-clipboard";
     import {connected, address, ballance, accountName} from '../../store';   
-    import { Label, Toast } from 'flowbite-svelte';
-    import { CheckCircleSolid, ExclamationCircleSolid, FireOutline, CloseCircleSolid } from 'flowbite-svelte-icons';
+    import { Label, Toast, Button  } from 'flowbite-svelte';
+    import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
 
     export let currentView = "sendXLM";
 
     let open:boolean  = false;
-    let counter:number = 2;
+    let counter:number = 4;
 
     let _currentView:string;
-    $:_currentView = currentView;
+
+    let processing:boolean = false;
 
     let sendToAddress:string = "GDPZOWVRHQV2SQ3N47CILKNU4NZQOXYDVXGKKJI32TVWIF7V7364G2QM";
-    let sendAmount:number = 0;
+    let sendAmount:number = 5;
 
     const setView = (view:string) => {
         currentView = view;
@@ -26,9 +26,11 @@
     }
     
     const onCopy = (text:string) => {
+        if (!$connected) {alert('plz connect to wallet'); return}
+
         copy(text);
         open=true;
-        counter = 2;
+        counter = 4;
         timeout();
     }
 
@@ -38,14 +40,29 @@
     }
 
     async function signTransaction() {
+        if (!$connected) {
+            alert('plz connect to wallet');
+            return;
+        }
+        
+        if (sendToAddress == "") {
+            alert('please input address to send');
+            return;
+        }
+        
+        if (sendAmount == 0) {
+            alert('please input amount to send');
+            return;
+        }
+        processing = true;
         const server = new StellarSdk.Horizon.Server('https://horizon-testnet.stellar.org');
-    // const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
-         const sourcePublicKey = await ethereum.request({
+        const sourcePublicKey = await ethereum.request({
             method: 'wallet_invokeSnap',
             params: {snapId:'npm:stellar-snap', request:{
             method: 'getAddress',
             }}
         });
+
 
         const account = await server.loadAccount(sourcePublicKey);
         const fee = await server.fetchBaseFee();
@@ -58,45 +75,62 @@
         console.log("account is");
         console.log(account);
         console.log("building Transaction");
-        const transaction = new StellarSdk.TransactionBuilder(account, { fee, networkPassphrase: "Test SDF Network ; September 2015" });
+        const transaction = new StellarSdk.TransactionBuilder(account, { fee , networkPassphrase: "Test SDF Network ; September 2015" });
 
         // Add a payment operation to the transaction
         console.log("transaction builder initilazed");
-        await transaction.addOperation(StellarSdk.Operation.payment({
-        destination: receiverPublicKey,
-        // The term native asset refers to lumens
-        asset: StellarSdk.Asset.native(),
-        // Specify 350.1234567 lumens. Lumens are divisible to seven digits past
-        // the decimal. They are represented in JS Stellar SDK in string format
-        // to avoid errors from the use of the JavaScript Number data structure.
-        amount: sendAmount.toString()
-        }));
-        console.log("operations added")
+        try {
+            await transaction.addOperation(StellarSdk.Operation.payment({
+                destination: receiverPublicKey,
+                asset: StellarSdk.Asset.native(),
+                amount: sendAmount.toString()
+            }));
+            console.log("operations added")
+        } catch (e:any) {
+            alert('error:'+e.message);
+            return false;
+        }
+        
         // Make this transaction valid for the next 30 seconds only
-        await transaction.setTimeout(30);
+        try {
+            await transaction.setTimeout(30);
+        } catch (e:any) {
+            alert('error:'+e.message);
+            return false;
+        }
         console.log("timeout set");
-        // Uncomment to add a memo (https://www.stellar.org/developers/learn/concepts/transactions.html)
-        // .addMemo(StellarSdk.Memo.text('Hello world!'))
         const endTransaction = await transaction.build();
         const xdrTransaction = endTransaction.toXDR();
         console.log(xdrTransaction);
-        const response = await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params:{snapId:'npm:stellar-snap', request:{
-            method: 'signAndSubmitTransaction',
-            params:{
-            transaction: xdrTransaction,
-            testnet: true
-            }
-        }}
-        });
-        return response
+        let response = null;
+        try {
+            response = await ethereum.request({
+                method: 'wallet_invokeSnap',
+                params:{snapId:'npm:stellar-snap', request:{
+                    method: 'signAndSubmitTransaction',
+                    params:{
+                    transaction: xdrTransaction,
+                    testnet: true
+                    }
+                }}
+            });
+            getWalletBallance();
+        } catch (e:any) {
+            alert('error:'+e.message);
+            return false;
+        }
+
+        return true;
     }
 
     async function sendXNL() {
-        const response = await signTransaction();
-        console.log('transaction response', response);
-        // getWalletBallance();
+        // const response = await signTransaction();
+        // debugger;
+        // console.log('transaction response', response);
+        // // getWalletBallance();
+        // processing = false;
+        await signTransaction();
+        processing = false;
     }
 
       async function getWalletBallance() {
@@ -123,16 +157,16 @@
     <div id="midContainer"  class="uk-container">
         <Card class="p-5 mt-16  ">
             <div class="mt-12">
-                <p class="text-center">{$ballance} </p>
-                <h3 class="my-5 font-bold text-2xl text-center uppercase"> ballance</h3>
+                <p class="text-center text-4xl">{$ballance} </p>
+                <h3 class="my-5 font-bold text-2xl text-center "> ballance</h3>
             </div>
             <div class="mt-5">
-                <p class="text-center">{$address} <span class="border rounded-xl px-2 py-1" on:click={()=>onCopy($address)}>copy</span></p>
-                <h3 class="my-5 font-bold text-center">address</h3>
+                <p class="text-center">{$address} <span class="copy-address inline-block ml-2 pt-1" on:click={()=>onCopy($address)}><FileCopyAltOutline /></span></p>
+                <h3 class="my-5 font-bold text-2xl text-center ">address</h3>
             </div>
         </Card>
         <div class="grid md:grid-cols-6 sm:grid-cols-3 mt-12 gap-3">
-            <button on:click={()=>{setView('sendXLM')}}>
+            <button on:click={()=>{setView('sendXLM')}} >
                 <Card class="py-8 px-12  " hoverTransform>
                     <span>Send XLM</span>
                 </Card>
@@ -143,16 +177,15 @@
                 </Card>
             </button>
             <button on:click={()=>{setView('sendToken')}}>
-            <Card class="py-8 px-12  "
-            hoverTransform>
-                Send token
-            </Card>
-              </button>
+                <Card class="py-8 px-12  "
+                hoverTransform>
+                    Send token
+                </Card>
+            </button>
             <button on:click={()=>{setView('viewNFT')}}>
-                 <Card class="py-8 px-12  "
-            hoverTransform>
-                View token
-            </Card>
+                <Card class="py-8 px-12  " hoverTransform>
+                    View token
+                </Card>
               </button>
             <button on:click={()=>{setView('sendNFT')}}>
                 <Card class="py-8 px-12  " hoverTransform>
@@ -166,7 +199,7 @@
             </button>
         </div>
         <div class="mt-12">
-            {#if _currentView == 'sendXLM'}
+            {#if currentView == 'sendXLM'}
             <Card class="py-12 px-5 " >
                 <h3 class="mb-4 text-center font-bold text-2xl">Send XLM</h3>
                 <div class="mb-2">
@@ -182,27 +215,36 @@
                     </div>
                 </div>
                 <div class="mb-2 mt-2">
-                    <button class="py-5 text-center w-full bg-blue-700 rounded-lg capitalize text-white" on:click={sendXNL}>send</button>
+                    <Button class="py-5 text-center w-full bg-blue-700 rounded-lg capitalize text-white hover:bg-blue-800" on:click={sendXNL} disabled={processing}>
+                        <div class="text-center">
+                            {#if processing}
+                            <div class="inline-block">
+                                <Chasing size="15" color="white" unit="px" />
+                            </div>
+                            {/if}
+                            Send
+                        </div>
+                    </Button>
                 </div>
                 
             </Card>
-            {:else if _currentView == 'receiveStellar'}
+            {:else if currentView == 'receiveStellar'}
             <Card class="py-12 px-5 " >
                 receive Stellar
             </Card>
-            {:else if _currentView == 'sendToken'}
+            {:else if currentView == 'sendToken'}
             <Card class="py-12 px-5 " >
                 sendToken
             </Card>
-            {:else if _currentView == 'viewNFT'}
+            {:else if currentView == 'viewNFT'}
             <Card class="py-12 px-5 " >
                 viewNFT
             </Card>
-            {:else if _currentView == 'sendNFT'}
+            {:else if currentView == 'sendNFT'}
             <Card class="py-12 px-5 " >
                 sendNFT
             </Card>
-            {:else if _currentView == 'mintNFT'}
+            {:else if currentView == 'mintNFT'}
             <Card class="py-12 px-5 " >
                 mintNFT
             </Card>
@@ -211,16 +253,17 @@
         
     </div>
 </div>
-
-<!-- on:close={()=>{
-    alert('close ')
-    isOpenToast=false;
-}} -->
-<Toast color="green" position="top-right" bind:open on:close={()=>{open=false; alert('false')}} 
->
+<Toast color="green" position="top-right" bind:open on:close={()=>{open=false; alert('false')}}>
     <svelte:fragment slot="icon">
-        <CheckCircleSolid class="w-5 h-5" />
+        <CheckCircleSolid class="w-5 h-5 " />
         <span class="sr-only">Check icon</span>
     </svelte:fragment>
     Copied!
 </Toast>
+<style>
+    button.active {
+		/* box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
+		transform: translatey(-5px) scale(1.01); */
+        color:#1d4ed8;
+    }
+</style>
