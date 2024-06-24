@@ -232,13 +232,13 @@ export class canvasRope{
     this.args = {
         start: { x: 100, y: canvas.height / 2 },
         end: { x: canvas.width - 100, y: canvas.height / 2 },
-        resolution: 8,
+        resolution: 12,
         mass: 0.88,
         damping: 0.95,
         gravity: { x: 0, y: 3000 },
         solverIterations: 500,
         ropeColour: "white",
-        ropeSize: 4,
+        ropeSize: 3,
         maxX: null,
         maxY: null
 
@@ -272,27 +272,53 @@ export class canvasRope{
   drawRopePoints(colour, width){
     this.animationTicker += 1;
     let currentBoog = this.animationTicker%(this.points.length-1);
-    this.context.fillStyle = "white";
+    this.context.strokeStyle = "cyan";
     for (let i = 0; i < this.points.length; i++) {
       let p = this.points[i];
 
       const prev = i > 0 ? this.points[i - 1] : null;
+       this.context.strokeStyle = "cyan"
+      if(this.state === 'drawing'){
+        if(currentBoog == i){
+          console.log("here")
+          this.context.strokeStyle = "yellow";
+          this.context.lineWidth = 7;
+        }
+        else if((currentBoog+1)%(this.points.length-1) == i){
+          this.context.strokeStyle = "white";
+          this.context.lineWidth = 10;
+        }
+        else if((currentBoog+2)%(this.points.length-1) == i){
+          this.context.strokeStyle = "yellow";
+          this.context.lineWidth = 7;
+        }
+        else{
+          this.context.lineWidth = this.args.ropeSize;
+        }
+      }
 
       if (prev) {
         this.context.beginPath();
         this.context.moveTo(prev.pos.x, prev.pos.y);
         this.context.lineTo(p.pos.x, p.pos.y);
-        this.context.lineWidth = width;
-        this.context.strokeStyle = colour;
+        
+       
         this.context.stroke();
       }
       if(i == this.points.length-1){
         this.context.fillStyle = "black";
         this.context.beginPath();
-        this.context.arc(p.pos.x, p.pos.y, 40, 0, 2 * Math.PI);
+        if(this.state === 'drawing'){
+          this.context.arc(p.pos.x, p.pos.y, 40+3*Math.cos(0.2*this.animationTicker), 0, 2 * Math.PI);
+        }
+        else{
+          this.context.arc(p.pos.x, p.pos.y, 40+3*Math.cos(0.005*this.animationTicker), 0, 2 * Math.PI);
+        }
         this.context.fill();
       }
+      this.context.strokeStyle = "cyan";
     }
+    /*
     if(this.state === 'drawing'){
       let p = this.points[currentBoog]
         this.context.fillStyle = "black";
@@ -303,6 +329,7 @@ export class canvasRope{
 
         this.context.fill();
     }
+        */
   };
 
   //render a rope using the verlet points

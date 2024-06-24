@@ -39,7 +39,7 @@ export class Pen{
         this.pen_src_flipped.onload = () =>{
             console.log("flipped loaded");
         }
-        this.rope = new canvasRope(canvas, context, {x:100, y:600}, {x:50, y:50}, {maxX:800, maxY:600});
+        this.rope = new canvasRope(canvas, context, {x:150, y:660}, {x:50, y:50}, {maxX:800, maxY:600});
         this.rope.setStartPoint({x:this.x+(this.width/10), y:this.y+(this.height/10)});
     }
     pickUp(){
@@ -97,6 +97,7 @@ export class Pen{
                 this.context.lineTo(this.currentLine[i].x, this.currentLine[i].y);
             }
         }
+        this.context.strokeStyle = 'black';
         this.context.stroke();
     }
 
