@@ -1,63 +1,98 @@
 <script lang="ts">
     import {Card} from '@metastellar/ui-library';
-    import {Modal} from 'flowbite-svelte'
-
+    
+    import copy from "copy-to-clipboard";
     import {connected, address, ballance, accountName} from '../../store';   
-    import {snapId} from '../../constants';   
-  import Button from '../../components/Button.svelte';
  
-    export let balance= "";
-    export let accountInfo= "";
+    export let currentView = "sendXLM";
+    const setView = (view:string) => {
+        currentView = view;
+        console.log('view ', currentView);
+
+    }
+
+    const onCopy = (text:string) => {
+        copy(text);
+        alert('copied!');
+    }
+
+    let _currentView;
+    $:_currentView = currentView;
+
 </script>
 <div>
     <div id="midContainer"  class="uk-container">
-        <Card class="p-5 mt-16">
-            <h3 class="my-5 font-bold">Metamask Account</h3>
-            <p>{$address}</p>
-            
-            <h3 class="my-5 font-bold"> ballance of wallet</h3>
-            <p>{$ballance}</p>
-             <h3 class="my-5 font-bold"> account name</h3>
-            <p>{$accountName}</p>
+        <Card class="p-5 mt-16  ">
+            <div class="mt-12">
+                <p class="text-center">{$ballance} </p>
+                <h3 class="my-5 font-bold text-2xl text-center uppercase"> ballance</h3>
+            </div>
+            <div class="mt-5">
+                <p class="text-center">{$address} <span class="border rounded-xl px-2 py-1" on:click={()=>onCopy($address)}>copy</span></p>
+                <h3 class="my-5 font-bold text-center">address</h3>
+            </div>
         </Card>
-        <Card class="p-5 mt-16">
-            <div class="flex gap-2 text-white">
-            <Button>
-                Send XLM
-            </Button>
-            <Button>
-                Receive stellar
-            </Button>
-            
-            <Button>
+        <div class="flex flex-row mt-12 justify-between ">
+            <button on:click={()=>{setView('sendXLM')}}>
+                <Card class="py-8 px-12  " hoverTransform>
+                    <span>Send XLM</span>
+                </Card>
+            </button>
+            <button on:click={()=>{setView('receiveStellar')}}>
+                <Card class="py-8 px-12 " hoverTransform>
+                    <span>Receive</span>
+                </Card>
+            </button>
+            <button on:click={()=>{setView('sendToken')}}>
+            <Card class="py-8 px-12  "
+            hoverTransform>
                 Send token
-            </Button>
-            <Button>
+            </Card>
+              </button>
+            <button on:click={()=>{setView('viewNFT')}}>
+                 <Card class="py-8 px-12  "
+            hoverTransform>
                 View token
-            </Button>
-            
-            <Button>
-                Send NFT
-            </Button>
-            <Button>
-                Mint NFT
-            </Button>
-            </div>
-        </Card>
-        <!-- <Card class="p-5 mt-16">
-            <div class="mb-5">
-                <button on:click={getAccountName} class="border bg-slate-700 text-white py-3 px-7 rounded-lg">get account name</button>
-            </div>
-            <h3>get account name</h3>
-            <p>{accountInfo}</p>
-        </Card>       -->
-        <!-- <Card class="p-5 mt-16">
-            <div class="mb-5">
-                <button on:click={getBallance} class="border bg-slate-700 text-white py-3 px-7 rounded-lg">get ballance</button>
-            </div>
-            <h3>get stellar balances</h3>
-            <p>{balance}</p>
-        </Card>   -->
+            </Card>
+              </button>
+            <button on:click={()=>{setView('sendNFT')}}>
+                <Card class="py-8 px-12  " hoverTransform>
+                    Send NFT
+                </Card>
+            </button>
+            <button on:click={()=>{setView('mintNFT')}}>
+                <Card class="py-8 px-12  " hoverTransform>
+                    Mint NFT
+                </Card>
+            </button>
+        </div>
+        <div class="mt-12">
+            {#if _currentView == 'sendXLM'}
+            <Card class="py-12 px-5 " >
+                Send XLM
+            </Card>
+            {:else if _currentView == 'receiveStellar'}
+            <Card class="py-12 px-5 " >
+                receive Stellar
+            </Card>
+            {:else if _currentView == 'sendToken'}
+            <Card class="py-12 px-5 " >
+                sendToken
+            </Card>
+            {:else if _currentView == 'viewNFT'}
+            <Card class="py-12 px-5 " >
+                viewNFT
+            </Card>
+            {:else if _currentView == 'sendNFT'}
+            <Card class="py-12 px-5 " >
+                sendNFT
+            </Card>
+            {:else if _currentView == 'mintNFT'}
+            <Card class="py-12 px-5 " >
+                mintNFT
+            </Card>
+            {/if}
+        </div>
         
     </div>
 </div>

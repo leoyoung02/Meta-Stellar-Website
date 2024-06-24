@@ -108,7 +108,7 @@
 		width:50%;
 		display: flex;
 		justify-content: left;
-		z-index: 50;
+		z-index: 5;
 	}
 	#logo *{
 		max-width: 250px;
