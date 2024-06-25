@@ -58,7 +58,7 @@ export class Pen{
     
 
     createTimer(){
-        this.timerId = setTimeout(this.endDrawCallback, this.timeLimit);
+        this.timerId = setTimeout(this.endDrawCallback, this.timeLimit, this.signature);
     }
     clearTimer(){
         clearTimeout(this.timerId);
@@ -127,7 +127,6 @@ export class Pen{
         
         if(this.flipped){
             this.context.drawImage(this.pen_src_flipped, this.x, this.y, this.width, this.height)
-            console.log("flipped");
         }
         else{
             this.context.drawImage(this.penImage, this.x, this.y, this.width, this.height)

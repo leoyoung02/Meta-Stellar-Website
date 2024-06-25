@@ -4,9 +4,9 @@
     import RenderMaker from './CanvasRenderer';
     import {Pen} from './drawpen';
     import StellarTOKENSPNG from './images/stellarTokens_transparent.png';
-
-    import windowsImg from './images/windows.webp'
-    import checkmark from './images/checkmark.png'
+    import {openCanvasModal} from '@metastellar/ui-library';
+    import windowsImg from './images/windows.webp';
+    import checkmark from './images/checkmark.png';
 
     let context;
     let canvas:HTMLCanvasElement;
@@ -53,7 +53,7 @@
             }
         }
         let pen = new Pen(canvas, context, 0, 270, 340, 320);
-        pen.setTimerCallback((Signature:any)=>alert("done drawing"))
+        pen.setTimerCallback((Signature:any)=>{console.log(Signature);openCanvasModal("Signature", "yep", Signature)});
         renderMaker.addDrawFunc(drawBackground);
         renderMaker.addDrawFunc(pen.draw.bind(pen));
         //renderMaker.addDrawFunc(rope.draw.bind(rope));

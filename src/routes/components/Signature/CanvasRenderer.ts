@@ -7,7 +7,7 @@ export class App {
     drawHandler,
     frameRate = 60)
     {
-        console.log(window);
+        
       this._window = window;
       this._canvas = canvas;
       this._context = context;
@@ -104,7 +104,7 @@ export class App {
       let pageX;
       let pageY;
       if(e.touches !== undefined && e.touches.length > 0){
-       console.log(rect);
+       
         pageX = e.touches[0].pageX;
         pageY = e.touches[0].pageY;
 
@@ -124,7 +124,7 @@ export class App {
       y = (pageY / rect.height)*this._canvas.height;
       x -= (rect.x/rect.width)*this._canvas.width;
       y -= (rect.y/rect.height)*this._canvas.height;
-      console.log(x,y);
+      
       callback(x, y);
     }
   
@@ -212,7 +212,7 @@ export default class CanvasRenderer{
                 }
             }
         }
-        console.log(this.canvas);
+        
         this._renderer = new App(
             window, 
             this.canvas, 
