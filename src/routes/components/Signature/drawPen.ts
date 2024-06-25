@@ -18,9 +18,16 @@ export class Pen{
     rope:canvasRope;
     pen_src:any;
     pen_src_flipped:any;
+    
+    feeler: "mouse" | "finger" = "mouse";
 
-    signature:Point[][] = []
-    currentLine:Point[] = []
+    signature:Point[][] = [];
+    currentLine:Point[] = [];
+
+    timeLimit = 2000;
+    timerId:number = -1;
+    endDrawCallback:Function = function(signature:Point[][]){}
+
     
     constructor(canvas:HTMLCanvasElement, context:CanvasRenderingContext2D, x:number , y:number, width:number, height:number){
         this.x = x;
@@ -49,19 +56,21 @@ export class Pen{
         this.state = "drawing";
     }
     
-    drawPenBox(){
-        let penWidth = this.width/5;
-        let boxNum = 20;
-        let box = [this.x, this.y, penWidth, this.height/boxNum]
-        for(let i = 0; i<boxNum; i++){
-            this.context.fillStyle = "black"
-            this.context.fillRect(box[0]-(this.width/10), box[1], box[2], box[3]);
-            box[0] += this.width/boxNum;
-            box[1] += this.height/boxNum;
-        }
-        
+
+    createTimer(){
+        this.timerId = setTimeout(this.endDrawCallback, this.timeLimit);
     }
-    checkPenCollision(x,y){
+    clearTimer(){
+        clearTimeout(this.timerId);
+    }
+    setTimerCallback(func:Function){
+        this.endDrawCallback = func;
+    }
+    setTimerLimit(ms:number){
+        this.timeLimit = ms;
+    }
+    
+    checkPenCollision(x,y, draw=true){
         let penWidth = this.width/5;
         let boxNum = 20;
         let box = [this.x-(this.width/10), this.y, penWidth, this.height/boxNum]
@@ -73,6 +82,9 @@ export class Pen{
             }
             box[0] += this.width/boxNum;
             box[1] += this.height/boxNum;
+            if(draw){
+                this.context.fillRect(box[0], box[1], box[2], box[3]);
+            }
         }
         return false;
     }
@@ -165,8 +177,11 @@ export class Pen{
         }
 
         if(this.state === 'drawing' && this.flipped){
+
             this.y = y-((this.height/8)*6);
             this.x = x-((this.height/3));
+
+
             this.currentLine.push({
                 x:this.x+(this.width/40), 
                 y:this.y+this.height-(this.height/22)
@@ -178,13 +193,12 @@ export class Pen{
     onTouchMove(x,y){
         if(this.state === 'drawing'){
             this.currentLine.push({x:x, y:y})
-            this.y = y-((this.height/8)*6);
-            this.x = x-((this.height/3));
+            this.y = y-this.height;
+            this.x = x-this.width;
         }
     }
     onMouseDown(x,y){
-        console.log(x)
-        console.log(y)
+        
         if(this.checkPenCollision(x,y) && this.state === 'idle'){
             this.state = 'active';
             this.hover = false;
@@ -192,6 +206,7 @@ export class Pen{
             this.flipped = true;
         }
         if(this.state === 'active'){
+            this.clearTimer();
             this.state = 'drawing';
             this.rope.state = 'drawing';
             this.y = y-((this.height/8)*6);
@@ -199,13 +214,14 @@ export class Pen{
         }
     }
     onTouchDown(x, y){
+        this.clearTimer();
         console.log("here in touch down");
         console.log(x,y);
-        
+        this.feeler = 'finger';
         this.state = 'drawing';
         this.rope.state = 'drawing';
-        this.y = y-((this.height/8)*6);
-        this.x = x-((this.height/3));
+        this.y = y-this.height;
+        this.x = x-this.width;
         
     }
 
@@ -215,7 +231,11 @@ export class Pen{
             this.rope.state = 'active';
             this.signature.push(this.currentLine);
             this.currentLine = [];
+            this.createTimer();
         }
+    }
+    onMouseOut(){
+        this.onMouseUp();
     }
     onTouchUp(){
         if(this.state === 'drawing'){
@@ -223,6 +243,8 @@ export class Pen{
             this.rope.state = 'active';
             this.signature.push(this.currentLine);
             this.currentLine = [];
+            this.createTimer();
         }
     }
+
 }

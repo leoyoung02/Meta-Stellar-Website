@@ -45,15 +45,15 @@
 
                 //context.drawImage(backgroundImage, 0,0, canvas.width, canvas.height);
                 context.drawImage(stellarImage, 0,0, 800, (800*0.75));
-                context.drawImage(penImage, 0, 270, 340, 320);
-                context.drawImage(checkmarkImage, 110, 360);
+                //context.drawImage(penImage, 0, 270, 340, 320);
+                context.drawImage(checkmarkImage, 80, 430);
             }
             catch(e){
                 //ignore before image is loaded
             }
         }
         let pen = new Pen(canvas, context, 0, 270, 340, 320);
-
+        pen.setTimerCallback((Signature:any)=>alert("done drawing"))
         renderMaker.addDrawFunc(drawBackground);
         renderMaker.addDrawFunc(pen.draw.bind(pen));
         //renderMaker.addDrawFunc(rope.draw.bind(rope));
@@ -64,6 +64,7 @@
         renderMaker.addMouseMove(pen.onMouseMove.bind(pen));
         renderMaker.addMouseDown(pen.onMouseDown.bind(pen));
         renderMaker.addMouseUp(pen.onMouseUp.bind(pen));
+        //renderMaker.addMouseOut(pen.onMouseOut.bind(pen));
         renderMaker.addTouchDown(pen.onTouchDown.bind(pen));
         renderMaker.addTouchMove(pen.onTouchMove.bind(pen));
         renderMaker.addTouchUp(pen.onTouchUp.bind(pen));
@@ -87,3 +88,7 @@
 <center>
     <canvas width={900}, height={700}, bind:this={canvas} ></canvas>
 </center>
+
+<style>
+    
+</style>

@@ -25,6 +25,7 @@ export class App {
       this.onTouchDownHandler = (x, y) => {};
       this.onTouchMoveHandler = (x, y) => {};
       this.onTouchUpHandler = (x, y) => {};
+      this.onMouseOutHandler = (x, y) => {};
 
       this.start = this.start.bind(this);
       this._onMouseEventHandlerWrapper = this._onMouseEventHandlerWrapper.bind(
@@ -77,39 +78,53 @@ export class App {
           this._onMouseEventHandlerWrapper(e, this.onTouchUpHandler);
         }
       )
+
+      this._canvas.addEventListener(
+        "mouseout",
+        (e) => {
+          this._onMouseEventHandlerWrapper(e, this.onMouseOutHandler);
+        }
+      )
+      
   
   
       this._onRequestAnimationFrame();
     }
   
     _onMouseEventHandlerWrapper(e, callback) {
+      let rect = this._canvas.getBoundingClientRect();
+      
+      let x = e.clientX - rect.left;
+      let y = e.clientY - rect.top;
 
       let element = this._canvas;
-      let offsetX = 0;
-      let offsetY = 0;
-  
-      if (element.offsetParent) {
-        do {
-          offsetX += element.offsetLeft;
-          offsetY += element.offsetTop;
-        } while (element = element.offsetParent);
-      }
-      let x;
-      let y;
+      //let x;
+      //let y;
       
-      
+      let pageX;
+      let pageY;
       if(e.touches !== undefined && e.touches.length > 0){
-        console.log("touch event");
-        console.log(e.touches);
-        x = e.touches[0].pageX;
-        y = e.touches[0].pageY;
+       console.log(rect);
+        pageX = e.touches[0].pageX;
+        pageY = e.touches[0].pageY;
+
       }
       else{
+        let x = (e.clientX- rect.left) 
+        let xScalar = (element.width/rect.width) ;
+        let y = (e.clientY - rect.top)
+        let yScalar = (element.height/rect.height);
         
-        x = e.pageX - offsetX;
-        y = e.pageY - offsetY;
-        
+        x = x*xScalar;
+        y = y*yScalar;
+        return callback(x, y);
       }
+      
+      x = (pageX / rect.width)*this._canvas.width;
+      y = (pageY / rect.height)*this._canvas.height;
+      x -= (rect.x/rect.width)*this._canvas.width;
+      y -= (rect.y/rect.height)*this._canvas.height;
+      console.log(x,y);
       callback(x, y);
     }
   
@@ -143,10 +158,12 @@ export default class CanvasRenderer{
     mouseMoveHandlerArray: Function[] = [];
     mouseDownHandlerArray: Function[] = [];
     mouseUpHandlerArray: Function[] = [];
+    mouseOutHandlerArray: Function[] = [];
 
     touchDownHandlerArray: Function[] = [];
     touchMoveHandlerArray: Function[] = [];
     touchUpHandlerArray: Function[] = [];
+    
 
     constructor( canvas:HTMLCanvasElement, context:CanvasRenderingContext2D, frameRate = 60){
         this.canvas = canvas;
@@ -182,6 +199,10 @@ export default class CanvasRenderer{
       this.touchUpHandlerArray.push(func);
     }
 
+    addMouseOut(func:Function){
+      this.mouseDownHandlerArray.push(func);
+    }
+
     start(){
         const getCombinedFunc = function(funcs:Function[]){
             
@@ -202,6 +223,7 @@ export default class CanvasRenderer{
         this._renderer.onMouseMoveHandler = getCombinedFunc(this.mouseMoveHandlerArray);
         this._renderer.onMouseDownHandler = getCombinedFunc(this.mouseDownHandlerArray);
         this._renderer.onMouseUpHandler = getCombinedFunc(this.mouseUpHandlerArray);
+        this._renderer.onMouseOutHandler = getCombinedFunc(this.mouseOutHandlerArray);
         
         this._renderer.onTouchDownHandler = getCombinedFunc(this.touchDownHandlerArray);
         this._renderer.onTouchMoveHandler = getCombinedFunc(this.touchMoveHandlerArray);

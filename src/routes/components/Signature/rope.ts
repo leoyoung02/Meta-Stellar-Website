@@ -281,16 +281,16 @@ export class canvasRope{
       if(this.state === 'drawing'){
         if(currentBoog == i){
           console.log("here")
-          this.context.strokeStyle = "yellow";
-          this.context.lineWidth = 7;
+          //this.context.strokeStyle = "yellow";
+          this.context.lineWidth = 15;
         }
         else if((currentBoog+1)%(this.points.length-1) == i){
-          this.context.strokeStyle = "white";
-          this.context.lineWidth = 10;
+          //this.context.strokeStyle = "white";
+          this.context.lineWidth = 20;
         }
         else if((currentBoog+2)%(this.points.length-1) == i){
-          this.context.strokeStyle = "yellow";
-          this.context.lineWidth = 7;
+          //this.context.strokeStyle = "yellow";
+          this.context.lineWidth = 15;
         }
         else{
           this.context.lineWidth = this.args.ropeSize;
