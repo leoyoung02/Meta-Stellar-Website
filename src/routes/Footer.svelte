@@ -1,5 +1,5 @@
 <!-- Footer.svelte -->
-<div uk-sticky="position: bottom">
+<div uk-sticky="position: bottom;">
     <p>footer</p>
 </div>
 <style>

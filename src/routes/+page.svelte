@@ -4,6 +4,8 @@
     import OfficeImg from "$lib/images/wallet.webp";
     import { onMount } from "svelte";
     import ChatBox from "./components/Chat/index.svelte";
+    import {lockScroll} from './store';
+    
     let titles = {
         wallet: "Wallet",
         news: "News",

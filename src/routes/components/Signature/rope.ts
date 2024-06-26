@@ -243,6 +243,7 @@ export class canvasRope{
         maxY: null
 
     }
+    
     if(typeof this.args == 'object'){
       let keys:Array<string> = Array.from(Object.keys(params));
       console.log(keys)
@@ -262,11 +263,16 @@ export class canvasRope{
 
 
   this.rope = new Rope(this.points, this.args.solverIterations);
+  this.context.lineWidth = this.args.ropeSize;
   }
   
   tick(dt:number){
     this.rope.update(this.args.gravity, dt);
   };
+
+  animationRenderer(animation:animationType){
+
+  }
 
   
   drawRopePoints(colour, width){

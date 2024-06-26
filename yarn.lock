@@ -213,10 +213,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@metastellar/ui-library@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@metastellar/ui-library/-/ui-library-0.0.12.tgz#dfb9b6caf01cda1b105b6db73d100ab59a8b0cc0"
-  integrity sha512-9qgPUwQ2T6t8EKEPCS8Wj8yAIE5tjUmOVB4m4VkDhKraQfJ9OFzsiuPVHfmshPeAOsPQzPplMQ/yPeWNmcPRuw==
+"@metastellar/ui-library@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@metastellar/ui-library/-/ui-library-0.0.13.tgz#f48f5d8a638d1915361dc10857b20d197976bea7"
+  integrity sha512-4VJGC40mNm10QylSaYCdJe1IfRc01eNgbyN9uMd1oHo2mJBtT2UnuOn3l6gCJ4dEKStGy8YP2f87uSOncQ50BA==
   dependencies:
     "@stellar/stellar-sdk" "^12.0.1"
     flowbite-svelte "^0.46.1"
