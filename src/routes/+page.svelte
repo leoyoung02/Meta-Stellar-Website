@@ -54,34 +54,19 @@
 {#if screen === 'lg' || screen === 'md'}
 <div id="midContainer"  class="uk-container">
 	<div class="uk-flex uk-flex-wrap uk-flex-wrap-around mt-16">
-        <!-- <Card 
-            img={OfficeImg}
-            imgClass=" rounded-lg"
-            bodyClass="mt-5"
-            class="p-5 uk-width-2-3"
-            isMouseTrackRecord={true} 
-            dataURL="http://localhost/api" 
-            intervalData={5}
-            hoverTransform
-            imgHoverTransform
-            reverse
-            >
-            <h5 class="mb-2 text-xl  tracking-tight text-gray-900 ">{titles.wallet}</h5> 
-        </Card> -->
-        
         <NftPoster 
             isMouseTrackRecord={true} 
             dataURL="http://localhost/api" 
             intervalData={5} 
             hoverTransform
             imgHoverTransform
-            class="p-6 uk-width-2-3"
+            class="p-6 w-[calc(100%*2/3.001)]"
             assetAccount={assetInfo}
         >
         </NftPoster>
         <Card 
             bodyClass="mt-5"
-            class="px-5 py-10 uk-width-expand"
+            class="px-5 py-10  uk-width-expand"
             isMouseTrackRecord={true} 
             dataURL="http://localhost/api" 
             intervalData={5}
