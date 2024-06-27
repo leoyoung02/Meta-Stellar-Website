@@ -55,10 +55,14 @@
 				{/if}
 				{#if logo==='img'}
 					<img class="uk-logo uk-width-2-3" src={svgLogo} alt="Metastellar Logo"/>
+<<<<<<< HEAD
 				{/if}
 				</a>
+=======
+				{/if}</a>
+>>>>>>> 09c76bd2ebc401fb803e9dfb1fe0f1accb9e7121
 			</li>
-			<li data-uk-hover class="uk-width-1-6"><a href="#">Wallet</a></li>
+			<li data-uk-hover class="uk-width-1-6"><a href="wallet">Wallet</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="#">FAQ</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="/docs">Docs</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="#">chat</a></li>
@@ -104,7 +108,7 @@
 		width:50%;
 		display: flex;
 		justify-content: left;
-		z-index: 50;
+		z-index: 5;
 	}
 	#logo *{
 		max-width: 250px;

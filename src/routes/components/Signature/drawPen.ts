@@ -217,7 +217,7 @@ export class Pen{
                 this.x = this.startX;
                 this.y = this.startY;
                 this.flipped = false;
-                this.clearTimer();
+                //this.clearTimer();
             }
             //this.canvas.style.cursor = 'none';
         }
