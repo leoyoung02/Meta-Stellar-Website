@@ -83,7 +83,7 @@
                 
                 chatHeadBubble.style.transitionDuration = "0.2s";
                 
-                chatHeadBubble.style.bottom = "85vh";
+                chatHeadBubble.style.bottom = "88vh";
             }, 400);
             
         }
