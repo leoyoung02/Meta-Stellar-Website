@@ -4,17 +4,19 @@
     import RenderMaker from './CanvasRenderer';
     import {Pen} from './drawpen';
     import StellarTOKENSPNG from './images/stellarTokens_transparent.png';
-    import {openCanvasModal} from '@metastellar/ui-library';
+
     import windowsImg from './images/windows.webp';
     import checkmark from './images/checkmark.png';
 
-    let context;
+    export let SignatureCallback:Function = (sig:Point[][])=>{};
+
+    let context:CanvasRenderingContext2D;
     let canvas:HTMLCanvasElement;
     let stellarImage:any;
     let backgroundImage:any;
     let penImage:any;
     let checkmarkImage:any;
-
+    
     
     onMount(()=>{
         const img0 = document.createElement("img");
@@ -46,14 +48,19 @@
                 //context.drawImage(backgroundImage, 0,0, canvas.width, canvas.height);
                 context.drawImage(stellarImage, 0,0, 800, (800*0.75));
                 //context.drawImage(penImage, 0, 270, 340, 320);
-                context.drawImage(checkmarkImage, 80, 430);
+                context.drawImage(checkmarkImage, -50, 430);
             }
             catch(e){
                 //ignore before image is loaded
             }
         }
         let pen = new Pen(canvas, context, 0, 270, 340, 320);
-        pen.setTimerCallback((Signature:any)=>{console.log(Signature);openCanvasModal("Signature", "yep", Signature)});
+        //pen.maxX = 800;
+        //pen.maxY = 400;
+
+        pen.setTimerCallback(SignatureCallback);
+
+
         renderMaker.addDrawFunc(drawBackground);
         renderMaker.addDrawFunc(pen.draw.bind(pen));
         //renderMaker.addDrawFunc(rope.draw.bind(rope));
@@ -71,22 +78,10 @@
         renderMaker.start()
     })
 
-    function handleMouseDown(){
-
-    }
-
-    function handleMouseMove(){
-
-    }
-    function handleMouseUp(){
-
-    }
-    function handleDoubleClick(){
-
-    }
 </script>
 <center>
-    <canvas width={900}, height={700}, bind:this={canvas} ></canvas>
+    
+    <canvas style="height:500px; width:auto;"  width={900}, height={700}, bind:this={canvas} ></canvas>
 </center>
 
 <style>

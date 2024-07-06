@@ -1587,14 +1587,14 @@
     superstruct "^1.0.3"
 
 "@metamask/snaps-registry@^3.0.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@metamask/snaps-registry/-/snaps-registry-3.1.0.tgz#05635a09971f1e106deef73ef3181f17005b1750"
-  integrity sha512-72fQIAxCFSQ/25c0VgPj/XIL8K6Xm8nRuHYayhLmsSgRbHlNXzwVhMieK3yztBqMFD5Hi+9gKsl0HkMMORoqzg==
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@metamask/snaps-registry/-/snaps-registry-3.2.0.tgz#ee5b45d353fca0b320c7c8e86170eef95ad020a8"
+  integrity sha512-Wy1oYw3gmV7A6K1zwtdW6EHKCSqYWvWoAQ5xHOeKMZN0ilwZp2dLLkA4I/LFmzp2cCrd14EC0rzgtnQc1pnadA==
   dependencies:
-    "@metamask/utils" "^8.3.0"
+    "@metamask/superstruct" "^3.0.0"
+    "@metamask/utils" "^8.5.0"
     "@noble/curves" "^1.2.0"
     "@noble/hashes" "^1.3.2"
-    superstruct "^1.0.3"
 
 "@metamask/snaps-sdk@^1.3.2", "@metamask/snaps-sdk@^1.4.0":
   version "1.4.0"
@@ -1772,7 +1772,7 @@
     semver "^7.5.4"
     superstruct "^1.0.3"
 
-"@metamask/utils@^8.1.0", "@metamask/utils@^8.2.0", "@metamask/utils@^8.2.1", "@metamask/utils@^8.3.0":
+"@metamask/utils@^8.1.0", "@metamask/utils@^8.2.0", "@metamask/utils@^8.2.1", "@metamask/utils@^8.3.0", "@metamask/utils@^8.5.0":
   version "8.5.0"
   resolved "https://registry.yarnpkg.com/@metamask/utils/-/utils-8.5.0.tgz#ddd0d4012d5191809404c97648a837ea9962cceb"
   integrity sha512-I6bkduevXb72TIM9q2LRO63JSsF9EXduh3sBr9oybNX2hNNpr/j1tEjXrsG0Uabm4MJ1xkGAQEMwifvKZIkyxQ==
@@ -1787,10 +1787,10 @@
     semver "^7.5.4"
     uuid "^9.0.1"
 
-"@metastellar/ui-library@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@metastellar/ui-library/-/ui-library-0.0.12.tgz#dfb9b6caf01cda1b105b6db73d100ab59a8b0cc0"
-  integrity sha512-9qgPUwQ2T6t8EKEPCS8Wj8yAIE5tjUmOVB4m4VkDhKraQfJ9OFzsiuPVHfmshPeAOsPQzPplMQ/yPeWNmcPRuw==
+"@metastellar/ui-library@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@metastellar/ui-library/-/ui-library-0.0.14.tgz#4661f267e0d4d8703b6f17cd71eade19944cc5a1"
+  integrity sha512-BNGYNL8mFIUf2IPQ4n0TMYv2FngVz/LSLNXB4EZoiRqw8W1H5KhJMGWufwFan81vhKO56aPu28wdZ6sWKY77AA==
   dependencies:
     "@stellar/stellar-sdk" "^12.0.1"
     flowbite-svelte "^0.46.1"
@@ -2001,7 +2001,7 @@
   optionalDependencies:
     sodium-native "^4.1.1"
 
-"@stellar/stellar-sdk@^12.0.0-rc.3", "@stellar/stellar-sdk@^12.0.1":
+"@stellar/stellar-sdk@^12.0.0-rc.3", "@stellar/stellar-sdk@^12.0.1", "@stellar/stellar-sdk@^12.1.0":
   version "12.1.0"
   resolved "https://registry.npmjs.org/@stellar/stellar-sdk/-/stellar-sdk-12.1.0.tgz"
   integrity sha512-Va0hu9SaPezmMbO5eMwL5D15Wrx1AGWRtxayUDRWV2Fr3ynY58mvCZS1vsgNQ4kE8MZe3nBVKv6T9Kzqwgx1PQ==
@@ -4514,6 +4514,13 @@ merge2@^1.3.0:
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
+metastellar-sdk@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/metastellar-sdk/-/metastellar-sdk-0.0.7.tgz#93c80a50665136ef3dba67797a0b0b078a8e63e3"
+  integrity sha512-JfzOzQvqaCarZ08zn03yJQIgfsDciOhfZ8l7YeJNtfDDSVyNbBZFggMXGIc/xdfL5FfZFLg7wNOzoXO95icf8w==
+  dependencies:
+    "@stellar/stellar-sdk" "^12.1.0"
+
 micro-ftch@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/micro-ftch/-/micro-ftch-0.3.1.tgz#6cb83388de4c1f279a034fb0cf96dfc050853c5f"
@@ -5715,6 +5722,7 @@ stream-splicer@^2.0.0:
     readable-stream "^2.0.2"
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -5747,6 +5755,7 @@ string_decoder@~1.1.1:
     safe-buffer "~5.1.0"
 
 "strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  name strip-ansi-cjs
   version "6.0.1"
   resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==

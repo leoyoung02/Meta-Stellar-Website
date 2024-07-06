@@ -6,6 +6,10 @@
 	import ConnectButtonCreepy from '../components/connectButtonCreepy.svelte';
 	import { onMount } from 'svelte';
 	import {videoPlayed} from '$lib/store';
+	import {MetaStellarWallet} from 'metastellar-sdk';
+	import {walletData} from '$lib/store';
+    import {Button} from 'flowbite-svelte';
+
 	let logo:'none'|'video'|'img' = 'none';
 	let videoRef;
 	let ButtonisCreepy = Math.random() < 0.05;
@@ -55,19 +59,20 @@
 				{/if}
 				{#if logo==='img'}
 					<img class="uk-logo uk-width-2-3" src={svgLogo} alt="Metastellar Logo"/>
-				{/if}</a>
+				{/if}
+				</a>
 			</li>
 			<li data-uk-hover class="uk-width-1-6"><a href="wallet">Wallet</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="#">FAQ</a></li>
-			<li data-uk-hover class="uk-width-1-6"><a href="#">Docs</a></li>
+			<li data-uk-hover class="uk-width-1-6"><a href="/docs">Docs</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="#">chat</a></li>
 			<li data-uk-hover class="uk-width-1-6">
-				{#if ButtonisCreepy}
-					<ConnectButtonCreepy/>
-				{:else}
+				<br/>
+				{#if !(($walletData).connected)}
 					<ConnectButton/>
+				{:else}
+					<Button color="yellow" >Connected</Button>
 				{/if}
-				
 			</li>
 		</ul>
 

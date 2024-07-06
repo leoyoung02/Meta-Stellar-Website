@@ -1,9 +1,12 @@
 <script lang='ts'>
-    import {Card, NftPoster} from '@metastellar/ui-library';
+    import {Card, NftPoster, YoutubePoster} from '@metastellar/ui-library';
 	import Greeting from "../components/greeting.svelte";
     import OfficeImg from "$lib/images/wallet.webp";
     import { onMount } from "svelte";
     import ChatBox from "./components/Chat/index.svelte";
+
+    import video1 from '$lib/video/metastellar.mp4';
+    import girlImg from '$lib/images/girl.jpg'
     let titles = {
         wallet: "Wallet",
         news: "News",
@@ -53,20 +56,51 @@
 <ChatBox />
 {#if screen === 'lg' || screen === 'md'}
 <div id="midContainer"  class="uk-container">
-	<div class="uk-flex uk-flex-wrap uk-flex-wrap-around mt-16">
-        <NftPoster 
+    <div class='flex gap-4'>
+        <div class='w-72 mt-5'>
+            <NftPoster 
+                isMouseTrackRecord={true} 
+                dataURL="http://localhost/api" 
+                intervalData={5} 
+                hoverTransform
+                imgHoverTransform
+                class="p-4 w-72"
+                assetAccount={assetInfo}
+            >
+        </NftPoster>
+        </div>
+        <div class='w-72 mt-5'>
+            <YoutubePoster
+                dataURL="http://localhost/api"
+                yutubeURL={video1}
+                thumnailURL={girlImg}
+                type="video/mp4"
+                bodyClass="mt-5"
+                videoClass=""
+                class="p-4 w-72"
+            />
+        </div>
+    </div>
+	<div class="uk-flex uk-flex-wrap uk-flex-wrap-around mt-5">
+        <!-- <Card 
+            img={OfficeImg}
+            imgClass=" rounded-lg"
+            bodyClass="mt-5"
+            class="p-5 uk-width-2-3"
             isMouseTrackRecord={true} 
             dataURL="http://localhost/api" 
-            intervalData={5} 
+            intervalData={5}
             hoverTransform
             imgHoverTransform
-            class="p-6 w-[calc(100%*2/3.001)]"
-            assetAccount={assetInfo}
-        >
-        </NftPoster>
+            reverse
+            >
+            <h5 class="mb-2 text-xl  tracking-tight text-gray-900 ">{titles.wallet}</h5> 
+        </Card> -->
+
+        
         <Card 
             bodyClass="mt-5"
-            class="px-5 py-10  uk-width-expand"
+            class="px-5 py-10 uk-width-expand"
             isMouseTrackRecord={true} 
             dataURL="http://localhost/api" 
             intervalData={5}

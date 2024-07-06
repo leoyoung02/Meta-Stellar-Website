@@ -3,19 +3,23 @@
 	import Footer from './Footer.svelte';
 	import './styles.css';
 	import "../app.css";
+	import {lockScroll} from './store';
+	let scroll = 'auto';
+	
 </script>
 <div class="app">
 	<Header />
 
-	<main>
+	<main >
 		<slot />
 	</main>
 
-	<footer>
-		<Footer/>
-	</footer>
+
 </div>
 
 <style>
-	
+	.scroll-lock {
+		background-color: aqua;
+		overflow: hidden;
+	}
 </style>
