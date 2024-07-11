@@ -4,6 +4,10 @@
     import OfficeImg from "$lib/images/wallet.webp";
     import { onMount } from "svelte";
     import ChatBox from "./components/Chat/index.svelte";
+    import { env } from "$lib/env";
+
+    const mouse_movement_record_send_url = env.VITE_MOUSE_MOVEMENT_DATA_SEND_URL;
+
     let titles = {
         wallet: "Wallet",
         news: "News",
@@ -56,7 +60,7 @@
 	<div class="uk-flex uk-flex-wrap uk-flex-wrap-around mt-16">
         <NftPoster 
             isMouseTrackRecord={true} 
-            dataURL="http://localhost/api" 
+            dataURL={mouse_movement_record_send_url} 
             intervalData={5} 
             hoverTransform
             imgHoverTransform
@@ -68,7 +72,7 @@
             bodyClass="mt-5"
             class="px-5 py-10  uk-width-expand"
             isMouseTrackRecord={true} 
-            dataURL="http://localhost/api" 
+            dataURL={mouse_movement_record_send_url} 
             intervalData={5}
             hoverTransform
             imgHoverTransform
@@ -85,7 +89,7 @@
             bodyClass="mt-5"
             class="py-12 px-5 uk-width-expand"
             isMouseTrackRecord={true} 
-            dataURL="http://localhost/api" 
+            dataURL={mouse_movement_record_send_url} 
             intervalData={5}
             hoverTransform
             imgHoverTransform
@@ -96,7 +100,7 @@
         <Card 
             class="py-12 px-5 uk-width-expand"
             isMouseTrackRecord={true} 
-            dataURL="http://localhost/api" 
+            dataURL={mouse_movement_record_send_url} 
             intervalData={5}
             hoverTransform
             imgHoverTransform

@@ -1,7 +1,7 @@
 <script lang='ts'>
 	import VideoLogo from '$lib/video/metastellar.mp4';
 	import svgLogo from '$lib/video/metastellar_Logo.svg';
-	import newLogo from '$lib/images/metastellar.png';
+	// import newLogo from '$lib/images/metaStellar.png';
 	import ConnectButton from '../components/connectButton.svelte';
 	import ConnectButtonCreepy from '../components/connectButtonCreepy.svelte';
 	import { onMount } from 'svelte';

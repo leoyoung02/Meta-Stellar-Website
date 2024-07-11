@@ -6,6 +6,8 @@
     import {connected, address, ballance, accountName} from '../../store';   
     import { Label, Toast, Button  } from 'flowbite-svelte';
     import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
+    import NFTMint from "../components/NFT/nftMint.svelte";
+    import { env } from "$lib/env";
 
     export let currentView = "sendXLM";
 
@@ -18,6 +20,10 @@
 
     let sendToAddress:string = "GDPZOWVRHQV2SQ3N47CILKNU4NZQOXYDVXGKKJI32TVWIF7V7364G2QM";
     let sendAmount:number = 5;
+
+    const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
+
+    // console.log("stellar_rpc_endpoint", stellar_rpc_endpoint);
 
     const setView = (view:string) => {
         currentView = view;
@@ -55,7 +61,7 @@
             return;
         }
         processing = true;
-        const server = new StellarSdk.Horizon.Server('https://horizon-testnet.stellar.org');
+        const server = new StellarSdk.Horizon.Server(stellar_rpc_endpoint);
         const sourcePublicKey = await ethereum.request({
             method: 'wallet_invokeSnap',
             params: {snapId:'npm:stellar-snap', request:{
@@ -245,9 +251,7 @@
                 sendNFT
             </Card>
             {:else if currentView == 'mintNFT'}
-            <Card class="py-12 px-5 " >
-                mintNFT
-            </Card>
+            <NFTMint />
             {/if}
         </div>
         

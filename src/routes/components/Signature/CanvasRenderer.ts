@@ -231,8 +231,4 @@ export default class CanvasRenderer{
         
         this._renderer.start();
     }
-
-
-
-
 }
