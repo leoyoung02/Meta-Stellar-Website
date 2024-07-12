@@ -1394,12 +1394,21 @@
     "@scure/base" "^1.0.0"
 
 "@metamask/key-tree@^9.0.0":
+<<<<<<< HEAD
   version "9.1.2"
   resolved "https://registry.yarnpkg.com/@metamask/key-tree/-/key-tree-9.1.2.tgz#3f89fc7990c395be3aa9c3e6e045d3d28768149b"
   integrity sha512-oznbIDlIn7bQsyf/RVhuVX9TsK+QUlTDeksUjBjTPKhGkFHAgn9duBHPE8P30VcCdWlt/oYSqfJVC5WK1/OXKw==
   dependencies:
     "@metamask/scure-bip39" "^2.1.1"
     "@metamask/utils" "^9.0.0"
+=======
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/@metamask/key-tree/-/key-tree-9.1.1.tgz#0a604e7ee147d0f2433adb87c8be92e8c8613bb5"
+  integrity sha512-Z/KEbNlNvLeaBIjw+ibtC8gfLAm7X152JPcLo2KJgw8wMxKjwq/OjkI3XIqn7hFRA2HWCm3MWJPcABQsXWPQcQ==
+  dependencies:
+    "@metamask/scure-bip39" "^2.1.1"
+    "@metamask/utils" "^8.3.0"
+>>>>>>> main
     "@noble/curves" "^1.2.0"
     "@noble/hashes" "^1.3.2"
     "@scure/base" "^1.0.0"
@@ -1512,11 +1521,19 @@
     webextension-polyfill "^0.10.0"
 
 "@metamask/rpc-errors@^6.0.0", "@metamask/rpc-errors@^6.1.0", "@metamask/rpc-errors@^6.2.1":
+<<<<<<< HEAD
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/@metamask/rpc-errors/-/rpc-errors-6.3.1.tgz#d5bb4740e070c3d87e91717ff4c3c6061a081cab"
   integrity sha512-ugDY7cKjF4/yH5LtBaOIKHw/AiGGSAmzptAUEiAEGr/78LwuzcXAxmzEQfSfMIfI+f9Djr8cttq1pRJJKfTuCg==
   dependencies:
     "@metamask/utils" "^9.0.0"
+=======
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/@metamask/rpc-errors/-/rpc-errors-6.3.0.tgz#adc63f3c1c50ec812d3631a471fe2beca0c3707d"
+  integrity sha512-B1UIG/0xWkaDs/d6xrxsRf7kmFLdk8YE0HUToaFumjwQM36AjBsqEzVyemPTQv0SIrAPFnSmkLt053JOWcu5iw==
+  dependencies:
+    "@metamask/utils" "^8.3.0"
+>>>>>>> main
     fast-safe-stringify "^2.0.6"
 
 "@metamask/rpc-methods@^1.0.2":
@@ -1624,12 +1641,21 @@
     superstruct "^1.0.3"
 
 "@metamask/snaps-registry@^3.0.0":
+<<<<<<< HEAD
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@metamask/snaps-registry/-/snaps-registry-3.2.1.tgz#ff97329b97e8dc9a512f0c5f0f41b3554a592ad3"
   integrity sha512-MnG1BBJk4UK9iJArK+h/iz8wlt+xjsvgnj0k39p5658hWZu6cuumHoV1EIupCwsCv7XXOBLc8iAgjvITXKC1FQ==
   dependencies:
     "@metamask/superstruct" "^3.1.0"
     "@metamask/utils" "^9.0.0"
+=======
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@metamask/snaps-registry/-/snaps-registry-3.2.0.tgz#ee5b45d353fca0b320c7c8e86170eef95ad020a8"
+  integrity sha512-Wy1oYw3gmV7A6K1zwtdW6EHKCSqYWvWoAQ5xHOeKMZN0ilwZp2dLLkA4I/LFmzp2cCrd14EC0rzgtnQc1pnadA==
+  dependencies:
+    "@metamask/superstruct" "^3.0.0"
+    "@metamask/utils" "^8.5.0"
+>>>>>>> main
     "@noble/curves" "^1.2.0"
     "@noble/hashes" "^1.3.2"
 
@@ -1775,10 +1801,17 @@
     "@metamask/utils" "^8.3.0"
     webpack-sources "^3.2.3"
 
+<<<<<<< HEAD
 "@metamask/superstruct@^3.0.0", "@metamask/superstruct@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@metamask/superstruct/-/superstruct-3.1.0.tgz#148f786a674fba3ac885c1093ab718515bf7f648"
   integrity sha512-N08M56HdOgBfRKkrgCMZvQppkZGcArEop3kixNEtVbJKm6P9Cfg0YkI6X0s1g78sNrj2fWUwvJADdZuzJgFttA==
+=======
+"@metamask/superstruct@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@metamask/superstruct/-/superstruct-3.0.0.tgz#0200d0a627522904a7e0fd751dcc6fb863cefacb"
+  integrity sha512-TOm+Lt/lCJk9j/3QT2LucrPewRmqI7/GKT+blK2IIOAkBMS+9TmeNjd2Y+TlfpSSYstaYsGZyz1XwpiTCg6RLA==
+>>>>>>> main
 
 "@metamask/types@^1.1.0":
   version "1.1.0"
@@ -1809,7 +1842,11 @@
     semver "^7.5.4"
     superstruct "^1.0.3"
 
+<<<<<<< HEAD
 "@metamask/utils@^8.1.0", "@metamask/utils@^8.2.0", "@metamask/utils@^8.2.1", "@metamask/utils@^8.3.0":
+=======
+"@metamask/utils@^8.1.0", "@metamask/utils@^8.2.0", "@metamask/utils@^8.2.1", "@metamask/utils@^8.3.0", "@metamask/utils@^8.5.0":
+>>>>>>> main
   version "8.5.0"
   resolved "https://registry.yarnpkg.com/@metamask/utils/-/utils-8.5.0.tgz#ddd0d4012d5191809404c97648a837ea9962cceb"
   integrity sha512-I6bkduevXb72TIM9q2LRO63JSsF9EXduh3sBr9oybNX2hNNpr/j1tEjXrsG0Uabm4MJ1xkGAQEMwifvKZIkyxQ==
@@ -1824,6 +1861,7 @@
     semver "^7.5.4"
     uuid "^9.0.1"
 
+<<<<<<< HEAD
 "@metamask/utils@^9.0.0":
   version "9.0.0"
   resolved "https://registry.yarnpkg.com/@metamask/utils/-/utils-9.0.0.tgz#cbcdf90e2cfc425f67731fc50d44bdf501daae36"
@@ -1843,6 +1881,12 @@
   version "0.0.12"
   resolved "https://registry.yarnpkg.com/@metastellar/ui-library/-/ui-library-0.0.12.tgz#dfb9b6caf01cda1b105b6db73d100ab59a8b0cc0"
   integrity sha512-9qgPUwQ2T6t8EKEPCS8Wj8yAIE5tjUmOVB4m4VkDhKraQfJ9OFzsiuPVHfmshPeAOsPQzPplMQ/yPeWNmcPRuw==
+=======
+"@metastellar/ui-library@^0.0.14":
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/@metastellar/ui-library/-/ui-library-0.0.14.tgz#4661f267e0d4d8703b6f17cd71eade19944cc5a1"
+  integrity sha512-BNGYNL8mFIUf2IPQ4n0TMYv2FngVz/LSLNXB4EZoiRqw8W1H5KhJMGWufwFan81vhKO56aPu28wdZ6sWKY77AA==
+>>>>>>> main
   dependencies:
     "@stellar/stellar-sdk" "^12.0.1"
     flowbite-svelte "^0.46.1"
@@ -2114,7 +2158,11 @@
   optionalDependencies:
     sodium-native "^4.1.1"
 
+<<<<<<< HEAD
 "@stellar/stellar-sdk@^12.0.0-rc.3", "@stellar/stellar-sdk@^12.0.1":
+=======
+"@stellar/stellar-sdk@^12.0.0-rc.3", "@stellar/stellar-sdk@^12.0.1", "@stellar/stellar-sdk@^12.1.0":
+>>>>>>> main
   version "12.1.0"
   resolved "https://registry.npmjs.org/@stellar/stellar-sdk/-/stellar-sdk-12.1.0.tgz"
   integrity sha512-Va0hu9SaPezmMbO5eMwL5D15Wrx1AGWRtxayUDRWV2Fr3ynY58mvCZS1vsgNQ4kE8MZe3nBVKv6T9Kzqwgx1PQ==
@@ -3585,6 +3633,7 @@ dash-ast@^1.0.0:
   resolved "https://registry.yarnpkg.com/dash-ast/-/dash-ast-1.0.0.tgz#12029ba5fb2f8aa6f0a861795b23c1b4b6c27d37"
   integrity sha512-Vy4dx7gquTeMcQR/hDkYLGUnwVil6vk4FOOct+djUnHOUWt+zJPJAaRIXaAFkPXtJjvlY7o3rfRu0/3hpnwoUA==
 
+<<<<<<< HEAD
 data-uri-to-buffer@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-3.0.1.tgz#594b8973938c5bc2c33046535785341abc4f3636"
@@ -3595,6 +3644,8 @@ data-uri-to-buffer@^4.0.0:
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz#d8feb2b2881e6a4f58c2e08acfd0e2834e26222e"
   integrity sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==
 
+=======
+>>>>>>> main
 debounce@^1.0.0:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.1.tgz#38881d8f4166a5c5848020c11827b834bcb3e0a5"
@@ -3738,6 +3789,7 @@ dlv@^1.1.3:
   resolved "https://registry.npmjs.org/dlv/-/dlv-1.1.3.tgz"
   integrity sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==
 
+<<<<<<< HEAD
 dns-over-http-resolver@^1.2.3:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/dns-over-http-resolver/-/dns-over-http-resolver-1.2.3.tgz#194d5e140a42153f55bb79ac5a64dd2768c36af9"
@@ -3747,6 +3799,8 @@ dns-over-http-resolver@^1.2.3:
     native-fetch "^3.0.0"
     receptacle "^1.3.2"
 
+=======
+>>>>>>> main
 dom-serializer@^1.0.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/dom-serializer/-/dom-serializer-1.4.1.tgz#de5d41b1aea290215dc45a6dae8adcf1d32e2d30"
@@ -3851,6 +3905,7 @@ emoji-regex@^9.2.2:
   resolved "https://registry.npmjs.org/emoji-regex/-/emoji-regex-9.2.2.tgz"
   integrity sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==
 
+<<<<<<< HEAD
 encoding@^0.1.13:
   version "0.1.13"
   resolved "https://registry.yarnpkg.com/encoding/-/encoding-0.1.13.tgz#56574afdd791f54a8e9b2785c0582a2d26210fa9"
@@ -3858,6 +3913,8 @@ encoding@^0.1.13:
   dependencies:
     iconv-lite "^0.6.2"
 
+=======
+>>>>>>> main
 end-of-stream@^1.1.0, end-of-stream@^1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/end-of-stream/-/end-of-stream-1.4.4.tgz#5ae64a5f45057baf3626ec14da0ca5e4b2431eb0"
@@ -3878,6 +3935,7 @@ entities@^2.0.0:
   resolved "https://registry.yarnpkg.com/entities/-/entities-2.2.0.tgz#098dc90ebb83d8dffa089d55256b351d34c4da55"
   integrity sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==
 
+<<<<<<< HEAD
 err-code@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/err-code/-/err-code-3.0.1.tgz#a444c7b992705f2b120ee320b09972eef331c920"
@@ -3890,6 +3948,8 @@ error-ex@^1.3.1:
   dependencies:
     is-arrayish "^0.2.1"
 
+=======
+>>>>>>> main
 es-define-property@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/es-define-property/-/es-define-property-1.0.0.tgz#c7faefbdff8b2696cf5f46921edfb77cc4ba3845"
@@ -4454,6 +4514,7 @@ hmac-drbg@^1.0.1:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.1"
 
+<<<<<<< HEAD
 hosted-git-info@^2.1.4:
   version "2.8.9"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
@@ -4466,6 +4527,8 @@ hosted-git-info@^4.0.1:
   dependencies:
     lru-cache "^6.0.0"
 
+=======
+>>>>>>> main
 htmlescape@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/htmlescape/-/htmlescape-1.1.1.tgz#3a03edc2214bca3b66424a3e7959349509cb0351"
@@ -4486,6 +4549,7 @@ https-browserify@^1.0.0:
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha512-J+FkSdyD+0mA0N+81tMotaRMfSL9SGi+xpD3T6YApKsc3bGSXJlfXri3VyFOeYkfLRQisDk1W+jIFFKBeUBbBg==
 
+<<<<<<< HEAD
 iconv-lite@^0.6.2:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.6.3.tgz#a52f80bf38da1952eb5c681790719871a1a72501"
@@ -4498,6 +4562,8 @@ idb-keyval@^6.0.3:
   resolved "https://registry.yarnpkg.com/idb-keyval/-/idb-keyval-6.2.1.tgz#94516d625346d16f56f3b33855da11bfded2db33"
   integrity sha512-8Sb3veuYCyrZL+VBt9LJfZjLUPWVvqn8tG28VqYNFCo43KHcKuq+b4EiXGeuaLAQWL2YmyDgMp2aSpH9JHsEQg==
 
+=======
+>>>>>>> main
 idna-uts46-hx@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/idna-uts46-hx/-/idna-uts46-hx-2.3.1.tgz#a1dc5c4df37eee522bf66d969cc980e00e8711f9"
@@ -5123,6 +5189,7 @@ locate-character@^3.0.0:
   resolved "https://registry.npmjs.org/locate-character/-/locate-character-3.0.0.tgz"
   integrity sha512-SW13ws7BjaeJ6p7Q6CO2nchbYEc3X3J6WrmTTDto7yMPqVSZTUyY5Tjbid+Ab8gLnATtygYtiDIJGQRRn2ZOiA==
 
+<<<<<<< HEAD
 locate-path@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-5.0.0.tgz#1afba396afd676a6d42504d0a67a3a7eb9f62aa0"
@@ -5130,6 +5197,8 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+=======
+>>>>>>> main
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
@@ -5153,11 +5222,14 @@ log-symbols@^4.1.0:
     chalk "^4.1.0"
     is-unicode-supported "^0.1.0"
 
+<<<<<<< HEAD
 long@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/long/-/long-4.0.0.tgz#9a7b71cfb7d361a194ea555241c92f7468d5bf28"
   integrity sha512-XsP+KhQif4bjX1kbuSiySJFNAehNxgLb6hPRGJ9QsUr8ajHkuXGdrHmFUTUUXhDwVX2R5bY4JNZEwbUiMhV+MA==
 
+=======
+>>>>>>> main
 lru-cache@^10.2.0:
   version "10.2.2"
   resolved "https://registry.npmjs.org/lru-cache/-/lru-cache-10.2.2.tgz"
@@ -5252,6 +5324,13 @@ merge2@^1.3.0:
   version "1.4.1"
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
+
+metastellar-sdk@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/metastellar-sdk/-/metastellar-sdk-0.0.7.tgz#93c80a50665136ef3dba67797a0b0b078a8e63e3"
+  integrity sha512-JfzOzQvqaCarZ08zn03yJQIgfsDciOhfZ8l7YeJNtfDDSVyNbBZFggMXGIc/xdfL5FfZFLg7wNOzoXO95icf8w==
+  dependencies:
+    "@stellar/stellar-sdk" "^12.1.0"
 
 micro-ftch@^0.3.1:
   version "0.3.1"
@@ -5742,6 +5821,7 @@ parse-asn1@^5.0.0, parse-asn1@^5.1.7:
     pbkdf2 "^3.1.2"
     safe-buffer "^5.2.1"
 
+<<<<<<< HEAD
 parse-duration@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/parse-duration/-/parse-duration-1.1.0.tgz#5192084c5d8f2a3fd676d04a451dbd2e05a1819c"
@@ -5757,6 +5837,8 @@ parse-json@^5.0.0:
     json-parse-even-better-errors "^2.3.0"
     lines-and-columns "^1.1.6"
 
+=======
+>>>>>>> main
 parse-srcset@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/parse-srcset/-/parse-srcset-1.0.2.tgz#f2bd221f6cc970a938d88556abc589caaaa2bde1"
@@ -5767,11 +5849,14 @@ path-browserify@^1.0.0, path-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/path-browserify/-/path-browserify-1.0.1.tgz#d98454a9c3753d5790860f16f68867b9e46be1fd"
   integrity sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==
 
+<<<<<<< HEAD
 path-exists@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/path-exists/-/path-exists-4.0.0.tgz#513bdbe2d3b95d7762e8c1137efa195c6c61b5b3"
   integrity sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==
 
+=======
+>>>>>>> main
 path-is-absolute@^1.0.0, path-is-absolute@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/path-is-absolute/-/path-is-absolute-1.0.1.tgz"
@@ -6117,6 +6202,7 @@ queue-microtask@^1.2.2:
   resolved "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
+<<<<<<< HEAD
 quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
@@ -6134,6 +6220,8 @@ rabin-wasm@^0.1.4:
     node-fetch "^2.6.1"
     readable-stream "^3.6.0"
 
+=======
+>>>>>>> main
 raf@^3.4.0:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/raf/-/raf-3.4.1.tgz#0742e99a4a6552f445d73e3ee0328af0ff1ede39"
@@ -6472,17 +6560,24 @@ secp256k1@^4.0.1:
     node-addon-api "^2.0.0"
     node-gyp-build "^4.2.0"
 
+<<<<<<< HEAD
 "semver@2 || 3 || 4 || 5":
   version "5.7.2"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.2.tgz#48d55db737c3287cd4835e17fa13feace1c41ef8"
   integrity sha512-cBznnQ9KjJqU67B52RMC65CMarK2600WFnbkcaiwWq3xy/5haFJlshgnpjovMVJ+Hff49d8GEn0b87C5pDQ10g==
 
+=======
+>>>>>>> main
 semver@^6.3.1:
   version "6.3.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
+<<<<<<< HEAD
 semver@^7.3.4, semver@^7.3.8, semver@^7.5.4:
+=======
+semver@^7.3.8, semver@^7.5.4:
+>>>>>>> main
   version "7.6.2"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.6.2.tgz#1e3b34759f896e8f14d6134732ce798aeb0c6e13"
   integrity sha512-FNAIBWCx9qcRhoHcgcJ0gvU7SN1lYU2ZXuSfl04bSC5OpvDHFyJCjdNHomPXxjQlCBU67YW64PzY7/VIEH7F2w==
@@ -6657,11 +6752,14 @@ source-map@~0.5.3:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==
 
+<<<<<<< HEAD
 sparse-array@^1.3.1:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/sparse-array/-/sparse-array-1.3.2.tgz#0e1a8b71706d356bc916fe754ff496d450ec20b0"
   integrity sha512-ZT711fePGn3+kQyLuv1fpd3rNSkNF8vd5Kv2D+qnOANeyKs3fx6bUMGWRPvgTTcYV64QMqZKZwcuaQSP3AZ0tg==
 
+=======
+>>>>>>> main
 sparse-bitfield@^3.0.3:
   version "3.0.3"
   resolved "https://registry.npmjs.org/sparse-bitfield/-/sparse-bitfield-3.0.3.tgz"
@@ -6766,6 +6864,7 @@ stream-splicer@^2.0.0:
     inherits "^2.0.1"
     readable-stream "^2.0.2"
 
+<<<<<<< HEAD
 stream-to-it@^0.2.2, stream-to-it@^0.2.3:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/stream-to-it/-/stream-to-it-0.2.4.tgz#d2fd7bfbd4a899b4c0d6a7e6a533723af5749bd0"
@@ -6778,6 +6877,8 @@ streaming-iterables@^6.0.0:
   resolved "https://registry.yarnpkg.com/streaming-iterables/-/streaming-iterables-6.2.0.tgz#e8079bc56272335b287e2f13274602fbef008e56"
   integrity sha512-3AYC8oB60WyD1ic7uHmN/vm2oRGzRnQ3XFBl/bFMDi1q1+nc5/vjMmiE4vroIya3jG59t87VpyAj/iXYxyw9AA==
 
+=======
+>>>>>>> main
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
   name string-width-cjs
   version "4.2.3"
@@ -7268,6 +7369,7 @@ ui-kit@^0.20.10:
     scroll-to-element "^2.0.0"
     unique-id-mixin "^1.0.0"
 
+<<<<<<< HEAD
 uint8arrays@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/uint8arrays/-/uint8arrays-3.1.1.tgz#2d8762acce159ccd9936057572dade9459f65ae0"
@@ -7275,6 +7377,8 @@ uint8arrays@^3.0.0:
   dependencies:
     multiformats "^9.4.2"
 
+=======
+>>>>>>> main
 umd@^3.0.0:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/umd/-/umd-3.0.3.tgz#aa9fe653c42b9097678489c01000acb69f0b26cf"

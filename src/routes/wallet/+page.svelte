@@ -3,9 +3,16 @@
     import {Card} from '@metastellar/ui-library';
     import {Chasing} from 'svelte-loading-spinners'
     import copy from "copy-to-clipboard";
-    import {connected, address, ballance, accountName} from '../../store';   
+    // import {connected, } from '../../store';   
+    import {walletData} from '$lib/store';
+    import type {WalletState} from 'metastellar-sdk';
+    import {MetaStellarWallet} from 'metastellar-sdk';
     import { Label, Toast, Button  } from 'flowbite-svelte';
     import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
+<<<<<<< HEAD
+=======
+    import ConnectButton from '../../components/connectButton.svelte';
+>>>>>>> main
     import NFTMint from "../components/NFT/nftMint.svelte";
     import { env } from "$lib/env";
 
@@ -22,8 +29,12 @@
     let sendAmount:number = 5;
 
     const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
+<<<<<<< HEAD
 
     // console.log("stellar_rpc_endpoint", stellar_rpc_endpoint);
+=======
+    const network_passphrase = env.VITE_NETWORK_PASSPHRASE;
+>>>>>>> main
 
     const setView = (view:string) => {
         currentView = view;
@@ -32,7 +43,7 @@
     }
     
     const onCopy = (text:string) => {
-        if (!$connected) {alert('plz connect to wallet'); return}
+        // if (!$connected) {alert('plz connect to wallet'); return}
 
         copy(text);
         open=true;
@@ -46,10 +57,10 @@
     }
 
     async function signTransaction() {
-        if (!$connected) {
-            alert('plz connect to wallet');
-            return;
-        }
+        // if (!$connected) {
+        //     alert('plz connect to wallet');
+        //     return;
+        // }
         
         if (sendToAddress == "") {
             alert('please input address to send');
@@ -81,7 +92,7 @@
         console.log("account is");
         console.log(account);
         console.log("building Transaction");
-        const transaction = new StellarSdk.TransactionBuilder(account, { fee , networkPassphrase: "Test SDF Network ; September 2015" });
+        const transaction = new StellarSdk.TransactionBuilder(account, { fee , networkPassphrase: network_passphrase });
 
         // Add a payment operation to the transaction
         console.log("transaction builder initilazed");
@@ -138,8 +149,18 @@
         await signTransaction();
         processing = false;
     }
+    let xlmBalance:number = 0;
+    // async function getWalletBallance() {
+    //     let wallet = MetaStellarWallet.loadFromState($walletData);
+    //     let balance = await wallet.getBalance();
+    //     console.log("balance", balance);
+    //     let data = wallet.exportState();
+    //     walletData.set(data);
+    //     xlmBalance = balance;
+    //     return balance;
+    // }
 
-      async function getWalletBallance() {
+    async function getWalletBallance() {
         try {
             const wallet_ballance = await window.ethereum.request({
                 method: 'wallet_invokeSnap',
@@ -151,23 +172,28 @@
                 },
                 },
             });
-            ballance.set(wallet_ballance)
+            xlmBalance = wallet_ballance;
         } catch(error) {
             console.log(error);
             throw error;
         }
         
     }
+
 </script>
+{#if ($walletData).connected}
 <div>
     <div id="midContainer"  class="uk-container">
         <Card class="p-5 mt-16  ">
+            <div>
+                
+            </div>
             <div class="mt-12">
-                <p class="text-center text-4xl">{$ballance} </p>
+                <p class="text-center text-4xl">{xlmBalance} XLM</p>
                 <h3 class="my-5 font-bold text-2xl text-center "> ballance</h3>
             </div>
             <div class="mt-5">
-                <p class="text-center">{$address} <span class="copy-address inline-block ml-2 pt-1" on:click={()=>onCopy($address)}><FileCopyAltOutline /></span></p>
+                <p class="text-center">{($walletData).address} <span class="copy-address inline-block ml-2 pt-1" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline /></span></p>
                 <h3 class="my-5 font-bold text-2xl text-center ">address</h3>
             </div>
         </Card>
@@ -204,6 +230,7 @@
                 </Card>
             </button>
         </div>
+        
         <div class="mt-12">
             {#if currentView == 'sendXLM'}
             <Card class="py-12 px-5 " >
@@ -251,7 +278,11 @@
                 sendNFT
             </Card>
             {:else if currentView == 'mintNFT'}
+<<<<<<< HEAD
             <NFTMint />
+=======
+                <NFTMint />
+>>>>>>> main
             {/if}
         </div>
         
@@ -264,6 +295,10 @@
     </svelte:fragment>
     Copied!
 </Toast>
+{/if}
+{#if !(($walletData).connected)}
+    <ConnectButton/>
+{/if}
 <style>
     button.active {
 		/* box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);

@@ -183,20 +183,32 @@ export default class CanvasRenderer{
         this.mouseMoveHandlerArray.push(func);
     }
     addMouseDown(func:Function){
+      console.log("mouse down func added");
+      console.log(func);
       this.mouseDownHandlerArray.push(func);
+      console.log(this.mouseDownHandlerArray);
     }
     addMouseUp(func:Function){
+      console.log("mouse up func added");
+      console.log(func);
       this.mouseUpHandlerArray.push(func);
+      console.log(this.mouseUpHandlerArray);
     }
 
     addTouchDown(func:Function){
+      console.log("touch down func added");
+      console.log(func);
       this.touchDownHandlerArray.push(func);
+      console.log(this.touchDownHandlerArray);
     }
     addTouchMove(func:Function){
       this.touchMoveHandlerArray.push(func);
     }
     addTouchUp(func:Function){
+      console.log("touch down func added");
+      console.log(func);
       this.touchUpHandlerArray.push(func);
+      console.log(this.touchUpHandlerArray);
     }
 
     addMouseOut(func:Function){
