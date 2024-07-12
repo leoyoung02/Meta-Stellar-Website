@@ -7,6 +7,10 @@
 
     import video1 from '$lib/video/metastellar.mp4';
     import girlImg from '$lib/images/girl.jpg'
+    import { env } from "$lib/env";
+
+    const mouse_movement_record_send_url = env.VITE_MOUSE_MOVEMENT_DATA_SEND_URL;
+
     let titles = {
         wallet: "Wallet",
         news: "News",
@@ -60,7 +64,7 @@
         <div class='w-72 mt-5'>
             <NftPoster 
                 isMouseTrackRecord={true} 
-                dataURL="http://localhost/api" 
+                dataURL={mouse_movement_record_send_url} 
                 intervalData={5} 
                 hoverTransform
                 imgHoverTransform
@@ -71,7 +75,7 @@
         </div>
         <div class='w-72 mt-5'>
             <YoutubePoster
-                dataURL="http://localhost/api"
+                dataURL={mouse_movement_record_send_url}
                 yutubeURL={video1}
                 thumnailURL={girlImg}
                 type="video/mp4"
@@ -88,7 +92,7 @@
             bodyClass="mt-5"
             class="p-5 uk-width-2-3"
             isMouseTrackRecord={true} 
-            dataURL="http://localhost/api" 
+            dataURL={mouse_movement_record_send_url} 
             intervalData={5}
             hoverTransform
             imgHoverTransform
@@ -102,7 +106,7 @@
             bodyClass="mt-5"
             class="px-5 py-10 uk-width-expand"
             isMouseTrackRecord={true} 
-            dataURL="http://localhost/api" 
+            dataURL={mouse_movement_record_send_url} 
             intervalData={5}
             hoverTransform
             imgHoverTransform
@@ -119,7 +123,7 @@
             bodyClass="mt-5"
             class="py-12 px-5 uk-width-expand"
             isMouseTrackRecord={true} 
-            dataURL="http://localhost/api" 
+            dataURL={mouse_movement_record_send_url} 
             intervalData={5}
             hoverTransform
             imgHoverTransform
@@ -130,7 +134,7 @@
         <Card 
             class="py-12 px-5 uk-width-expand"
             isMouseTrackRecord={true} 
-            dataURL="http://localhost/api" 
+            dataURL={mouse_movement_record_send_url} 
             intervalData={5}
             hoverTransform
             imgHoverTransform
