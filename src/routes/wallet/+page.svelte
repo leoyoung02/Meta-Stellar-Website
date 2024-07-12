@@ -3,13 +3,15 @@
     import {Card} from '@metastellar/ui-library';
     import {Chasing} from 'svelte-loading-spinners'
     import copy from "copy-to-clipboard";
-    import {connected, address, ballance, accountName} from '../../store';   
+    // import {connected, } from '../../store';   
     import {walletData} from '$lib/store';
     import type {WalletState} from 'metastellar-sdk';
     import {MetaStellarWallet} from 'metastellar-sdk';
     import { Label, Toast, Button  } from 'flowbite-svelte';
     import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
     import ConnectButton from '../../components/connectButton.svelte';
+    import NFTMint from "../components/NFT/nftMint.svelte";
+    import { env } from "$lib/env";
 
     export let currentView = "sendXLM";
 
@@ -23,6 +25,9 @@
     let sendToAddress:string = "GDPZOWVRHQV2SQ3N47CILKNU4NZQOXYDVXGKKJI32TVWIF7V7364G2QM";
     let sendAmount:number = 5;
 
+    const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
+    const network_passphrase = env.VITE_NETWORK_PASSPHRASE;
+
     const setView = (view:string) => {
         currentView = view;
         console.log('view ', currentView);
@@ -30,7 +35,7 @@
     }
     
     const onCopy = (text:string) => {
-        if (!$connected) {alert('plz connect to wallet'); return}
+        // if (!$connected) {alert('plz connect to wallet'); return}
 
         copy(text);
         open=true;
@@ -44,10 +49,10 @@
     }
 
     async function signTransaction() {
-        if (!$connected) {
-            alert('plz connect to wallet');
-            return;
-        }
+        // if (!$connected) {
+        //     alert('plz connect to wallet');
+        //     return;
+        // }
         
         if (sendToAddress == "") {
             alert('please input address to send');
@@ -59,7 +64,7 @@
             return;
         }
         processing = true;
-        const server = new StellarSdk.Horizon.Server('https://horizon-testnet.stellar.org');
+        const server = new StellarSdk.Horizon.Server(stellar_rpc_endpoint);
         const sourcePublicKey = await ethereum.request({
             method: 'wallet_invokeSnap',
             params: {snapId:'npm:stellar-snap', request:{
@@ -79,7 +84,7 @@
         console.log("account is");
         console.log(account);
         console.log("building Transaction");
-        const transaction = new StellarSdk.TransactionBuilder(account, { fee , networkPassphrase: "Test SDF Network ; September 2015" });
+        const transaction = new StellarSdk.TransactionBuilder(account, { fee , networkPassphrase: network_passphrase });
 
         // Add a payment operation to the transaction
         console.log("transaction builder initilazed");
@@ -137,15 +142,36 @@
         processing = false;
     }
     let xlmBalance:number = 0;
-    async function getWalletBalance() {
-        let wallet = MetaStellarWallet.loadFromState($walletData);
-        let balance = await wallet.getBalance();
-        let data = wallet.exportState();
-        walletData.set(data);
-        xlmBalance = balance;
-        return balance;
+    // async function getWalletBallance() {
+    //     let wallet = MetaStellarWallet.loadFromState($walletData);
+    //     let balance = await wallet.getBalance();
+    //     console.log("balance", balance);
+    //     let data = wallet.exportState();
+    //     walletData.set(data);
+    //     xlmBalance = balance;
+    //     return balance;
+    // }
+
+    async function getWalletBallance() {
+        try {
+            const wallet_ballance = await window.ethereum.request({
+                method: 'wallet_invokeSnap',
+                params: {
+                snapId: 'npm:stellar-snap',
+                request: {
+                    method: 'getBalance',
+                    params: {"testnet":true}
+                },
+                },
+            });
+            xlmBalance = wallet_ballance;
+        } catch(error) {
+            console.log(error);
+            throw error;
+        }
         
     }
+
 </script>
 {#if ($walletData).connected}
 <div>
@@ -244,9 +270,7 @@
                 sendNFT
             </Card>
             {:else if currentView == 'mintNFT'}
-            <Card class="py-12 px-5 " >
-                mintNFT
-            </Card>
+                <NFTMint />
             {/if}
         </div>
         
