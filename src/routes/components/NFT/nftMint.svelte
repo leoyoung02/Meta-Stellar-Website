@@ -10,7 +10,8 @@
   import testNFTImage from "$lib/images/svelte-welcome.png";
 
 
-  const issuerKeypair = StellarSdk.Keypair.random();
+  // const issuerKeypair = StellarSdk.Keypair.random();
+  const issuerKeypair = StellarSdk.Keypair.fromSecret(env.VITE_NFT_ISSUER);
   const receiverKeypair = StellarSdk.Keypair.fromSecret(env.VITE_NFT_RECEIVER);
   const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
   const fritend_bot_url = env.VITE_FRIEND_BOT_URL;
@@ -54,24 +55,6 @@
     // Create the Asset so we can issue it on the network.
     const nftAsset = new StellarSdk.Asset('MSNFT', issuerKeypair.publicKey());
 
-    // // Store the Image and metadata using nft.storage
-    const NFT_STORAGE_TOKEN = nft_storage_api_key; // Get this from https://nft.storage/manage
-    const IMAGE_PATH = "$lib/images/svelte-welcome.png";
-    const client = new NFTStorage({ token: '' });
-
-    const imageCID = await client.storeBlob(new Blob([files[0]]));
-    console.log(`imageCID: ${imageCID}`);
-
-    const metadata = {
-      name: "Test Meta Stellar NFT",
-      description: "This is for testing meta stellar nft",
-      image: `${nft_storage_url}/${imageCID}`,
-      issuer: nftAsset.getIssuer(),
-      code: nftAsset.getCode()
-    };
-    const metadataCID = await client.storeBlob(new Blob([JSON.stringify(metadata)]));
-    console.log(`metadataCID: ${metadataCID}`);
-
     // Connect to the testnet with the StellarSdk.
     const server = new StellarSdk.Horizon.Server(stellar_rpc_endpoint);
     const account = await server.loadAccount(issuerKeypair.publicKey());
@@ -82,12 +65,17 @@
         fee: StellarSdk.BASE_FEE,
         networkPassphrase: StellarSdk.Networks.TESTNET
       })
+      .addOperation(
+        StellarSdk.Operation.setOptions({
+          homeDomain: "deoss.anonid.io",
+        }),
+      )
       // Add the NFT metadata to the issuer account using a `manageData` operation.
-      .addOperation(StellarSdk.Operation.manageData({
-        name: 'ipfshash',
-        value: "QmQwPAxDLYRN4zRuMn3H9ZocmNNSSUWw2pdS5RdoV5vuHM" as CIDString,
-        source: issuerKeypair.publicKey(),
-      }))
+      // .addOperation(StellarSdk.Operation.manageData({
+      //   name: 'ipfshash',
+      //   value: "QmQwPAxDLYRN4zRuMn3H9ZocmNNSSUWw2pdS5RdoV5vuHM" as CIDString,
+      //   source: issuerKeypair.publicKey(),
+      // }))
       // Perform a `changeTrust` operation to create a trustline for the receiver account.
       .addOperation(StellarSdk.Operation.changeTrust({
         asset: nftAsset,
@@ -119,7 +107,7 @@
   }
 
   async function testNFT() {
-    await funding();
+    // await funding();
     await generateNFT();
   }
 
