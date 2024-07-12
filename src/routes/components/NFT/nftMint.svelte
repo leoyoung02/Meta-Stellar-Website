@@ -7,6 +7,7 @@
   import {Card} from '@metastellar/ui-library';
   import { env } from "$lib/env";
   import testNFTImage from "$lib/images/svelte-welcome.png";
+  import {Input, Textarea, Spinner, Button} from 'flowbite-svelte'
 
 
   const issuerKeypair = StellarSdk.Keypair.random();
@@ -17,6 +18,10 @@
   // const nft_storage_api_key = env.VITE_NFT_STORAGE_API_KEY;
   // const nft_storage_url = env.VITE_NFT_STORAGE_URL;
   let files: any;
+  let itemCode:string;
+  let itemName:string;
+  let itemDesc:string;
+  let isMinting:boolean;
 
   // // Optional: Log the keypair details if you want to save the information for later.
   console.log(`Issuer Public Key: ${issuerKeypair.publicKey()}`);
@@ -105,18 +110,139 @@
     console.log("==============generate nft end==============");
   }
 
-  async function testNFT() {
-    await funding();
-    await generateNFT();
+
+  async function uploadFile() {
+    //  const body = { data: JSON.stringify(mouseTrackData) };
+    const formData = new FormData();
+    formData.append("file", files[0]);
+
+    const pinataMetadata = JSON.stringify({
+      name: 'File name',
+    });
+    formData.append('pinataMetadata', pinataMetadata);
+
+    const pinataOptions = JSON.stringify({
+      cidVersion: 0,
+    })
+    formData.append('pinataOptions', pinataOptions);
+
+    type responseType = {
+      IpfsHash:string;
+      PinSize:string;
+      Timestamp:number
+    }
+    try {
+    
+      const res = await fetch(env.VITE_PINATA_API, {
+        method:'post',
+        headers: {
+            'Authorization': `Bearer ${import.meta.env['VITE_PINATA_API_KEY']}`
+        },
+        body:formData
+      });
+debugger;
+      if (res.ok) {
+        const responseData: responseType = await res.json();
+        return {success:true, data: responseData.IpfsHash}
+      }
+      else {
+        return {success:false, data:"", error: "parse error"}
+      }
+
+    } catch(e) {
+      return {success:false, data:"", error: e}
+    } 
   }
 
+  async function resigterNFT(imageURL:string) {
+      const req = {
+        code: itemCode,
+        issuer: issuerKeypair.publicKey(),
+        name: itemName,
+        desc: itemDesc,
+        image: `${env.VITE_STELLAR_TOML_SERVER_API}/${imageURL}`,
+        display_decimals:7
+      }
+
+      try {
+        const res = await fetch(env.VITE_STELLAR_TOML_SERVER_API, {
+          method:'post',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(req)
+        })
+        if (res.ok) {
+          alert('success minting');
+
+        }
+        else {
+          alert('register error');
+        }
+      } catch (e:any) {
+        console.log('register error', e);
+        alert('register error');
+      }
+  }
+
+  async function testNFT() {
+    isMinting=true;
+    try {
+      await funding();
+      await generateNFT();
+      const uploadRes = await uploadFile();
+      await resigterNFT(uploadRes.data);
+      isMinting = false;
+    } catch (e:any) {
+      console.log('error', e);
+      isMinting = false;
+    }
+      
+  }
+  $: if (files) {
+		console.log(files);
+	}
+
+  function handleItemNameChange(e:Event) {
+    const target = e.target as HTMLInputElement;
+    itemName = target.value;
+  } 
+  function handleItemCodeChange(e:Event) {
+    const target = e.target as HTMLInputElement;
+    itemCode = target.value;
+  }
+  function handleItemDescChange(e:Event) {
+    const target = e.target as HTMLInputElement;
+    itemDesc = target.value;
+  }
 </script>
 
 <Card class="py-12 px-5 " >
-    mintNFT
-    <label for="avatar">Upload a picture:</label>
-    <input accept="image/png, image/jpeg" bind:files id="avatar" name="avatar" type="file" />
-    <button on:click={()=>{testNFT()}}>Mint</button>
+    <div class="mb-5">
+      mintNFT
+    </div>
+    <div class="flex flex-col gap-4">
+      <div>
+        <Input type="text" bind:value={itemName} on:input={handleItemNameChange} placeholder='NFT Name'/>
+      </div>
+      <div>
+        <Input type="text" bind:value={itemCode} on:input={handleItemCodeChange}  placeholder='NFT Code'/>
+      </div>
+      <div>
+        <Textarea bind:value={itemDesc} on:input={handleItemDescChange}   placeholder='NFT Description'/>
+      </div>
+      <div>
+        <label for="avatar">picture:</label>
+        <input accept="image/png, image/jpeg" bind:files id="avatar" name="avatar" type="file" />
+      </div>
+      <Button on:click={()=>{testNFT()}} disabled={isMinting}  color="blue">
+        {#if isMinting}
+        <span class="mr-3"><Spinner size={4}/></span>
+        {/if}
+        Mint</Button>
+    </div>
+    
 </Card>
 
 <style>
