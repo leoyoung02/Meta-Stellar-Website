@@ -9,10 +9,7 @@
     import {MetaStellarWallet} from 'metastellar-sdk';
     import { Label, Toast, Button  } from 'flowbite-svelte';
     import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
-<<<<<<< HEAD
-=======
     import ConnectButton from '../../components/connectButton.svelte';
->>>>>>> main
     import NFTMint from "../components/NFT/nftMint.svelte";
     import { env } from "$lib/env";
 
@@ -29,12 +26,7 @@
     let sendAmount:number = 5;
 
     const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
-<<<<<<< HEAD
-
-    // console.log("stellar_rpc_endpoint", stellar_rpc_endpoint);
-=======
     const network_passphrase = env.VITE_NETWORK_PASSPHRASE;
->>>>>>> main
 
     const setView = (view:string) => {
         currentView = view;
@@ -278,11 +270,7 @@
                 sendNFT
             </Card>
             {:else if currentView == 'mintNFT'}
-<<<<<<< HEAD
-            <NFTMint />
-=======
                 <NFTMint />
->>>>>>> main
             {/if}
         </div>
         

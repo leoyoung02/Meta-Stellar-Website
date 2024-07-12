@@ -1,7 +1,7 @@
 
 
 <script lang='ts'>
-    import LOGO from './images/metaStellar.png';
+    import LOGO from './images/metastellar.png';
     import RING from './images/ring.png'
     import RINGFOREGROUND from './images/ring_foreground.png'
     import { fly, fade} from 'svelte/transition';

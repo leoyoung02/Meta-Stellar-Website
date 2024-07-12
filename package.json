@@ -39,8 +39,6 @@
 		"flowbite-svelte-icons": "^1.6.1",
 		"metastellar-sdk": "^0.0.7",
 		"mongodb": "^6.6.2",
-		"nft.storage": "^7.2.0",
-		"node-fetch": "^3.3.2",
 		"pg": "^8.11.5",
 		"stellar-snap": "^1.0.0",
 		"svelte-icons": "^2.1.0"

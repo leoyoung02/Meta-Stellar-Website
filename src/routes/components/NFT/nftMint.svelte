@@ -2,10 +2,6 @@
 <script lang='ts'>
   import * as StellarSdk from '@stellar/stellar-sdk';
   // import fetch from 'node-fetch';
-<<<<<<< HEAD
-  import { NFTStorage, Blob, type CIDString } from 'nft.storage';
-=======
->>>>>>> main
   import fs from 'fs';
 
   import {Card} from '@metastellar/ui-library';
@@ -13,15 +9,6 @@
   import testNFTImage from "$lib/images/svelte-welcome.png";
 
 
-<<<<<<< HEAD
-  // const issuerKeypair = StellarSdk.Keypair.random();
-  const issuerKeypair = StellarSdk.Keypair.fromSecret(env.VITE_NFT_ISSUER);
-  const receiverKeypair = StellarSdk.Keypair.fromSecret(env.VITE_NFT_RECEIVER);
-  const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
-  const fritend_bot_url = env.VITE_FRIEND_BOT_URL;
-  const nft_storage_api_key = env.VITE_NFT_STORAGE_API_KEY;
-  const nft_storage_url = env.VITE_NFT_STORAGE_URL;
-=======
   const issuerKeypair = StellarSdk.Keypair.random();
   // const issuerKeypair = StellarSdk.Keypair.fromSecret(env.VITE_NFT_ISSUER);
   const receiverKeypair = StellarSdk.Keypair.fromSecret(env.VITE_NFT_RECEIVER);
@@ -29,7 +16,6 @@
   const fritend_bot_url = env.VITE_FRIEND_BOT_URL;
   // const nft_storage_api_key = env.VITE_NFT_STORAGE_API_KEY;
   // const nft_storage_url = env.VITE_NFT_STORAGE_URL;
->>>>>>> main
   let files: any;
 
   // // Optional: Log the keypair details if you want to save the information for later.
@@ -120,11 +106,7 @@
   }
 
   async function testNFT() {
-<<<<<<< HEAD
-    // await funding();
-=======
     await funding();
->>>>>>> main
     await generateNFT();
   }
 

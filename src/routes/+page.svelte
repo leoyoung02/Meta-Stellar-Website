@@ -4,12 +4,9 @@
     import OfficeImg from "$lib/images/wallet.webp";
     import { onMount } from "svelte";
     import ChatBox from "./components/Chat/index.svelte";
-<<<<<<< HEAD
-=======
 
     import video1 from '$lib/video/metastellar.mp4';
     import girlImg from '$lib/images/girl.jpg'
->>>>>>> main
     import { env } from "$lib/env";
 
     const mouse_movement_record_send_url = env.VITE_MOUSE_MOVEMENT_DATA_SEND_URL;
@@ -96,11 +93,7 @@
             class="p-5 uk-width-2-3"
             isMouseTrackRecord={true} 
             dataURL={mouse_movement_record_send_url} 
-<<<<<<< HEAD
-            intervalData={5} 
-=======
             intervalData={5}
->>>>>>> main
             hoverTransform
             imgHoverTransform
             reverse
