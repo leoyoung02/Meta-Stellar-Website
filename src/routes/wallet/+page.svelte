@@ -10,22 +10,25 @@
     import { Label, Button  } from 'flowbite-svelte';
     import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
     import ConnectButton from '../../components/connectButton.svelte';
-    import NFTMint from "../components/NFT/nftMint.svelte";
-    import NFTView from "../components/NFT/nftView.svelte";
     import { env } from "$lib/env";
 	import {Toast as toast} from "$lib/utils"
+    import NFTMint from "../components/NFT/nftMint.svelte";
     import NftView from '../components/NFT/nftView.svelte';
+    import SendXML from '../components/XML/SendXML.svelte';
 
     export let currentView = "sendXLM";
 
-    let processing:boolean = false;
-
-    let sendToAddress:string = "GDPZOWVRHQV2SQ3N47CILKNU4NZQOXYDVXGKKJI32TVWIF7V7364G2QM";
-    let sendAmount:number = 5;
-
-    const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
-    const network_passphrase = env.VITE_NETWORK_PASSPHRASE;
-
+  let xlmBalance:number = 0;
+    // async function getWalletBallance() {
+    //     let wallet = MetaStellarWallet.loadFromState($walletData);
+    //     let balance = await wallet.getBalance();
+    //     console.log("balance", balance);
+    //     let data = wallet.exportState();
+    //     walletData.set(data);
+    //     xlmBalance = balance;
+    //     return balance;
+    // }
+    
     const setView = (view:string) => {
         currentView = view;
         console.log('view ', currentView);
@@ -38,131 +41,6 @@
         toast({type:'info', desc:'Copied!'});
     }
 
-
-    async function signTransaction() {
-        // if (!$connected) {
-        //     alert('plz connect to wallet');
-        //     return;
-        // }
-        
-        if (sendToAddress == "") {
-            alert('please input address to send');
-            return;
-        }
-        
-        if (sendAmount == 0) {
-            alert('please input amount to send');
-            return;
-        }
-        processing = true;
-        const server = new StellarSdk.Horizon.Server(stellar_rpc_endpoint);
-        const sourcePublicKey = await ethereum.request({
-            method: 'wallet_invokeSnap',
-            params: {snapId:'npm:stellar-snap', request:{
-            method: 'getAddress',
-            }}
-        });
-
-
-        const account = await server.loadAccount(sourcePublicKey);
-        const fee = await server.fetchBaseFee();
-
-        console.log("base fee is");
-        console.log(fee);
-        const receiverPublicKey = sendToAddress;
-        console.log("metamask public key: ");
-        console.log(sourcePublicKey);
-        console.log("account is");
-        console.log(account);
-        console.log("building Transaction");
-        const transaction = new StellarSdk.TransactionBuilder(account, { fee , networkPassphrase: network_passphrase });
-
-        // Add a payment operation to the transaction
-        console.log("transaction builder initilazed");
-        try {
-            await transaction.addOperation(StellarSdk.Operation.payment({
-                destination: receiverPublicKey,
-                asset: StellarSdk.Asset.native(),
-                amount: sendAmount.toString()
-            }));
-            console.log("operations added")
-        } catch (e:any) {
-            alert('error:'+e.message);
-            return false;
-        }
-        
-        // Make this transaction valid for the next 30 seconds only
-        try {
-            await transaction.setTimeout(30);
-        } catch (e:any) {
-            alert('error:'+e.message);
-            return false;
-        }
-        console.log("timeout set");
-        const endTransaction = await transaction.build();
-        const xdrTransaction = endTransaction.toXDR();
-        console.log(xdrTransaction);
-        let response = null;
-        try {
-            response = await ethereum.request({
-                method: 'wallet_invokeSnap',
-                params:{snapId:'npm:stellar-snap', request:{
-                    method: 'signAndSubmitTransaction',
-                    params:{
-                    transaction: xdrTransaction,
-                    testnet: true
-                    }
-                }}
-            });
-            getWalletBallance();
-        } catch (e:any) {
-            alert('error:'+e.message);
-            return false;
-        }
-
-        return true;
-    }
-
-    async function sendXNL() {
-        // const response = await signTransaction();
-        // debugger;
-        // console.log('transaction response', response);
-        // // getWalletBallance();
-        // processing = false;
-        await signTransaction();
-        processing = false;
-    }
-    let xlmBalance:number = 0;
-    // async function getWalletBallance() {
-    //     let wallet = MetaStellarWallet.loadFromState($walletData);
-    //     let balance = await wallet.getBalance();
-    //     console.log("balance", balance);
-    //     let data = wallet.exportState();
-    //     walletData.set(data);
-    //     xlmBalance = balance;
-    //     return balance;
-    // }
-
-    async function getWalletBallance() {
-        try {
-            const wallet_ballance = await window.ethereum.request({
-                method: 'wallet_invokeSnap',
-                params: {
-                snapId: 'npm:stellar-snap',
-                request: {
-                    method: 'getBalance',
-                    params: {"testnet":true}
-                },
-                },
-            });
-            xlmBalance = wallet_ballance;
-        } catch(error) {
-            console.log(error);
-            throw error;
-        }
-        
-    }
-
 </script>
 {#if ($walletData).connected}
 <div>
@@ -172,13 +50,14 @@
                 
             </div>
             <div class="">
-                <p class="text-center text-4xl">{xlmBalance} XLM</p>
+                <!-- <p class="text-center text-4xl">{xlmBalance} XLM</p> -->
+                <p class="text-center text-4xl">{($walletData).getBalance} XLM</p>
                 <h3 class="my-2 font-bold text-2xl text-center "> ballance</h3>
             </div>
             <div class="mt-2">
                 <div class="text-center flex justify-center gap-2 px-4">
                     <p class="max-w-[90%] truncate">{($walletData).address}</p> 
-                    <p class="copy-address inline-block flex items-center" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline /></p></div>
+                    <p class="copy-address inline-block flex items-center" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline/></p></div>
                 <h3 class="mt-4 font-bold text-2xl text-center ">address</h3>
             </div>
         </Card>
@@ -218,34 +97,7 @@
         
         <div class="mt-2">
             {#if currentView == 'sendXLM'}
-            <Card class="py-7 px-5 " >
-                <h3 class="mb-4 text-center font-bold text-2xl">Send XLM</h3>
-                <div class="mb-2">
-                    <Label class="my-2">Send To</Label>
-                    <div>
-                        <input type="text" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" placeholder="Enter public address " bind:value={sendToAddress}>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <Label class="my-5">Amount</Label>
-                    <div>
-                        <input type="number" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" bind:value={sendAmount}>
-                    </div>
-                </div>
-                <div class="mb-2 mt-2">
-                    <Button class="py-3 text-center w-full bg-blue-700 rounded-lg capitalize text-white hover:bg-blue-800" on:click={sendXNL} disabled={processing}>
-                        <div class="text-center">
-                            {#if processing}
-                            <div class="inline-block">
-                                <Chasing size="15" color="white" unit="px" />
-                            </div>
-                            {/if}
-                            Send
-                        </div>
-                    </Button>
-                </div>
-                
-            </Card>
+            <SendXML/>
             {:else if currentView == 'receiveStellar'}
             <Card class="py-12 px-5 " >
                 receive Stellar

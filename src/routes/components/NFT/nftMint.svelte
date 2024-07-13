@@ -1,12 +1,14 @@
 
 <script lang='ts'>
-  import {Input, Textarea, Spinner, Button} from 'flowbite-svelte'
+  import {Button} from 'flowbite-svelte'
+  import {Chasing} from 'svelte-loading-spinners'
   import * as StellarSdk from '@stellar/stellar-sdk';
   import {Card} from '@metastellar/ui-library';
   import { env } from "$lib/env";
   import {updateNFT} from '$lib/store/nft';
-  import { onMount } from 'svelte';
 	import {Toast as toast} from "$lib/utils"
+  import {MetaStellarWallet} from 'metastellar-sdk';
+  import {walletData} from '$lib/store';
 
 
   const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
@@ -74,7 +76,7 @@
         }}
     });
     const issuer = await server.loadAccount(issuerKeypair.publicKey());
-    const receiver = await server.loadAccount(receiverPuplicKey);
+    // const receiver = await server.loadAccount(receiverPuplicKey);
     // Build a transaction that mints the NFT.
     let transaction = new StellarSdk.TransactionBuilder(
     issuer, {
@@ -128,6 +130,7 @@
               }
           }}
       });
+      console.log("nft minting result", response);
       console.log('The asset has been issued to the receiver', response.hash);
       toast({type:'info', desc:`The asset has been issued to the receiver. ${response.hash}`});
 
@@ -267,6 +270,12 @@
       if(nftResult.ok) {
         console.log("transaction hash", stellar_explorer_url + nftResult.data);
         toast({type:'info', desc:`transaction hash: ${stellar_explorer_url+nftResult.data}`});
+        
+        walletData.update(item=>({...item, dataPacket:null }));
+        walletData.subscribe(val=>console.log(val));
+        const wallet = MetaStellarWallet.loadFromState($walletData);
+        await wallet.init();
+        walletData.set(wallet.exportState());
 
         // updateNFT({code:itemCode, issuer:})
       } else {
@@ -301,12 +310,11 @@
     nftIssuer = issuerKeyStr;
   }
 </script>
-
 <Card class="py-7 px-5 " >
+    <h3 class="mb-4 text-center font-bold text-2xl">Mint NFT</h3>
     <div class="flex flex-col gap-4">
       <div>
         <input type="text" bind:value={itemCode}  placeholder='NFT Code' on:input={handleItemCodeChange} class="w-full p-2 h-[48px] border border-slate-200 rounded-lg">
-
       </div>
       <div>
         <input type="text" bind:value={nftIssuer} placeholder='NFT Issuer' disabled class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
@@ -323,7 +331,7 @@
       </div>
       <Button on:click={()=>{mintNFT()}} disabled={isMinting}  color="blue" class="py-3">
         {#if isMinting}
-        <span class="mr-3"><Spinner size={4}/></span>
+        <span class="mr-3"><Chasing size="15" color="white" unit="px" /></span>
         {/if}
         Mint</Button>
       </div>
