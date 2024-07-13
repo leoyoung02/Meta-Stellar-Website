@@ -302,7 +302,7 @@
   }
 </script>
 
-<Card class="py-12 px-5 " >
+<Card class="py-7 px-5 " >
     <div class="flex flex-col gap-4">
       <div>
         <input type="text" bind:value={itemCode}  placeholder='NFT Code' on:input={handleItemCodeChange} class="w-full p-2 h-[48px] border border-slate-200 rounded-lg">

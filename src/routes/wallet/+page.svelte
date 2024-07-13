@@ -167,49 +167,50 @@
 {#if ($walletData).connected}
 <div>
     <div id="midContainer"  class="uk-container">
-        <Card class="p-5 mt-6  ">
+        <Card class=" mt-6 py-7 ">
             <div>
                 
             </div>
-            <div class="mt-6">
+            <div class="">
                 <p class="text-center text-4xl">{xlmBalance} XLM</p>
-                <h3 class="my-5 font-bold text-2xl text-center "> ballance</h3>
+                <h3 class="my-2 font-bold text-2xl text-center "> ballance</h3>
             </div>
-            <div class="mt-5">
-                <div class="text-center">{($walletData).address} 
-                    <span class="copy-address inline-block ml-2 pt-1" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline /></span></div>
-                <h3 class="my-5 font-bold text-2xl text-center ">address</h3>
+            <div class="mt-2">
+                <div class="text-center flex justify-center gap-2 px-4">
+                    <p class="max-w-[90%] truncate">{($walletData).address}</p> 
+                    <p class="copy-address inline-block flex items-center" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline /></p></div>
+                <h3 class="mt-4 font-bold text-2xl text-center ">address</h3>
             </div>
         </Card>
         <div class="grid md:grid-cols-6 sm:grid-cols-3 mt-2 gap-3">
             <button on:click={()=>{setView('sendXLM')}} >
-                <Card class="py-4 px-12  " hoverTransform>
+                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" hoverTransform>
                     <span>Send XLM</span>
                 </Card>
             </button>
             <button on:click={()=>{setView('receiveStellar')}}>
-                <Card class="py-4 px-12 " hoverTransform>
+                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" hoverTransform>
                     <span>Receive</span>
                 </Card>
             </button>
             <button on:click={()=>{setView('sendToken')}}>
-                <Card class="py-4 px-12  "
+                <Card class="py-4 lg:px-12  min-h-[80px] justify-center"
                 hoverTransform>
                     Send token
                 </Card>
             </button>
             <button on:click={()=>{setView('viewNFT')}}>
-                <Card class="py-4 px-12  " hoverTransform>
-                    View token
+                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" hoverTransform>
+                    View NFT
                 </Card>
               </button>
             <button on:click={()=>{setView('sendNFT')}}>
-                <Card class="py-4 px-12  " hoverTransform>
+                <Card class="py-4 lg:px-12  min-h-[80px] justify-center" hoverTransform>
                     Send NFT
                 </Card>
             </button>
             <button on:click={()=>{setView('mintNFT')}}>
-                <Card class="py-4 px-12  " hoverTransform>
+                <Card class="py-4 lg:px-12  min-h-[80px] justify-center" hoverTransform>
                     Mint NFT
                 </Card>
             </button>
@@ -217,7 +218,7 @@
         
         <div class="mt-2">
             {#if currentView == 'sendXLM'}
-            <Card class="py-12 px-5 " >
+            <Card class="py-7 px-5 " >
                 <h3 class="mb-4 text-center font-bold text-2xl">Send XLM</h3>
                 <div class="mb-2">
                     <Label class="my-2">Send To</Label>
