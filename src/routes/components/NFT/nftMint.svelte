@@ -303,9 +303,6 @@
 </script>
 
 <Card class="py-12 px-5 " >
-    <div class="mb-5">
-      mintNFT
-    </div>
     <div class="flex flex-col gap-4">
       <div>
         <input type="text" bind:value={itemCode}  placeholder='NFT Code' on:input={handleItemCodeChange} class="w-full p-2 h-[48px] border border-slate-200 rounded-lg">
@@ -324,7 +321,7 @@
         <label for="avatar">picture:</label>
         <input accept="image/png, image/jpeg" bind:files id="avatar" name="avatar" type="file" />
       </div>
-      <Button on:click={()=>{mintNFT()}} disabled={isMinting}  color="blue">
+      <Button on:click={()=>{mintNFT()}} disabled={isMinting}  color="blue" class="py-3">
         {#if isMinting}
         <span class="mr-3"><Spinner size={4}/></span>
         {/if}

@@ -7,20 +7,16 @@
     import {walletData} from '$lib/store';
     import type {WalletState} from 'metastellar-sdk';
     import {MetaStellarWallet} from 'metastellar-sdk';
-    import { Label, Toast, Button  } from 'flowbite-svelte';
+    import { Label, Button  } from 'flowbite-svelte';
     import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
     import ConnectButton from '../../components/connectButton.svelte';
     import NFTMint from "../components/NFT/nftMint.svelte";
     import NFTView from "../components/NFT/nftView.svelte";
     import { env } from "$lib/env";
-  import NftView from '../components/NFT/nftView.svelte';
+	import {Toast as toast} from "$lib/utils"
+    import NftView from '../components/NFT/nftView.svelte';
 
     export let currentView = "sendXLM";
-
-    let open:boolean  = false;
-    let counter:number = 4;
-
-    let _currentView:string;
 
     let processing:boolean = false;
 
@@ -38,17 +34,10 @@
     
     const onCopy = (text:string) => {
         // if (!$connected) {alert('plz connect to wallet'); return}
-
         copy(text);
-        open=true;
-        counter = 4;
-        timeout();
+        toast({type:'info', desc:'Copied!'});
     }
 
-    function timeout():any {
-        if (--counter > 0) return setTimeout(timeout, 1000);
-        open = false;
-    }
 
     async function signTransaction() {
         // if (!$connected) {
@@ -187,7 +176,8 @@
                 <h3 class="my-5 font-bold text-2xl text-center "> ballance</h3>
             </div>
             <div class="mt-5">
-                <p class="text-center">{($walletData).address} <span class="copy-address inline-block ml-2 pt-1" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline /></span></p>
+                <div class="text-center">{($walletData).address} 
+                    <span class="copy-address inline-block ml-2 pt-1" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline /></span></div>
                 <h3 class="my-5 font-bold text-2xl text-center ">address</h3>
             </div>
         </Card>
@@ -232,17 +222,17 @@
                 <div class="mb-2">
                     <Label class="my-2">Send To</Label>
                     <div>
-                        <input type="text" class="w-full p-3 h-[58px] border border-slate-200 rounded-lg" placeholder="Enter public address " bind:value={sendToAddress}>
+                        <input type="text" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" placeholder="Enter public address " bind:value={sendToAddress}>
                     </div>
                 </div>
                 <div class="mb-2">
                     <Label class="my-5">Amount</Label>
                     <div>
-                        <input type="number" class="w-full p-3 h-[58px] border border-slate-200 rounded-lg" bind:value={sendAmount}>
+                        <input type="number" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" bind:value={sendAmount}>
                     </div>
                 </div>
                 <div class="mb-2 mt-2">
-                    <Button class="py-5 text-center w-full bg-blue-700 rounded-lg capitalize text-white hover:bg-blue-800" on:click={sendXNL} disabled={processing}>
+                    <Button class="py-3 text-center w-full bg-blue-700 rounded-lg capitalize text-white hover:bg-blue-800" on:click={sendXNL} disabled={processing}>
                         <div class="text-center">
                             {#if processing}
                             <div class="inline-block">
@@ -276,13 +266,6 @@
         
     </div>
 </div>
-<Toast color="green" position="top-right" bind:open on:close={()=>{open=false; alert('false')}}>
-    <svelte:fragment slot="icon">
-        <CheckCircleSolid class="w-5 h-5 " />
-        <span class="sr-only">Check icon</span>
-    </svelte:fragment>
-    Copied!
-</Toast>
 {/if}
 {#if !(($walletData).connected)}
     <ConnectButton/>
