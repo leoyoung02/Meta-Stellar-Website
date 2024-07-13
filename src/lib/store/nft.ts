@@ -6,8 +6,8 @@ export interface NftModel {
 }
 
 export const nftStore = writable<NftModel[]>([
-  { code: "asdfaf", issuer: "sdafasdfa" },
-  { code: "asdfaf", issuer: "sdafasdfa" },
+  { code: "test1 code", issuer: "test1 issuer" },
+  { code: "test2 code", issuer: "test2 issuer" },
 ]);
 let loadingForNFT = false;
 
@@ -18,7 +18,6 @@ export const updateNFT = (nft: NftModel) => {
   return true;
 };
 
-// export const getNFT = async ({ forceUpdate = false }) => {
 export const getNFT = async () => {
   let nftList;
 

@@ -2,10 +2,11 @@
 <script lang='ts'>
   import {Input, Textarea, Spinner, Button} from 'flowbite-svelte'
   import * as StellarSdk from '@stellar/stellar-sdk';
-
   import {Card} from '@metastellar/ui-library';
   import { env } from "$lib/env";
   import {updateNFT} from '$lib/store/nft';
+  import { onMount } from 'svelte';
+	import {Toast as toast} from "$lib/utils"
 
 
   const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
@@ -33,12 +34,14 @@
       let response = await fetch(friendbotUrl);
       if (response.ok) {
         console.log(`Account ${account} successfully funded.`);
+        toast({type:'info', desc:`Account ${account} successfully funded.`});
         return {
           ok: true,
           error: null
         }
       } else {
         console.log(`Something went wrong funding account: ${account}`);
+        toast({type:'error', desc:`Funding error: Something went wrong funding account: ${account}`});
         return {
           ok: false,
           error: "funding failed"
@@ -46,6 +49,7 @@
       }
     } catch (error) {
       console.log(`Something went wrong funding account: ${account}`);
+      toast({type:'error', desc:`Funding error: Something went wrong funding account: ${account}`});
       return {
           ok: false,
           error: error
@@ -125,6 +129,8 @@
           }}
       });
       console.log('The asset has been issued to the receiver', response.hash);
+      toast({type:'info', desc:`The asset has been issued to the receiver. ${response.hash}`});
+
       return {
         ok: true,
         error: null,
@@ -132,6 +138,7 @@
       }
     } catch (error: any) {
       console.log(`${error}. More details: \n${error.response.data}`);
+      toast({type:'error', desc:'generate error'});
       return {
         ok: false,
         error: error,
@@ -175,8 +182,10 @@
 
       if (res.ok) {
         const responseData: responseType = await res.json();
-        if (responseData.isDuplicate)
+        if (responseData.isDuplicate){
+          isMinting = false;
           return {ok:false, data:'', error:'duplicated'}
+        }
         return {ok:true, data: responseData.IpfsHash, error: null}
       }
       else {
@@ -216,6 +225,7 @@
       }
       else {
         console.log("register error");
+        toast({type:'error', desc:'register error'});
         return {
           ok: false,
           error: "register error"
@@ -223,6 +233,7 @@
       }
     } catch (e:any) {
       console.log('register error', e);
+      toast({type:'error', desc:'register error'});
       return {
           ok: false,
           error: e
@@ -243,24 +254,29 @@
       const uploadRes = await uploadFile();
       if(!uploadRes.ok) {
         console.log("upload failed", uploadRes.error);
+        toast({type:'error', desc:`minting error: ${uploadRes.error}`});
         return;
       }
       result = await resigterNFT(uploadRes.data);
       if(!result.ok) {
         console.log("register nft failed", result.error);
+        toast({type:'error', desc:`register nft failed: ${result.error}`});
         return;
       }
       const nftResult = await generateNFTOnStellar();
       if(nftResult.ok) {
         console.log("transaction hash", stellar_explorer_url + nftResult.data);
-        alert(stellar_explorer_url + nftResult.data);
+        toast({type:'info', desc:`transaction hash: ${stellar_explorer_url+nftResult.data}`});
+
         // updateNFT({code:itemCode, issuer:})
       } else {
         console.log("transaction failed", nftResult.error);
+        toast({type:'error', desc:`transaction failed: ${nftResult.error}`});
       }
       isMinting = false;
     } catch (e:any) {
       console.log('error', e);
+      toast({type:'error', desc:`transaction failed: ${e}`});
       isMinting = false;
     }
       
@@ -313,9 +329,7 @@
         <span class="mr-3"><Spinner size={4}/></span>
         {/if}
         Mint</Button>
-    </div>
-    
-</Card>
-
+      </div>
+  </Card>
 <style>
 </style>

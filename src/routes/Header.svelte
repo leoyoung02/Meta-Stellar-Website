@@ -62,7 +62,7 @@
 				{/if}
 				</a>
 			</li>
-			<li data-uk-hover class="uk-width-1-6"><a href="wallet">Wallet</a></li>
+			<li data-uk-hover class="uk-width-1-6"><a href="/wallet">Wallet</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="#">FAQ</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="/docs">Docs</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="#">chat</a></li>

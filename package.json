@@ -41,6 +41,8 @@
 		"mongodb": "^6.6.2",
 		"pg": "^8.11.5",
 		"stellar-snap": "^1.0.0",
-		"svelte-icons": "^2.1.0"
+		"svelte-icons": "^2.1.0",
+		"svelte-sonner": "^0.3.26",
+		"svelte-toasts": "^1.1.2"
 	}
 }
