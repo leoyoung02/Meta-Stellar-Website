@@ -7,18 +7,16 @@
     import {walletData} from '$lib/store';
     import type {WalletState} from 'metastellar-sdk';
     import {MetaStellarWallet} from 'metastellar-sdk';
-    import { Label, Toast, Button  } from 'flowbite-svelte';
+    import { Label, Button  } from 'flowbite-svelte';
     import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
     import ConnectButton from '../../components/connectButton.svelte';
     import NFTMint from "../components/NFT/nftMint.svelte";
+    import NFTView from "../components/NFT/nftView.svelte";
     import { env } from "$lib/env";
+	import {Toast as toast} from "$lib/utils"
+    import NftView from '../components/NFT/nftView.svelte';
 
     export let currentView = "sendXLM";
-
-    let open:boolean  = false;
-    let counter:number = 4;
-
-    let _currentView:string;
 
     let processing:boolean = false;
 
@@ -36,17 +34,10 @@
     
     const onCopy = (text:string) => {
         // if (!$connected) {alert('plz connect to wallet'); return}
-
         copy(text);
-        open=true;
-        counter = 4;
-        timeout();
+        toast({type:'info', desc:'Copied!'});
     }
 
-    function timeout():any {
-        if (--counter > 0) return setTimeout(timeout, 1000);
-        open = false;
-    }
 
     async function signTransaction() {
         // if (!$connected) {
@@ -176,71 +167,73 @@
 {#if ($walletData).connected}
 <div>
     <div id="midContainer"  class="uk-container">
-        <Card class="p-5 mt-16  ">
+        <Card class=" mt-6 py-7 ">
             <div>
                 
             </div>
-            <div class="mt-12">
+            <div class="">
                 <p class="text-center text-4xl">{xlmBalance} XLM</p>
-                <h3 class="my-5 font-bold text-2xl text-center "> ballance</h3>
+                <h3 class="my-2 font-bold text-2xl text-center "> ballance</h3>
             </div>
-            <div class="mt-5">
-                <p class="text-center">{($walletData).address} <span class="copy-address inline-block ml-2 pt-1" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline /></span></p>
-                <h3 class="my-5 font-bold text-2xl text-center ">address</h3>
+            <div class="mt-2">
+                <div class="text-center flex justify-center gap-2 px-4">
+                    <p class="max-w-[90%] truncate">{($walletData).address}</p> 
+                    <p class="copy-address inline-block flex items-center" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline /></p></div>
+                <h3 class="mt-4 font-bold text-2xl text-center ">address</h3>
             </div>
         </Card>
-        <div class="grid md:grid-cols-6 sm:grid-cols-3 mt-12 gap-3">
+        <div class="grid md:grid-cols-6 sm:grid-cols-3 mt-2 gap-3">
             <button on:click={()=>{setView('sendXLM')}} >
-                <Card class="py-8 px-12  " hoverTransform>
+                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" hoverTransform>
                     <span>Send XLM</span>
                 </Card>
             </button>
             <button on:click={()=>{setView('receiveStellar')}}>
-                <Card class="py-8 px-12 " hoverTransform>
+                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" hoverTransform>
                     <span>Receive</span>
                 </Card>
             </button>
             <button on:click={()=>{setView('sendToken')}}>
-                <Card class="py-8 px-12  "
+                <Card class="py-4 lg:px-12  min-h-[80px] justify-center"
                 hoverTransform>
                     Send token
                 </Card>
             </button>
             <button on:click={()=>{setView('viewNFT')}}>
-                <Card class="py-8 px-12  " hoverTransform>
-                    View token
+                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" hoverTransform>
+                    View NFT
                 </Card>
               </button>
             <button on:click={()=>{setView('sendNFT')}}>
-                <Card class="py-8 px-12  " hoverTransform>
+                <Card class="py-4 lg:px-12  min-h-[80px] justify-center" hoverTransform>
                     Send NFT
                 </Card>
             </button>
             <button on:click={()=>{setView('mintNFT')}}>
-                <Card class="py-8 px-12  " hoverTransform>
+                <Card class="py-4 lg:px-12  min-h-[80px] justify-center" hoverTransform>
                     Mint NFT
                 </Card>
             </button>
         </div>
         
-        <div class="mt-12">
+        <div class="mt-2">
             {#if currentView == 'sendXLM'}
-            <Card class="py-12 px-5 " >
+            <Card class="py-7 px-5 " >
                 <h3 class="mb-4 text-center font-bold text-2xl">Send XLM</h3>
                 <div class="mb-2">
                     <Label class="my-2">Send To</Label>
                     <div>
-                        <input type="text" class="w-full p-3 h-[58px] border border-slate-200 rounded-lg" placeholder="Enter public address " bind:value={sendToAddress}>
+                        <input type="text" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" placeholder="Enter public address " bind:value={sendToAddress}>
                     </div>
                 </div>
                 <div class="mb-2">
                     <Label class="my-5">Amount</Label>
                     <div>
-                        <input type="number" class="w-full p-3 h-[58px] border border-slate-200 rounded-lg" bind:value={sendAmount}>
+                        <input type="number" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" bind:value={sendAmount}>
                     </div>
                 </div>
                 <div class="mb-2 mt-2">
-                    <Button class="py-5 text-center w-full bg-blue-700 rounded-lg capitalize text-white hover:bg-blue-800" on:click={sendXNL} disabled={processing}>
+                    <Button class="py-3 text-center w-full bg-blue-700 rounded-lg capitalize text-white hover:bg-blue-800" on:click={sendXNL} disabled={processing}>
                         <div class="text-center">
                             {#if processing}
                             <div class="inline-block">
@@ -262,9 +255,7 @@
                 sendToken
             </Card>
             {:else if currentView == 'viewNFT'}
-            <Card class="py-12 px-5 " >
-                viewNFT
-            </Card>
+                <NftView/>
             {:else if currentView == 'sendNFT'}
             <Card class="py-12 px-5 " >
                 sendNFT
@@ -276,13 +267,6 @@
         
     </div>
 </div>
-<Toast color="green" position="top-right" bind:open on:close={()=>{open=false; alert('false')}}>
-    <svelte:fragment slot="icon">
-        <CheckCircleSolid class="w-5 h-5 " />
-        <span class="sr-only">Check icon</span>
-    </svelte:fragment>
-    Copied!
-</Toast>
 {/if}
 {#if !(($walletData).connected)}
     <ConnectButton/>
