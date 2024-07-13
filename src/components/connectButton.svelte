@@ -47,14 +47,19 @@
     async function connectSnap(){
         console.log("connectSnap");
         let wallet = MetaStellarWallet.loadFromState($walletData);
-        await wallet.init();
-        walletData.set(wallet.exportState());
-        console.log('wallet', wallet);
-        console.log('wallet state', wallet.exportState());
-        // console.log('assets', wallet.getAssets());
-        const assets = await wallet.getAssets();
-        console.log('assets', assets);
-        
+        try {
+            await wallet.init();
+
+            walletData.set(wallet.exportState());
+            console.log('wallet', wallet);
+            console.log('wallet state', wallet.exportState());
+            // console.log('assets', wallet.getAssets());
+            const assets = await wallet.getAssets();
+            console.log('assets', assets);
+        } catch(e) {
+            flaskNotDetected=true;
+            console.log(e);
+        }
     }
 
     async function getWalletAddress(){
