@@ -57,7 +57,7 @@
   async function generateNFT() {
     console.log("==============generate nft==============");
     // Create the Asset so we can issue it on the network.
-    const nftAsset = new StellarSdk.Asset('MSNFT', issuerKeypair.publicKey());
+    const nftAsset = new StellarSdk.Asset(itemCode, issuerKeypair.publicKey());
 
     // Connect to the testnet with the StellarSdk.
     const server = new StellarSdk.Horizon.Server(stellar_rpc_endpoint);
@@ -133,14 +133,14 @@
     }
     try {
     
-      const res = await fetch(env.VITE_PINATA_API, {
+      const res = await fetch(env.VITE_PINATA_UPLOAD_URL, {
         method:'post',
         headers: {
-            'Authorization': `Bearer ${import.meta.env['VITE_PINATA_API_KEY']}`
+            'Authorization': `Bearer ${env.VITE_PINATA_API_KEY}`
         },
         body:formData
       });
-debugger;
+
       if (res.ok) {
         const responseData: responseType = await res.json();
         return {success:true, data: responseData.IpfsHash}
@@ -154,45 +154,45 @@ debugger;
     } 
   }
 
+
   async function resigterNFT(imageURL:string) {
-      const req = {
-        code: itemCode,
-        issuer: issuerKeypair.publicKey(),
-        name: itemName,
-        desc: itemDesc,
-        image: `${env.VITE_STELLAR_TOML_SERVER_API}/${imageURL}`,
-        display_decimals:7
+    const req = {
+      code: itemCode,
+      issuer: issuerKeypair.publicKey(),
+      name: itemName,
+      desc: itemDesc,
+      image: `${env.VITE_PINATA_BASE_URL}/${imageURL}`,
+      display_decimals:7
+    }
+    try {
+      const res = await fetch(`${env.VITE_STELLAR_TOML_SERVER_API}/insert_nft`, {
+        method:'post',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(req)
+      })
+      if (res.ok) {
+
       }
-
-      try {
-        const res = await fetch(env.VITE_STELLAR_TOML_SERVER_API, {
-          method:'post',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(req)
-        })
-        if (res.ok) {
-          alert('success minting');
-
-        }
-        else {
-          alert('register error');
-        }
-      } catch (e:any) {
-        console.log('register error', e);
+      else {
         alert('register error');
       }
+    } catch (e:any) {
+      console.log('register error', e);
+      alert('register error');
+    }
   }
-
+  
   async function testNFT() {
     isMinting=true;
     try {
       await funding();
-      await generateNFT();
       const uploadRes = await uploadFile();
       await resigterNFT(uploadRes.data);
+      await generateNFT();
+      // await testRegister();
       isMinting = false;
     } catch (e:any) {
       console.log('error', e);
