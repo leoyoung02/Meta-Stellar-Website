@@ -14,7 +14,7 @@
 	import {Toast as toast} from "$lib/utils"
     import NFTMint from "../components/NFT/nftMint.svelte";
     import NftView from '../components/NFT/nftView.svelte';
-    import SendXML from '../components/XML/xml.svelte';
+    import SendXML from '../components/XML/SendXML.svelte';
 
     export let currentView = "sendXLM";
 
@@ -28,25 +28,7 @@
     //     xlmBalance = balance;
     //     return balance;
     // }
-    async function getWalletBallance() {
-        try {
-            const wallet_ballance = await window.ethereum.request({
-                method: 'wallet_invokeSnap',
-                params: {
-                snapId: 'npm:stellar-snap',
-                request: {
-                    method: 'getBalance',
-                    params: {"testnet":true}
-                },
-                },
-            });
-            xlmBalance = wallet_ballance;
-        } catch(error) {
-            console.log(error);
-            throw error;
-        }
-    }
-
+    
     const setView = (view:string) => {
         currentView = view;
         console.log('view ', currentView);
@@ -68,13 +50,14 @@
                 
             </div>
             <div class="">
-                <p class="text-center text-4xl">{xlmBalance} XLM</p>
+                <!-- <p class="text-center text-4xl">{xlmBalance} XLM</p> -->
+                <p class="text-center text-4xl">{($walletData).getBalance} XLM</p>
                 <h3 class="my-2 font-bold text-2xl text-center "> ballance</h3>
             </div>
             <div class="mt-2">
                 <div class="text-center flex justify-center gap-2 px-4">
                     <p class="max-w-[90%] truncate">{($walletData).address}</p> 
-                    <p class="copy-address inline-block flex items-center" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline /></p></div>
+                    <p class="copy-address inline-block flex items-center" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline/></p></div>
                 <h3 class="mt-4 font-bold text-2xl text-center ">address</h3>
             </div>
         </Card>

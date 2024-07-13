@@ -51,6 +51,10 @@
         walletData.set(wallet.exportState());
         console.log('wallet', wallet);
         console.log('wallet state', wallet.exportState());
+        // console.log('assets', wallet.getAssets());
+        const assets = await wallet.getAssets();
+        console.log('assets', assets);
+        
     }
 
     async function getWalletAddress(){

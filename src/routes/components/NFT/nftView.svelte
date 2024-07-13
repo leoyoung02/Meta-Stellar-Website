@@ -3,7 +3,9 @@
   import {Card, NftPoster} from '@metastellar/ui-library';
   import {Input, Textarea, Spinner, Button} from 'flowbite-svelte'
   import { getNFT, type NftModel, nftStore} from '$lib/store/nft';
+  import {walletData} from '$lib/store';
   import { onDestroy, onMount } from 'svelte';
+  import {MetaStellarWallet} from 'metastellar-sdk';
 
   let itemCode:string="";
   let nftIssuer:string="";
@@ -23,8 +25,12 @@
     nftList = value;
   });
 
+  let assets:any;
   onMount(async ()=>{
-    await getNFT();
+    let wallet = MetaStellarWallet.loadFromState($walletData);
+    assets = await wallet.getAssets();
+    console.log('assets', assets);
+    
   })
 
   onDestroy(unsubscribe);
@@ -33,14 +39,16 @@
     <h3 class="mb-4 text-center font-bold text-2xl"> View NFT </h3>
     <div>
       <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-2 ">
-        {#each nftList  as nft}  
-        <div class="my-2 ">
-          <NftPoster
-          dataURL="http://localhost/api" 
-          assetAccount={nft}
-          />
-          </div>
-        {/each}
+        {#if assets}
+          {#each assets  as asset}  
+          <div class="my-2 ">
+            <NftPoster
+            dataURL="http://localhost/api" 
+            assetAccount={{code:asset.asset_code, issuer:asset.asset_issuer}}
+            />
+            </div>
+          {/each}
+        {/if}
       </div>
     </div>
     <!-- <div class="flex flex-col gap-4">

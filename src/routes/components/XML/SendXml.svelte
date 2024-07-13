@@ -2,6 +2,7 @@
   import { Label, Button  } from 'flowbite-svelte';
   import * as StellarSdk from '@stellar/stellar-sdk';
   import {Chasing} from 'svelte-loading-spinners'
+   import {MetaStellarWallet} from 'metastellar-sdk';
 
   import {Card} from '@metastellar/ui-library';
   import { env } from "$lib/env";
@@ -13,7 +14,6 @@
 
   let sendToAddress:string = "GDPZOWVRHQV2SQ3N47CILKNU4NZQOXYDVXGKKJI32TVWIF7V7364G2QM";
   let sendAmount:number = 5;
-  let xlmBalance:number = 0;
 
   async function signTransaction() {
       // if (!$connected) {
@@ -90,7 +90,8 @@
                   }
               }}
           });
-          getWalletBallance();
+        //   getWalletBallance();
+        // const ballance = await MetaStellarWallet.loadFromState();
       } catch (e:any) {
           alert('error:'+e.message);
           return false;
@@ -107,26 +108,6 @@
       await signTransaction();
       processing = false;
   }
-
-  async function getWalletBallance() {
-      try {
-          const wallet_ballance = await window.ethereum.request({
-              method: 'wallet_invokeSnap',
-              params: {
-              snapId: 'npm:stellar-snap',
-              request: {
-                  method: 'getBalance',
-                  params: {"testnet":true}
-              },
-              },
-          });
-          console.log('wallet_ballance', wallet_ballance);
-          xlmBalance = wallet_ballance;
-      } catch(error) {
-          console.log(error);
-          throw error;
-      }
-    }
 
 </script>
 <Card class="py-7 px-5 " >

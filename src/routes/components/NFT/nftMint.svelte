@@ -7,6 +7,8 @@
   import { env } from "$lib/env";
   import {updateNFT} from '$lib/store/nft';
 	import {Toast as toast} from "$lib/utils"
+  import {MetaStellarWallet} from 'metastellar-sdk';
+  import {walletData} from '$lib/store';
 
 
   const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
@@ -74,7 +76,7 @@
         }}
     });
     const issuer = await server.loadAccount(issuerKeypair.publicKey());
-    const receiver = await server.loadAccount(receiverPuplicKey);
+    // const receiver = await server.loadAccount(receiverPuplicKey);
     // Build a transaction that mints the NFT.
     let transaction = new StellarSdk.TransactionBuilder(
     issuer, {
@@ -128,6 +130,7 @@
               }
           }}
       });
+      console.log("nft minting result", response);
       console.log('The asset has been issued to the receiver', response.hash);
       toast({type:'info', desc:`The asset has been issued to the receiver. ${response.hash}`});
 
@@ -267,6 +270,12 @@
       if(nftResult.ok) {
         console.log("transaction hash", stellar_explorer_url + nftResult.data);
         toast({type:'info', desc:`transaction hash: ${stellar_explorer_url+nftResult.data}`});
+        
+        walletData.update(item=>({...item, dataPacket:null }));
+        walletData.subscribe(val=>console.log(val));
+        const wallet = MetaStellarWallet.loadFromState($walletData);
+        await wallet.init();
+        walletData.set(wallet.exportState());
 
         // updateNFT({code:itemCode, issuer:})
       } else {
