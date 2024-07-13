@@ -29,10 +29,8 @@
 
   onDestroy(unsubscribe);
 </script>
-<Card class="py-12 px-5 " >
-    <div class="mb-5">
-      NFT View
-    </div>
+<Card class="py-7 px-5 " >
+    <h3 class="mb-4 text-center font-bold text-2xl"> View NFT </h3>
     <div>
       <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-2 ">
         {#each nftList  as nft}  
