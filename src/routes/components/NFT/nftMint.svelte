@@ -1,12 +1,12 @@
 
 <script lang='ts'>
+  import {Input, Textarea, Spinner, Button} from 'flowbite-svelte'
   import * as StellarSdk from '@stellar/stellar-sdk';
-  // import fetch from 'node-fetch';
-  import fs from 'fs';
 
   import {Card} from '@metastellar/ui-library';
   import { env } from "$lib/env";
-  import {Input, Textarea, Spinner, Button} from 'flowbite-svelte'
+  import {updateNFT} from '$lib/store/nft';
+
 
   const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
   const stellar_network_passphrase = env.VITE_NETWORK_PASSPHRASE;
@@ -160,7 +160,8 @@
     type responseType = {
       IpfsHash:string;
       PinSize:string;
-      Timestamp:number
+      Timestamp:number,
+      isDuplicate?:boolean
     }
     try {
     
@@ -174,6 +175,8 @@
 
       if (res.ok) {
         const responseData: responseType = await res.json();
+        if (responseData.isDuplicate)
+          return {ok:false, data:'', error:'duplicated'}
         return {ok:true, data: responseData.IpfsHash, error: null}
       }
       else {
@@ -251,11 +254,10 @@
       if(nftResult.ok) {
         console.log("transaction hash", stellar_explorer_url + nftResult.data);
         alert(stellar_explorer_url + nftResult.data);
+        // updateNFT({code:itemCode, issuer:})
       } else {
         console.log("transaction failed", nftResult.error);
       }
-      
-      // await testRegister();
       isMinting = false;
     } catch (e:any) {
       console.log('error', e);
@@ -290,16 +292,17 @@
     </div>
     <div class="flex flex-col gap-4">
       <div>
-        <Input type="text" bind:value={itemCode} on:input={handleItemCodeChange}  placeholder='NFT Code'/>
+        <input type="text" bind:value={itemCode}  placeholder='NFT Code' on:input={handleItemCodeChange} class="w-full p-2 h-[48px] border border-slate-200 rounded-lg">
+
       </div>
       <div>
-        <Input type="text" bind:value={nftIssuer} placeholder='NFT Issuer' disabled/>
+        <input type="text" bind:value={nftIssuer} placeholder='NFT Issuer' disabled class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
       </div>
       <div>
-        <Input type="text" bind:value={itemName} on:input={handleItemNameChange} placeholder='NFT Name'/>
+        <input type="text" bind:value={itemName} on:input={handleItemNameChange} placeholder='NFT Name' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
       </div>
       <div>
-        <Textarea bind:value={itemDesc} on:input={handleItemDescChange}   placeholder='NFT Description'/>
+        <textarea bind:value={itemDesc} on:input={handleItemDescChange}   placeholder='NFT Description' class="w-full p-2 border border-slate-200 rounded-lg"/>
       </div>
       <div>
         <label for="avatar">picture:</label>

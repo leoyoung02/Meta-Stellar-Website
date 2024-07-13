@@ -11,7 +11,9 @@
     import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
     import ConnectButton from '../../components/connectButton.svelte';
     import NFTMint from "../components/NFT/nftMint.svelte";
+    import NFTView from "../components/NFT/nftView.svelte";
     import { env } from "$lib/env";
+  import NftView from '../components/NFT/nftView.svelte';
 
     export let currentView = "sendXLM";
 
@@ -176,11 +178,11 @@
 {#if ($walletData).connected}
 <div>
     <div id="midContainer"  class="uk-container">
-        <Card class="p-5 mt-16  ">
+        <Card class="p-5 mt-6  ">
             <div>
                 
             </div>
-            <div class="mt-12">
+            <div class="mt-6">
                 <p class="text-center text-4xl">{xlmBalance} XLM</p>
                 <h3 class="my-5 font-bold text-2xl text-center "> ballance</h3>
             </div>
@@ -189,41 +191,41 @@
                 <h3 class="my-5 font-bold text-2xl text-center ">address</h3>
             </div>
         </Card>
-        <div class="grid md:grid-cols-6 sm:grid-cols-3 mt-12 gap-3">
+        <div class="grid md:grid-cols-6 sm:grid-cols-3 mt-2 gap-3">
             <button on:click={()=>{setView('sendXLM')}} >
-                <Card class="py-8 px-12  " hoverTransform>
+                <Card class="py-4 px-12  " hoverTransform>
                     <span>Send XLM</span>
                 </Card>
             </button>
             <button on:click={()=>{setView('receiveStellar')}}>
-                <Card class="py-8 px-12 " hoverTransform>
+                <Card class="py-4 px-12 " hoverTransform>
                     <span>Receive</span>
                 </Card>
             </button>
             <button on:click={()=>{setView('sendToken')}}>
-                <Card class="py-8 px-12  "
+                <Card class="py-4 px-12  "
                 hoverTransform>
                     Send token
                 </Card>
             </button>
             <button on:click={()=>{setView('viewNFT')}}>
-                <Card class="py-8 px-12  " hoverTransform>
+                <Card class="py-4 px-12  " hoverTransform>
                     View token
                 </Card>
               </button>
             <button on:click={()=>{setView('sendNFT')}}>
-                <Card class="py-8 px-12  " hoverTransform>
+                <Card class="py-4 px-12  " hoverTransform>
                     Send NFT
                 </Card>
             </button>
             <button on:click={()=>{setView('mintNFT')}}>
-                <Card class="py-8 px-12  " hoverTransform>
+                <Card class="py-4 px-12  " hoverTransform>
                     Mint NFT
                 </Card>
             </button>
         </div>
         
-        <div class="mt-12">
+        <div class="mt-2">
             {#if currentView == 'sendXLM'}
             <Card class="py-12 px-5 " >
                 <h3 class="mb-4 text-center font-bold text-2xl">Send XLM</h3>
@@ -262,9 +264,7 @@
                 sendToken
             </Card>
             {:else if currentView == 'viewNFT'}
-            <Card class="py-12 px-5 " >
-                viewNFT
-            </Card>
+                <NftView/>
             {:else if currentView == 'sendNFT'}
             <Card class="py-12 px-5 " >
                 sendNFT
