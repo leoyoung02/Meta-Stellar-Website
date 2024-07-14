@@ -45,7 +45,7 @@
 {#if ($walletData).connected}
 <div>
     <div id="midContainer"  class="uk-container">
-        <Card class=" mt-6 py-7 " hoverTransform>
+        <Card class=" mt-6 py-7 " >
             <div>
                 
             </div>
