@@ -14,7 +14,7 @@
 	import {Toast as toast} from "$lib/utils"
     import NFTMint from "../components/NFT/nftMint.svelte";
     import NftView from '../components/NFT/nftView.svelte';
-    import SendXML from '../components/XML/SendXML.svelte';
+    import SendXML from '../components/XML/SendXml.svelte';
 
     export let currentView = "sendXLM";
 

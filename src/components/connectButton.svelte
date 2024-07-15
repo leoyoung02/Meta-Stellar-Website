@@ -46,12 +46,15 @@
     
     async function connectSnap(){
         console.log("connectSnap");
+        const flask_exist = await isFlask();
+        if(!flask_exist) return;
         let wallet = MetaStellarWallet.loadFromState($walletData);
         await wallet.init();
         walletData.set(wallet.exportState());
         console.log('wallet', wallet);
         console.log('wallet state', wallet.exportState());
-        // console.log('assets', wallet.getAssets());
+        // const balance = await getWalletBalance($walletData);
+        // console.log('balance', balance);
         const assets = await wallet.getAssets();
         console.log('assets', assets);
         
