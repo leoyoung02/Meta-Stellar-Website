@@ -252,23 +252,27 @@
       let result = await funding(issuerKeypair.publicKey());
       if(!result.ok) {
         console.log("funding error", result.error);
+        isMinting = false;
         return;
       }
       const uploadRes = await uploadFile();
       if(!uploadRes.ok) {
         console.log("upload failed", uploadRes.error);
+        isMinting = false;
         toast({type:'error', desc:`minting error: ${uploadRes.error}`});
         return;
       }
       result = await resigterNFT(uploadRes.data);
       if(!result.ok) {
         console.log("register nft failed", result.error);
+        isMinting = false;
         toast({type:'error', desc:`register nft failed: ${result.error}`});
         return;
       }
       const nftResult = await generateNFTOnStellar();
       if(nftResult.ok) {
         console.log("transaction hash", stellar_explorer_url + nftResult.data);
+        isMinting = false;
         toast({type:'info', desc:`transaction hash: ${stellar_explorer_url+nftResult.data}`});
         
         walletData.update(item=>({...item, dataPacket:null }));
@@ -280,6 +284,7 @@
         // updateNFT({code:itemCode, issuer:})
       } else {
         console.log("transaction failed", nftResult.error);
+        isMinting = false;
         toast({type:'error', desc:`transaction failed: ${nftResult.error}`});
       }
       isMinting = false;
