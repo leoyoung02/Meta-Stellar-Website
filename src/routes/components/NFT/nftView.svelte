@@ -7,6 +7,8 @@
   import { onDestroy, onMount } from 'svelte';
   import {MetaStellarWallet} from 'metastellar-sdk';
 
+  let testnetBaseURL = "https://horizon-testnet.stellar.org/";
+
   let itemCode:string="";
   let nftIssuer:string="";
   let isLoadingNFT:boolean = false;
@@ -40,13 +42,17 @@
     <div>
       <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-2 ">
         {#if assets}
-          {#each assets  as asset}  
-          <div class="my-2 ">
-            <NftPoster
-            dataURL="http://localhost/api" 
-            assetAccount={{code:asset.asset_code, issuer:asset.asset_issuer}}
-            />
-            </div>
+          {#each assets  as asset}
+            {#if asset.asset_code != 'XLM'}  
+            <div class="my-2 ">
+              <NftPoster
+                baseURL={testnetBaseURL}
+                hoverTransform
+                dataURL="http://localhost/api" 
+                assetAccount={{code:asset.asset_code, issuer:asset.asset_issuer}}
+              />
+              </div>
+            {/if}
           {/each}
         {/if}
       </div>
