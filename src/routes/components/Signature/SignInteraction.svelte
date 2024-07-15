@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import {canvasRope} from './rope';
     import RenderMaker from './CanvasRenderer';
-    import {Pen} from './drawpen';
+    import {Pen} from './drawPen';
     import StellarTOKENSPNG from './images/stellarTokens_transparent.png';
 
     import windowsImg from './images/windows.webp';
