@@ -1174,6 +1174,13 @@
   dependencies:
     "@floating-ui/utils" "^0.2.0"
 
+"@floating-ui/core@^1.6.0":
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.6.4.tgz#0140cf5091c8dee602bff9da5ab330840ff91df6"
+  integrity sha512-a4IowK4QkXl4SCWTGUR0INAfEOX3wtsYw3rKK5InQEHMGObkR8Xk44qYQD9P4r6HHw0iIfK6GUKECmY8sTkqRA==
+  dependencies:
+    "@floating-ui/utils" "^0.2.4"
+
 "@floating-ui/dom@^1.6.5":
   version "1.6.5"
   resolved "https://registry.npmjs.org/@floating-ui/dom/-/dom-1.6.5.tgz"
@@ -1182,10 +1189,23 @@
     "@floating-ui/core" "^1.0.0"
     "@floating-ui/utils" "^0.2.0"
 
+"@floating-ui/dom@^1.6.7":
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-1.6.7.tgz#85d22f731fcc5b209db504478fb1df5116a83015"
+  integrity sha512-wmVfPG5o2xnKDU4jx/m4w5qva9FWHcnZ8BvzEe90D/RpwsJaTAVYPEPdQ8sbr/N8zZTAHlZUTQdqg8ZUbzHmng==
+  dependencies:
+    "@floating-ui/core" "^1.6.0"
+    "@floating-ui/utils" "^0.2.4"
+
 "@floating-ui/utils@^0.2.0":
   version "0.2.2"
   resolved "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.2.tgz"
   integrity sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==
+
+"@floating-ui/utils@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.4.tgz#1d459cee5031893a08a0e064c406ad2130cced7c"
+  integrity sha512-dWO2pw8hhi+WrXq1YJy2yCuWoL20PddgGaqTgVe4cOS9Q6qklXCiA1tJEqX6BEwRNSCP84/afac9hd4MS+zEUA==
 
 "@fontsource/fira-mono@^4.5.10":
   version "4.5.10"
@@ -1873,6 +1893,27 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.8.tgz"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
+"@rollup/plugin-node-resolve@^15.2.3":
+  version "15.2.3"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-15.2.3.tgz#e5e0b059bd85ca57489492f295ce88c2d4b0daf9"
+  integrity sha512-j/lym8nf5E21LwBT4Df1VD6hRO2L2iwUeUmP7litikRsVp1H6NWx20NEp0Y7su+7XGc476GnXXc4kFeZNGmaSQ==
+  dependencies:
+    "@rollup/pluginutils" "^5.0.1"
+    "@types/resolve" "1.20.2"
+    deepmerge "^4.2.2"
+    is-builtin-module "^3.2.1"
+    is-module "^1.0.0"
+    resolve "^1.22.1"
+
+"@rollup/pluginutils@^5.0.1":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.1.0.tgz#7e53eddc8c7f483a4ad0b94afb1f7f5fd3c771e0"
+  integrity sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==
+  dependencies:
+    "@types/estree" "^1.0.0"
+    estree-walker "^2.0.2"
+    picomatch "^2.3.1"
+
 "@rollup/rollup-android-arm-eabi@4.17.2":
   version "4.17.2"
   resolved "https://registry.yarnpkg.com/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.17.2.tgz#1a32112822660ee104c5dd3a7c595e26100d4c2d"
@@ -2243,6 +2284,11 @@
   resolved "https://registry.npmjs.org/@types/pug/-/pug-2.0.10.tgz"
   integrity sha512-Sk/uYFOBAB7mb74XcpizmH0KOR2Pv3D2Hmrh1Dmy5BmK3MpdSa5kqZcg6EKBdklU0bFXX9gCfzvpnyUehrPIuA==
 
+"@types/resolve@1.20.2":
+  version "1.20.2"
+  resolved "https://registry.yarnpkg.com/@types/resolve/-/resolve-1.20.2.tgz#97d26e00cd4a0423b4af620abecf3e6f442b7975"
+  integrity sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==
+
 "@types/secp256k1@^4.0.1":
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/@types/secp256k1/-/secp256k1-4.0.6.tgz#d60ba2349a51c2cbc5e816dcd831a42029d376bf"
@@ -2508,6 +2554,19 @@ apexcharts@^3.49.1:
   version "3.49.1"
   resolved "https://registry.npmjs.org/apexcharts/-/apexcharts-3.49.1.tgz"
   integrity sha512-MqGtlq/KQuO8j0BBsUJYlRG8VBctKwYdwuBtajHgHTmSgUU3Oai+8oYN/rKCXwXzrUlYA+GiMgotAIbXY2BCGw==
+  dependencies:
+    "@yr/monotone-cubic-spline" "^1.0.3"
+    svg.draggable.js "^2.2.2"
+    svg.easing.js "^2.0.0"
+    svg.filter.js "^2.0.2"
+    svg.pathmorphing.js "^0.1.3"
+    svg.resize.js "^1.4.3"
+    svg.select.js "^3.0.1"
+
+apexcharts@^3.49.2:
+  version "3.50.0"
+  resolved "https://registry.yarnpkg.com/apexcharts/-/apexcharts-3.50.0.tgz#9030f206183978df0d762602b3d15b59ec6e783b"
+  integrity sha512-LJT1PNAm+NoIU3aogL2P+ViC0y/Cjik54FdzzGV54UNnGQLBoLe5ok3fxsJDTgyez45BGYT8gqNpYKqhdfy5sg==
   dependencies:
     "@yr/monotone-cubic-spline" "^1.0.3"
     svg.draggable.js "^2.2.2"
@@ -2929,6 +2988,11 @@ buffer@~5.2.1:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
 
+builtin-modules@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-3.3.0.tgz#cae62812b89801e9656336e46223e030386be7b6"
+  integrity sha512-zhaCDicdLuWN5UbN5IMnFqNMhNfo919sH85y2/ea+5Yg9TsTkeZxpL+JLbp6cgYFS4sRLp3YV4S6yDuqVWHYOw==
+
 builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
@@ -3322,7 +3386,7 @@ deep-freeze-strict@^1.1.1:
   resolved "https://registry.yarnpkg.com/deep-freeze-strict/-/deep-freeze-strict-1.1.1.tgz#77d0583ca24a69be4bbd9ac2fae415d55523e5b0"
   integrity sha512-QemROZMM2IvhAcCFvahdX2Vbm4S/txeq5rFYU9fh4mQP79WTMW5c/HkQ2ICl1zuzcDZdPZ6zarDxQeQMsVYoNA==
 
-deepmerge@^4.3.1:
+deepmerge@^4.2.2, deepmerge@^4.3.1:
   version "4.3.1"
   resolved "https://registry.npmjs.org/deepmerge/-/deepmerge-4.3.1.tgz"
   integrity sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==
@@ -3636,6 +3700,11 @@ estraverse@^5.2.0:
   resolved "https://registry.yarnpkg.com/estraverse/-/estraverse-5.3.0.tgz#2eea5290702f26ab8fe5370370ff86c965d21123"
   integrity sha512-MMdARuVEQziNTeJD8DgMqmhwR11BRQ/cBP+pLtYdSTnf3MIO8fFeiINEbX36ZdNlfU/7A9f3gUw49B3oQsvwBA==
 
+estree-walker@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-2.0.2.tgz#52f010178c2a4c117a7757cfe942adb7d2da4cac"
+  integrity sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==
+
 estree-walker@^3.0.0, estree-walker@^3.0.3:
   version "3.0.3"
   resolved "https://registry.npmjs.org/estree-walker/-/estree-walker-3.0.3.tgz"
@@ -3815,12 +3884,30 @@ flat@^5.0.2:
   resolved "https://registry.yarnpkg.com/flat/-/flat-5.0.2.tgz#8ca6fe332069ffa9d324c327198c598259ceb241"
   integrity sha512-b6suED+5/3rTpUBdG1gupIl8MPFCAMA0QXwmljLhvCUKcUvdE4gWky9zpuGCcXHOsz4J9wPGNWq6OKpmIzz3hQ==
 
+flowbite-datepicker@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/flowbite-datepicker/-/flowbite-datepicker-1.3.0.tgz#60b2423dfa1013e61c50babcf8512501d8b835ee"
+  integrity sha512-CLVqzuoE2vkUvWYK/lJ6GzT0be5dlTbH3uuhVwyB67+PjqJWABm2wv68xhBf5BqjpBxvTSQ3mrmLHpPJ2tvrSQ==
+  dependencies:
+    "@rollup/plugin-node-resolve" "^15.2.3"
+    flowbite "^2.0.0"
+
 flowbite-svelte-icons@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/flowbite-svelte-icons/-/flowbite-svelte-icons-1.6.1.tgz#10da0f5aafdbe1f34dcc44293bd2c0020482262b"
   integrity sha512-Kw/7BzA6fqlFq7tBNudwX0KVU4cbyyXcMcgHTraMwGBtvBQan0RKMbvWwqm4JZNvLGAvRv1BM2EF7rzo/oam1Q==
 
-flowbite-svelte@^0.46.1, flowbite-svelte@^0.46.4:
+flowbite-svelte@^0.46.1:
+  version "0.46.15"
+  resolved "https://registry.yarnpkg.com/flowbite-svelte/-/flowbite-svelte-0.46.15.tgz#d8622fd87f7a5988abf9c5492d7b2df374dc503d"
+  integrity sha512-xWhyLDez/gafTAmQayPMPKmWj1BAoq80SoA48yHZ12Wk3Vu3hFrELLUZf0UksxnjQL9hMOKRUlYl3/IH6pHwnQ==
+  dependencies:
+    "@floating-ui/dom" "^1.6.7"
+    apexcharts "^3.49.2"
+    flowbite "^2.4.1"
+    tailwind-merge "^2.3.0"
+
+flowbite-svelte@^0.46.4:
   version "0.46.4"
   resolved "https://registry.npmjs.org/flowbite-svelte/-/flowbite-svelte-0.46.4.tgz"
   integrity sha512-67OYCGH1Jk4ttMqQqKFU3J3Wudajl2TNVzO8Yzqx3meIlT2yGrszIeWwhnSzS0+En2P7Sl60kmJvCHeHIjyEMA==
@@ -3829,6 +3916,15 @@ flowbite-svelte@^0.46.1, flowbite-svelte@^0.46.4:
     apexcharts "^3.49.1"
     flowbite "^2.3.0"
     tailwind-merge "^2.3.0"
+
+flowbite@^2.0.0, flowbite@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/flowbite/-/flowbite-2.4.1.tgz#d177173b13247186c4768c4a8a7cc46ce5c260eb"
+  integrity sha512-I++vDsSOOlzHNuxY2OcFMNVC4CNzpPU2K14YHJ81cYrANXdzgizqniMB/1KQ219x8fqw+S0msY9Q45ZSXDqAPw==
+  dependencies:
+    "@popperjs/core" "^2.9.3"
+    flowbite-datepicker "^1.3.0"
+    mini-svg-data-uri "^1.4.3"
 
 flowbite@^2.3.0:
   version "2.3.0"
@@ -4174,6 +4270,13 @@ is-buffer@^1.1.0:
   resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
 
+is-builtin-module@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/is-builtin-module/-/is-builtin-module-3.2.1.tgz#f03271717d8654cfcaf07ab0463faa3571581169"
+  integrity sha512-BSLE3HnV2syZ0FK0iMA/yUGplUeMmNz4AW5fnTunbCIqZi4vG3WjJT9FHMy5D69xmAYBHXQhJdALdpwVxV501A==
+  dependencies:
+    builtin-modules "^3.3.0"
+
 is-callable@^1.1.3:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/is-callable/-/is-callable-1.2.7.tgz#3bc2a85ea742d9e36205dcacdd72ca1fdc51b055"
@@ -4219,6 +4322,11 @@ is-interactive@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-interactive/-/is-interactive-1.0.0.tgz#cea6e6ae5c870a7b0a0004070b7b587e0252912e"
   integrity sha512-2HvIEKRoqS62guEC+qBjpvRubdX910WCMuJTZ+I9yvqKU2/12eSL549HMwtabb4oupdj2sMP50k+XJfB/8JE6w==
+
+is-module@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/is-module/-/is-module-1.0.0.tgz#3258fb69f78c14d5b815d664336b4cffb6441591"
+  integrity sha512-51ypPSPCoTEIN9dy5Oy+h4pShgJmPCygKfyRCISBI+JoWT/2oJvK8QPxmwv7b/p239jXrm9M1mlQbyKJ5A152g==
 
 is-nan@^1.3.2:
   version "1.3.2"
@@ -5315,7 +5423,7 @@ resolve-from@^4.0.0:
   resolved "https://registry.npmjs.org/resolve-from/-/resolve-from-4.0.0.tgz"
   integrity sha512-pb/MYmXstAkysRFx8piNI1tGFNQIFA3vkE3Gq4EuA1dF6gHp/+vgZqsCGJapvy8N3Q+4o7FwvquPJcnZ7RYy4g==
 
-resolve@^1.1.4, resolve@^1.1.7, resolve@^1.14.2, resolve@^1.17.0, resolve@^1.22.2, resolve@^1.4.0:
+resolve@^1.1.4, resolve@^1.1.7, resolve@^1.14.2, resolve@^1.17.0, resolve@^1.22.1, resolve@^1.22.2, resolve@^1.4.0:
   version "1.22.8"
   resolved "https://registry.npmjs.org/resolve/-/resolve-1.22.8.tgz"
   integrity sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==
@@ -5873,7 +5981,7 @@ svelte-loading-spinners@^0.3.6:
 
 svelte-modals@^1.3.0:
   version "1.3.0"
-  resolved "https://registry.npmjs.org/svelte-modals/-/svelte-modals-1.3.0.tgz"
+  resolved "https://registry.yarnpkg.com/svelte-modals/-/svelte-modals-1.3.0.tgz#b02331a178bd31507bf249f710ba5d52f4e064ac"
   integrity sha512-b1Ylnyv9O6b7VYeWGJVToaVU2lw7GtErVwiEdojyfnOuZcrhNlQ5eDqbTrL3xyKz8j2VTy/QiGUl1lm/6SnQ2A==
 
 svelte-preprocess@^5.1.3:
