@@ -111,7 +111,7 @@
   }
 
 </script>
-<Card class="py-7 px-5 " >
+<Card class="py-7 px-5 "  shadow>
   <h3 class="mb-4 text-center font-bold text-2xl">Send XLM</h3>
   <div class="mb-2">
     <Label class="my-2">Send To</Label>

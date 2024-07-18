@@ -5,7 +5,7 @@
   import { createForm } from "svelte-forms-lib";
   import {Chasing} from 'svelte-loading-spinners'
   import * as StellarSdk from '@stellar/stellar-sdk';
-  import {Card} from '@metastellar/ui-library';
+  import {Card} from '@metastellar/ui-library'
   import {MetaStellarWallet} from 'metastellar-sdk';
   import {walletData} from '$lib/store';
   import { env } from "$lib/env";
@@ -90,7 +90,7 @@
   })
 
 </script>
-<Card class="py-7 px-5 " >
+<Card class="py-7 px-5 " shadow>
     <h3 class="mb-4 text-center font-bold text-2xl">Mint NFT</h3>
     <div class="flex flex-col gap-4">
       <div>

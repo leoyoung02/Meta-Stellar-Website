@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import {getAirDropData, claimClaimableBalance, trustNClaimTransaction} from '$lib/services'
+  import {Card} from '@metastellar/ui-library'
   import { checkTrust } from '$lib/utils/airdrop';
 
   let airDropData:any;
@@ -17,7 +18,7 @@
       console.log('airDropData', airDropData);
   })
 </script>
-<div class="py-4">
+<Card class="py-4" shadow>
   {#if airDropData}
     {#each airDropData  as item}
       <div class="flex justify-between my-4">
@@ -37,5 +38,7 @@
         </div>
       </div>
     {/each}
+    {:else}
+    <p class="py-4 text-center">No Data</p>
   {/if}
-</div>
+</Card>

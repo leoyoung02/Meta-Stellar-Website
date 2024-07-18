@@ -1,27 +1,22 @@
 <script lang="ts">
-    import * as StellarSdk from '@stellar/stellar-sdk';
     import {Card} from '@metastellar/ui-library';
     import {Chasing} from 'svelte-loading-spinners'
     import copy from "copy-to-clipboard";
-    // import {connected, } from '../../store';   
     import {walletData} from '$lib/store';
-    import type {WalletState} from 'metastellar-sdk';
-    import {MetaStellarWallet} from 'metastellar-sdk';
-    import { Label, Button  } from 'flowbite-svelte';
-    import { CheckCircleSolid, FileCopyAltOutline} from 'flowbite-svelte-icons';
+    import {FileCopyAltOutline} from 'flowbite-svelte-icons';
     import ConnectButton from '../../components/connectButton.svelte';
     import { env } from "$lib/env";
 	import {Toast as toast} from "$lib/utils"
-    import NFTMint from "../components/NFT/nftMint.svelte";
-    import NftView from '../components/NFT/nftView.svelte';
+    import NFTMint from "../components/Assets/nftMint.svelte";
+    import NftView from '../components/Assets/nftView.svelte';
     import SendXML from '../components/XML/SendXml.svelte';
-    import Token from '../components/NFT/token.svelte';
-    import AirDrop from '../components/NFT/airDrop.svelte';
+    import Token from '../components/Assets/token.svelte';
+    import AirDrop from '../components/Assets/airDrop.svelte';
     import {formatWalletAddValue, formatWalletAddress} from '$lib/utils/string'
 
     export let currentView = "sendXLM";
 
-  let xlmBalance:number = 0;
+//   let xlmBalance:number = 0;
     // async function getWalletBallance() {
     //     let wallet = MetaStellarWallet.loadFromState($walletData);
     //     let balance = await wallet.getBalance();
@@ -35,7 +30,6 @@
     const setView = (view:string) => {
         currentView = view;
         console.log('view ', currentView);
-
     }
     
     const onCopy = (text:string) => {
@@ -48,7 +42,7 @@
 {#if ($walletData).connected}
 <div>
     <div id="midContainer"  class="uk-container">
-        <Card class=" mt-6 py-7 " >
+        <Card class=" mt-6 py-7 " shadow >
             <div>
                 
             </div>
@@ -66,27 +60,27 @@
         </Card>
         <div class="grid md:grid-cols-5 sm:grid-cols-3 mt-2 gap-3">
             <button on:click={()=>{setView('sendXLM')}} >
-                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" >
+                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow>
                     <span>Send XLM</span>
                 </Card>
             </button>
             <button on:click={()=>{setView('viewNFT')}}>
-                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" >
+                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow >
                     NFT
                 </Card>
               </button>
             <button on:click={()=>{setView('token')}}>
-                <Card class="py-4 lg:px-12  min-h-[80px] justify-center" >
+                <Card class="py-4 lg:px-12  min-h-[80px] justify-center"  shadow>
                     Token
                 </Card>
             </button>
             <button on:click={()=>{setView('mintNFT')}}>
-                <Card class="py-4 lg:px-12  min-h-[80px] justify-center" >
+                <Card class="py-4 lg:px-12  min-h-[80px] justify-center"  shadow>
                     Mint NFT
                 </Card>
             </button>
             <button on:click={()=>{setView('airDrop')}}>
-                <Card class="py-4 lg:px-12  min-h-[80px] justify-center" >
+                <Card class="py-4 lg:px-12  min-h-[80px] justify-center" shadow >
                     AirDrop
                 </Card>
             </button>

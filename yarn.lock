@@ -1807,10 +1807,10 @@
     semver "^7.5.4"
     uuid "^9.0.1"
 
-"@metastellar/ui-library@^0.0.17":
-  version "0.0.17"
-  resolved "https://registry.yarnpkg.com/@metastellar/ui-library/-/ui-library-0.0.17.tgz#685e19e4a52bc93d742254c4d5d083199ebbb7f4"
-  integrity sha512-A2hx1Qe8yRNxu0l7OriJlWs4fLp7Q+th/oiw0leOkhpOwfHPOapb6N8PVNyCiYCy1YO233gvikHecRtyNZbFCg==
+"@metastellar/ui-library@^0.0.19":
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/@metastellar/ui-library/-/ui-library-0.0.19.tgz#6bb5254373348d9eda22c98e053ed48f3a3ed1b6"
+  integrity sha512-6Kq5+XNLoDdZvh12YIaFsv9t4V11Cn5Sn9YH3tVAPUCD5b4kYO4X4hlX/B2zq4RFnU3PUsH5l4r0/Dp1WK1ojw==
   dependencies:
     "@stellar/stellar-sdk" "^12.0.1"
     flowbite-svelte "^0.46.1"
