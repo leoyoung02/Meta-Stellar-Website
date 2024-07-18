@@ -3,11 +3,12 @@
   import * as StellarSdk from '@stellar/stellar-sdk';
   import {Chasing} from 'svelte-loading-spinners'
    import {MetaStellarWallet} from 'metastellar-sdk';
+   import {stellar_rpc_endpoint} from '$lib/constants'
 
   import {Card} from '@metastellar/ui-library';
   import { env } from "$lib/env";
 
-  const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
+  // const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
   const network_passphrase = env.VITE_NETWORK_PASSPHRASE;
 
   let processing:boolean = false;
