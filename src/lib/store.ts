@@ -10,7 +10,7 @@ export const connected = writable(false);
 export const lockScroll: Writable<boolean> = writable(false);
 export const walletData: Writable<walletState> = writable({
   ...new MetaStellarWallet().exportState(),
-  network: env.VITE_ENV == "development" ? "testnet" : "mainnet",
+  network: env.VITE_DEV ? "testnet" : "mainnet",
 });
 
 //export const currentWalletState: Writable<walletState> = writable((new MetaStellarWallet()).exportState());
