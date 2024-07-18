@@ -6,6 +6,7 @@ import {
   stellar_toml_server_url,
   passpharase,
   stellar_rpc_endpoint,
+  home_domain_url
 } from "$lib/constants";
 import type {
   NFTRegistrationParams,
@@ -104,7 +105,7 @@ export const resigterNFT = async ({
     issuer: issuer,
     name: name,
     desc: desc,
-    image: `${pinata.url}/${imageURL}`,
+    image: `${pinata.baseURL}/${imageURL}`,
     display_decimals: 7,
   };
   try {
@@ -170,7 +171,7 @@ export const generateNFTOnStellar = async ({
   })
     .addOperation(
       StellarSdk.Operation.setOptions({
-        homeDomain: "deoss.anonid.io",
+        homeDomain: home_domain_url,
       })
     )
     // Add the NFT metadata to the issuer account using a `manageData` operation.

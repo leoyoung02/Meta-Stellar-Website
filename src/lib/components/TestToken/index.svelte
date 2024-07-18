@@ -10,7 +10,6 @@
 
 	let showModal = false;
 
-
   export let assetAccount: AssetAccount;
   export let imgClass: string | undefined = undefined;
   export let baseURL: string;

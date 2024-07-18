@@ -15,6 +15,10 @@ export const formatWalletAddress = (
 };
 
 export const formatWalletAddValue = (str: string) => {
+  console.log('formatWalletAddValue', str);
+  if (!str) {
+    return "";
+  }
   const parts = str.split(".");
   const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const decimalPart = parts[1];

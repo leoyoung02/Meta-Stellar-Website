@@ -60,6 +60,7 @@ function convertDataToAssetMetadata(_data: any): AssetMetaData {
     image: _data?.image,
   };
 }
+
 async function fetchToml(request: string, code: string) {
   try {
     const res = await fetch(request);
@@ -211,10 +212,12 @@ export const claimClaimableBalance = async ({
   asset,
   balanceID,
   amount,
+  flag,
 }: {
   asset: string;
   balanceID: string;
-  amount: string;
+  amount: string,
+  flag: boolean;
 }) => {
   let walletData: any = getWalletData();
   const server = new Horizon.Server(stellar_rpc_endpoint);
@@ -229,6 +232,10 @@ export const claimClaimableBalance = async ({
   };
 
   try {
+    if(flag) {
+      const assets = new Asset(asset.split(":")[0], asset.split(":")[1]);
+      txnBuilder.addOperation(Operation.changeTrust({ asset: assets }));
+    }
     txnBuilder.addOperation(Operation.claimClaimableBalance(operationParam));
     console.log(txnBuilder);
     txnBuilder.setTimeout(3600);
@@ -252,7 +259,6 @@ export const claimClaimableBalance = async ({
                   code: asset.split(":")[0],
                   issuer: asset.split(":")[1],
                 });
-                debugger;
                 updateWalletData();
                 // claimClaimableBalance();
               },
@@ -286,24 +292,4 @@ export const signTxn = async (txnXDR: any) => {
   });
 
   return signTransactionResult;
-};
-
-export const trustNClaimTransaction = async ({
-  asset,
-  balanceID,
-  amount,
-}: {
-  asset: string;
-  balanceID: string;
-  amount: string;
-}) => {
-  try {
-    await changeTrustTransaction({
-      code: asset.split(":")[0],
-      issuer: asset.split(":")[1],
-    });
-    await claimClaimableBalance({ asset, balanceID, amount });
-  } catch (e: any) {
-    console.log("error", e);
-  }
 };
