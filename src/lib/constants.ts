@@ -4,6 +4,7 @@
 export const snapId = "npm:stellar-snap";
 // stellar_rpc_endpoint
 export const stellar_rpc_endpoint = import.meta.env.VITE_STELLAR_RPC_ENDPOINT;
+export const stellar_rpc_mainnet_endpoint = import.meta.env.VITE_STELLAR_RPC_MAINNET_ENDPOINT;
 
 export const passpharase = import.meta.env.VITE_NETWORK_PASSPHRASE;
 

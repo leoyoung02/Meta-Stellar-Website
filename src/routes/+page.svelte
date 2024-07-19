@@ -8,6 +8,7 @@
     import video1 from '$lib/video/metastellar.mp4';
     import girlImg from '$lib/images/girl.jpg'
     import { env } from "$lib/env";
+    import {stellar_rpc_mainnet_endpoint} from '$lib/constants'
 
     const mouse_movement_record_send_url = env.VITE_MOUSE_MOVEMENT_DATA_SEND_URL;
 
@@ -51,8 +52,8 @@
     }
 
     const assetInfo: AssetAccount = {
-        code: "Spunks",
-        issuer: "GCAR7OJULRZBOMMUPJ33YMI3O6GPBMKHWVWQAD2BHSH6NZ25QYMI44UP"
+        code: "FBO2",
+        issuer: "GBSUYFOI5SWH7MWA43MQGXH3CP6DMBU3AKAU7ZGTEN7EKCNSVQWJUXOL"
     }
 </script>
 <svelte:window on:resize={handleResize} />
@@ -62,16 +63,15 @@
 <div id="midContainer"  class="uk-container">
     <div class='flex gap-4'>
         <div class='w-72 mt-5'>
-            <NftPoster 
-                isMouseTrackRecord={true} 
-                dataURL={mouse_movement_record_send_url} 
-                intervalData={5} 
+              <NftPoster
+                baseURL={stellar_rpc_mainnet_endpoint}
                 hoverTransform
-                imgHoverTransform
-                class="p-4 w-72"
                 assetAccount={assetInfo}
-            >
-        </NftPoster>
+                class="p-4 w-72"
+                shadow
+                imgClass="h-[200px]"
+                getNFTAssetInfo={()=>{}}
+              />
         </div>
         <div class='w-72 mt-5'>
             <YoutubePoster
@@ -79,7 +79,7 @@
                 yutubeURL={video1}
                 thumnailURL={girlImg}
                 type="video/mp4"
-                bodyClass="mt-5"
+                shadow
                 videoClass=""
                 class="p-4 w-72"
             />
@@ -103,8 +103,8 @@
 
         
         <Card 
-            bodyClass="mt-5"
             class="px-5 py-10 uk-width-expand"
+            shadow
             isMouseTrackRecord={true} 
             dataURL={mouse_movement_record_send_url} 
             intervalData={5}
@@ -120,8 +120,8 @@
     <br>
     <div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
         <Card 
-            bodyClass="mt-5"
             class="py-12 px-5 uk-width-expand"
+            shadow
             isMouseTrackRecord={true} 
             dataURL={mouse_movement_record_send_url} 
             intervalData={5}
@@ -134,6 +134,7 @@
         <Card 
             class="py-12 px-5 uk-width-expand"
             isMouseTrackRecord={true} 
+            shadow
             dataURL={mouse_movement_record_send_url} 
             intervalData={5}
             hoverTransform
