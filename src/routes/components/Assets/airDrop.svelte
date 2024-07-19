@@ -1,16 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import {getAirDropData, claimClaimableBalance, trustNClaimTransaction} from '$lib/services'
+  import {getAirDropData, claimClaimableBalance} from '$lib/services'
   import {Card} from '@metastellar/ui-library'
   import { checkTrust } from '$lib/utils/airdrop';
 
   let airDropData:any;
-  
+
   const createClaimTransaction = async ({asset, balanceID, amount}:{asset:string, balanceID:string, amount:string}) => {
-      await claimClaimableBalance({asset, balanceID, amount});
+      await claimClaimableBalance({asset, balanceID, amount, flag: false});
   }
   const createTrustNClaimTransaction = async({asset,balanceID,amount}:{asset:string, balanceID:string, amount:string}) => {
-    await trustNClaimTransaction({asset, balanceID, amount});
+    await claimClaimableBalance({asset, balanceID, amount, flag: true});
   }
   onMount(async ()=>{
       const response = await getAirDropData();

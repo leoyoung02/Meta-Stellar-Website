@@ -34,7 +34,7 @@
     ];
     
     const operationParam = {
-      amount: '1',
+      amount: "0.0000001",
       asset:assets,
       claimants:claimants
     }    
@@ -68,7 +68,7 @@
     
     const assets = new Asset(selectedNFTCode, selectedNFTIssuer);
     const operationParam = {
-      amount:'1',
+      amount:"0.0000001",
       destination: destinationAddr,
       asset:assets
     }
@@ -141,7 +141,7 @@ export const tokenInfo: AssetAccount = {
       <div class="">
         <div>
       <div class="flex justify-between">
-        <h3 class="mb-4 text-center font-bold text-2xl"> Send Token </h3>
+        <h3 class="mb-4 text-center font-bold text-2xl"> Send NFT </h3>
         <div>
           <Button on:click={()=>{
             view='list'

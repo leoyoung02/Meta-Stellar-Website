@@ -8,6 +8,5 @@ export const checkTrust = ({
   issuer: string;
 }): boolean => {
   const wd = getWalletData();
-  debugger;
   return false;
 };

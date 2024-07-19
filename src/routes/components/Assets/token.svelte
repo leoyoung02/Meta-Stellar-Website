@@ -25,8 +25,8 @@
   const gotTodetail = (data:any) => {
     view= 'detail';
     console.log(data);
-    selectedTokenCode= data.asset_code;
-    selectedTokenIssuer= data.asset_issuer;
+    selectedTokenCode= data.assetInfo.asset_code;
+    selectedTokenIssuer= data.assetInfo.asset_issuer;
   }
 
   const claimeTransaction = async() => {
