@@ -91,7 +91,7 @@
 
 </script>
 <Card class="py-7 px-5 " shadow>
-    <h3 class="mb-4 text-center font-bold text-2xl">Mint NFT</h3>
+    <h3 class="mb-4 font-bold text-2xl">Mint NFT</h3>
     <div class="flex flex-col gap-4">
       <div>
         <input type="text" bind:value={itemCode} on:input={validateForm} placeholder='NFT Code' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg">

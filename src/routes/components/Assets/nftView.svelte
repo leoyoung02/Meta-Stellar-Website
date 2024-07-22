@@ -1,26 +1,45 @@
 
 <script lang="ts">
   import {onMount } from 'svelte';
-  import {MetaStellarWallet} from 'metastellar-sdk';
   import {TransactionBuilder, Operation, BASE_FEE, Horizon, Asset, Claimant} from 'stellar-sdk';
+  import * as StellarSdk from '@stellar/stellar-sdk';
+  import {Chasing} from 'svelte-loading-spinners'
+  import {MetaStellarWallet} from 'metastellar-sdk';
+  import { Tabs, TabItem } from 'flowbite-svelte'
   import {Card, NftPoster} from '@metastellar/ui-library';
   import {walletData} from '$lib/store';
   import {stellar_rpc_endpoint, passpharase} from '$lib/constants'
   import { Alert, assetType, Toast as toast } from '$lib/utils';
   import { Button } from 'flowbite-svelte';
   import { signTxn } from '$lib/services';
+  import { getNFTList } from '$lib/services/nft';
+  import {funding, uploadNFTFile, resigterNFT, generateNFTOnStellar} from '$lib/services/nft'
+  import {stellar_explorer_url} from '$lib/constants'
 
   let view:string = 'list';
   let assets:any;
   let selectedNFTCode:string = '';
   let selectedNFTIssuer:string = '';
   let destinationAddr:string = '';
+  let isProcessing:boolean=false;
+
+  let files: any | null;
+  let itemCode:string = "";
+  let itemName:string = "";
+  let nftIssuer: string = "";
+  let itemDesc:string = "";
+  let isMinting:boolean;
+
+  let issuerKeypair:StellarSdk.Keypair;
+
+
   const goToDetail = (data:any) => {
     view = 'detail'
     selectedNFTCode = data.assetInfo.asset_code
     selectedNFTIssuer = data.assetInfo.asset_issuer;
   }
- const claimeTransaction = async() => {
+
+  const claimeTransaction = async() => {
     const server = new Horizon.Server(stellar_rpc_endpoint);
     const account = await server.loadAccount($walletData.address);
     const txnBuilder = new TransactionBuilder(account, {fee:BASE_FEE, networkPassphrase: passpharase});
@@ -34,7 +53,7 @@
     ];
     
     const operationParam = {
-      amount: "0.0000001",
+      amount: '1',
       asset:assets,
       claimants:claimants
     }    
@@ -62,13 +81,14 @@
   }
   
   const sendTransaction = async () => {
+    isProcessing=true;
     const server = new Horizon.Server(stellar_rpc_endpoint);
     const account = await server.loadAccount($walletData.address);
     const txnBuilder = new TransactionBuilder(account, {fee:BASE_FEE, networkPassphrase: passpharase});
     
     const assets = new Asset(selectedNFTCode, selectedNFTIssuer);
     const operationParam = {
-      amount:"0.0000001",
+      amount:'1',
       destination: destinationAddr,
       asset:assets
     }
@@ -100,64 +120,163 @@
     } catch (e:any) {
       toast({type:'error', desc: e.message});
       console.log('error', e);
+    } finally {
+      isProcessing = false;
     }
   }
 
-  onMount(async ()=>{
-    let wallet = MetaStellarWallet.loadFromState($walletData);
-    assets = await wallet.getAssets();
-  })
-export const tokenInfo: AssetAccount = {
-  code: "BTCLN",
-  issuer: "GDPKQ2TSNJOFSEE7XSUXPWRP27H6GFGLWD7JCHNEYYWQVGFA543EVBVT"
-}
+  async function mintNFT() {
+    isMinting=true;
+    
+    issuerKeypair = StellarSdk.Keypair.random();
+    handleNFTIssuerChange(issuerKeypair.publicKey().toString());
 
-                // assetAccount={{code:asset.asset_code, issuer:asset.asset_issuer}}
+    try {
+      let result = await funding(issuerKeypair.publicKey());
+      if(!result.ok) {
+        console.log("funding error", result.error);
+        return;
+      }
+      const uploadRes = await uploadNFTFile({files, itemName});
+      if(!uploadRes.ok) {
+        console.log("upload failed", uploadRes.error);
+        toast({type:'error', desc:`minting error: ${uploadRes.error}`});
+        return;
+      }
+      result = await resigterNFT({code:itemCode, issuer:issuerKeypair.publicKey(), name:itemName, desc:itemDesc, imageURL:uploadRes.data});
+      if(!result.ok) {
+        console.log("register nft failed", result.error);
+        toast({type:'error', desc:`register nft failed: ${result.error}`});
+        return;
+      }
+      const nftResult = await generateNFTOnStellar({code:itemCode, issuerKeypair:issuerKeypair});
+      if(nftResult.ok) {
+        console.log("transaction hash", stellar_explorer_url + nftResult.data);
+        toast({type:'info', desc:`transaction hash: ${stellar_explorer_url+nftResult.data}`});
+        
+        walletData.update(item=>({...item, dataPacket:null }));
+        walletData.subscribe(val=>console.log(val));
+        const wallet = MetaStellarWallet.loadFromState($walletData);
+        await wallet.init();
+        walletData.set(wallet.exportState());
+
+      } else {
+        console.log("transaction failed", nftResult.error);
+        toast({type:'error', desc:`transaction failed: ${nftResult.error}`});
+      }
+    } catch (e:any) {
+      console.log('error', e);
+      toast({type:'error', desc:`transaction failed: ${e}`});
+    }
+    finally {
+      isMinting = false;
+    }
+      
+  }
+  $: if (files) {
+		console.log(files);
+	}
+
+  function handleNFTIssuerChange(issuerKeyStr: string) {
+    nftIssuer = issuerKeyStr;
+  }
+
+  let isSubmitEnabled:boolean = false;
+  const validateForm = () => {
+    console.log('files validation', files);
+    isSubmitEnabled = itemCode.trim() != "" && itemCode.trim().length < 12 && itemName.trim() != "" && itemDesc.trim() != "" && files != null;
+    console.log('isSubmitEnabled', isSubmitEnabled);
+  }
+
+  onMount(async ()=>{
+    assets = await getNFTList();
+  })
+
 </script>
 <Card class="py-7 px-5 " shadow>
-  {#if view == 'list'}
-    <h3 class="mb-4 text-center font-bold text-2xl"> NFT List </h3>
-    <div>
-      <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-2 ">
-        {#if assets}
-          {#each assets  as asset}
-            {#if assetType(asset) == 'nft'}  
-            <div class="my-2 ">
-              <NftPoster
-                baseURL={stellar_rpc_endpoint}
-                hoverTransform
-                assetAccount={{code:asset.asset_code, issuer:asset.asset_issuer}}
+  <h3 class="mb-4 font-bold text-2xl"> NFT  </h3>
+  <Tabs>
+    <TabItem open title="List">
+      {#if view == 'list'}
+      <div>
+        <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-2 ">
+          {#if assets?.length > 0}
+            {#each assets  as asset}
+              {#if assetType(asset) == 'nft'}  
+              <div class="my-2 ">
+                <NftPoster
+                  baseURL={stellar_rpc_endpoint}
+                  hoverTransform
+                  assetAccount={{code:asset.asset_code, issuer:asset.asset_issuer}}
 
-                imgClass="h-[200px]"
-                getNFTAssetInfo={goToDetail}
-              />
-              </div>
-            {/if}
-          {/each}
-        {/if}
-      </div>
-    </div>
-    {:else}
-      <div class="">
-        <div>
-      <div class="flex justify-between">
-        <h3 class="mb-4 text-center font-bold text-2xl"> Send NFT </h3>
-        <div>
-          <Button on:click={()=>{
-            view='list'
-          }} color="none">back</Button>
+                  imgClass="h-[200px]"
+                  getNFTAssetInfo={goToDetail}
+                />
+                </div>
+              {/if}
+            {/each}
+          {:else}
+            <p class="py-2">
+              No NFTs yet
+            </p>
+          {/if}
         </div>
       </div>
-      
-      <div class="flex flex-col gap-3">
-      <div>
-        <input type="text" bind:value={destinationAddr} placeholder='Destination' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+      {:else}
+        <div class="">
+          <div>
+        <div class="flex justify-between">
+          <h3 class="mb-4 text-center font-bold text-2xl"> NFT Send </h3>
+          <div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-3">
+        <div>
+          <input type="text" bind:value={destinationAddr} placeholder='Destination' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        </div>
+        <div>
+          <Button type="button" on:click={sendTransaction} size="sm" color="blue" disabled={isProcessing}>{#if isProcessing}
+            <span class="mr-3"><Chasing size="15" color="white" unit="px" /></span>
+            {/if}send</Button>
+            <Button on:click={()=>{
+              view='list'
+            }} color="none">
+            back</Button>
+        </div>
+        </div>
       </div>
-      <div>
-        <Button type="button" on:click={sendTransaction} size="sm" color="blue">send</Button>
+        </div>
+      {/if}
+    </TabItem>
+    <TabItem open title="Mint">
+      <div class="flex flex-col gap-4">
+        <div>
+          <input type="text" bind:value={itemCode} on:input={validateForm} placeholder='NFT Code' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg">
+        </div>
+        <div>
+          <input type="text" bind:value={nftIssuer} on:input={validateForm}  placeholder='NFT Issuer' disabled class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        </div>
+        <div>
+          <input type="text" bind:value={itemName} on:input={validateForm}  placeholder='NFT Name' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        </div>
+        <div>
+          <textarea bind:value={itemDesc} placeholder='NFT Description' class="w-full p-2 border border-slate-200 rounded-lg"/>
+        </div>
+        <div>
+          <label for="avatar">picture:</label>
+          <input accept="image/png, image/jpeg" bind:files id="avatar" name="avatar" type="file" on:change={validateForm}/>
+        </div>
+        {#if isSubmitEnabled}
+          <Button on:click={()=>{mintNFT()}} disabled={isMinting}  color="blue" class="py-3">
+            {#if isMinting}
+            <span class="mr-3"><Chasing size="15" color="white" unit="px" /></span>
+            {/if}
+            Mint
+          </Button>
+        {:else}
+          <Button disabled  color="blue" class="py-3">Mint</Button>
+        {/if}
       </div>
-      </div>
-    </div>
-      </div>
-    {/if}
+    </TabItem>
+  </Tabs>
 </Card>

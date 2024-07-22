@@ -58,7 +58,7 @@
                 <h3 class="mt-4 font-bold text-2xl text-center ">address</h3>
             </div>
         </Card>
-        <div class="grid md:grid-cols-5 sm:grid-cols-3 mt-2 gap-3">
+        <div class="grid md:grid-cols-4 sm:grid-cols-2 mt-2 gap-3">
             <button on:click={()=>{setView('sendXLM')}} >
                 <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow>
                     <span>Send XLM</span>
@@ -72,11 +72,6 @@
             <button on:click={()=>{setView('token')}}>
                 <Card class="py-4 lg:px-12  min-h-[80px] justify-center"  shadow>
                     Token
-                </Card>
-            </button>
-            <button on:click={()=>{setView('mintNFT')}}>
-                <Card class="py-4 lg:px-12  min-h-[80px] justify-center"  shadow>
-                    Mint NFT
                 </Card>
             </button>
             <button on:click={()=>{setView('airDrop')}}>
@@ -93,8 +88,6 @@
                 <NftView/>
             {:else if currentView == 'token'}
                 <Token/>
-            {:else if currentView == 'mintNFT'}
-                <NFTMint />
             {:else if currentView == 'airDrop'}
                 <AirDrop />
             {/if}

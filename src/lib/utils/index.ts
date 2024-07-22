@@ -57,9 +57,12 @@ export const Alert = ({
   });
 };
 
-export const getWalletData = () => {
+export const getWalletData = async () => {
+  debugger;
   let data: any;
-  walletData.subscribe((val: any) => (data = val));
+  await walletData.subscribe((val: any) => {
+    if (val) data = val;
+  });
   return data;
 };
 

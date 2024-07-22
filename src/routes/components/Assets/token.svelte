@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import {MetaStellarWallet} from 'metastellar-sdk';
+  import { Tabs, TabItem } from 'flowbite-svelte'
   import {Card, TokenPoster} from '@metastellar/ui-library';
   import {TransactionBuilder, Operation, BASE_FEE, Horizon, Asset, Claimant} from 'stellar-sdk';
 
@@ -8,7 +8,7 @@
   import {stellar_rpc_endpoint, passpharase} from '$lib/constants'
 	import {Toast as toast, Alert, assetType} from "$lib/utils"
   import { Button } from 'flowbite-svelte';
-  import { signTxn } from '$lib/services/token';
+  import { getTokenList, signTxn } from '$lib/services/token';
     
   let assets:any; let view:string = 'list';
   let destinationAddr:string = '';
@@ -161,27 +161,18 @@
   }
 
   onMount(async ()=>{
-    let wallet = MetaStellarWallet.loadFromState($walletData);
-    assets = await wallet.getAssets();
-    console.log('assssssssssss', assets);
+    assets = await getTokenList();
   })
 </script>
 <Card class="py-7 px-5 " shadow>
- {#if view === 'list'}
- <div>
-    <div class=" flex justify-between">
-      <h3 class="mb-4 text-center font-bold text-2xl"> Token </h3>
-      <div>
-      <Button on:click={()=>{
-        view = 'add_asset'
-      }} color="blue" size="sm">Add Asset</Button>
-      <Button on:click={()=>{
-        view = 'receive'
-      }} color="none" size="sm">Receive</Button>
-      </div>
-    </div>
-    <div class="grid">
-        {#if assets}
+  <div class=" flex justify-between">
+    <h3 class="mb-4 text-center font-bold text-2xl"> Token </h3>
+  </div>
+  <Tabs>
+    <TabItem open title="List">
+    {#if view === 'list'}
+      <div class="grid">
+        {#if assets?.length>0}
           {#each assets  as asset}
             {#if assetType(asset) == 'token'}  
             <TokenPoster
@@ -191,37 +182,39 @@
               class="my-2"
               shadow
               balance={asset.balance}
-            ></TokenPoster>
+            />
             {/if}
           {/each}
+        {:else}
+          <div class="py-2 text-center">No token yet</div>
         {/if}
-    </div>
-  </div>
- {:else if view == 'detail'}
-    <div>
-      <div class="flex justify-between">
-        <h3 class="mb-4 text-center font-bold text-2xl"> Send Token </h3>
+      </div>
+    {:else if view == 'detail'}
+      <div>
+        <div class="flex justify-between">
+          <h3 class="mb-4 text-center font-bold text-2xl"> Send Token </h3>
+          <div>
+            <Button on:click={()=>{
+              view='list'
+            }} color="none">back</Button>
+          </div>
+        </div>
+        
+        <div class="flex flex-col gap-3">
         <div>
-          <Button on:click={()=>{
-            view='list'
-          }} color="none">back</Button>
+          <input type="text" bind:value={destinationAddr} placeholder='Destination' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        </div>
+        <div>
+          <input type="number" bind:value={sendAmount} placeholder='amount' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        </div>
+        <div>
+          <Button type="button" on:click={sendTransaction} size="sm" color="blue">send</Button>
+        </div>
         </div>
       </div>
-      
-      <div class="flex flex-col gap-3">
-      <div>
-        <input type="text" bind:value={destinationAddr} placeholder='Destination' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
-      </div>
-      <div>
-        <input type="number" bind:value={sendAmount} placeholder='amount' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
-      </div>
-      <div>
-        <Button type="button" on:click={sendTransaction} size="sm" color="blue">send</Button>
-      </div>
-      </div>
-    </div>
-  {:else if view == 'add_asset'}
-    <div class="my-4">Add Asset</div>
+    {/if}
+  </TabItem>
+  <TabItem title="Add assets">
     <div class="flex flex-col gap-5">
       <div>
         <input type="text" bind:value={tokenCode}  placeholder='code' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
@@ -231,20 +224,18 @@
       </div>
       <div>
         <Button on:click={changeTrustTransaction} color="blue" size="sm">Confirm</Button>
-        <Button on:click={()=>{view="list"}} color="none" size="sm">Back</Button>
       </div>
     </div>
-    {:else}
-    <h3 class="my-4">Receive</h3>
-    <div class="flex flex-col gap-5">
+  </TabItem>
+  <TabItem title="Receive">
+     <div class="flex flex-col gap-5">
       <div>
         <input type="text" bind:value={claimBalanceID}  placeholder='issuer' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
       </div>
       <div>
-        <Button on:click={claimClaimableBalanceTransaction} color="blue">receive</Button>
-        <Button on:click={()=>{view="list"}} color="none" size="sm">Back</Button>
+        <Button on:click={claimClaimableBalanceTransaction} color="blue">Receive</Button>
       </div>
     </div>
-  {/if}
-
+  </TabItem>
+  </Tabs>
 </Card>
