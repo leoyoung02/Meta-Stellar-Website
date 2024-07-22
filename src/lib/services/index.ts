@@ -168,7 +168,6 @@ export async function getMetadata(baseURL: string, assetAccount: AssetAccount) {
 
 export const getAirDropData = async () => {
   let walletData: any = getWalletData();
-  debugger;
   try {
     const res = await fetch(
       `${CLAIMABLE_BALANCE_ENDPOINT}?claimant=${walletData.address}`

@@ -159,7 +159,7 @@
         const wallet = MetaStellarWallet.loadFromState($walletData);
         await wallet.init();
         walletData.set(wallet.exportState());
-
+        getData();
       } else {
         console.log("transaction failed", nftResult.error);
         toast({type:'error', desc:`transaction failed: ${nftResult.error}`});
@@ -188,8 +188,11 @@
     console.log('isSubmitEnabled', isSubmitEnabled);
   }
 
-  onMount(async ()=>{
+  const getData = async() =>{
     assets = await getNFTList();
+  }
+  onMount(async ()=>{
+    getData();
   })
 
 </script>
@@ -199,7 +202,7 @@
     <TabItem open title="List">
       {#if view == 'list'}
       <div>
-        <div class="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-2 ">
+        <div class={`${assets?.length > 0 && ('grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-2 ')}`}>
           {#if assets?.length > 0}
             {#each assets  as asset}
               {#if assetType(asset) == 'nft'}  
@@ -216,7 +219,7 @@
               {/if}
             {/each}
           {:else}
-            <p class="py-2">
+            <p class="py-2 text-center w-full">
               No NFTs yet
             </p>
           {/if}
