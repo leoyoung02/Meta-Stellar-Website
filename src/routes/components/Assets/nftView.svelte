@@ -40,6 +40,7 @@
   }
 
   const claimeTransaction = async() => {
+    isProcessing = true;
     const server = new Horizon.Server(stellar_rpc_endpoint);
     const account = await server.loadAccount($walletData.address);
     const txnBuilder = new TransactionBuilder(account, {fee:BASE_FEE, networkPassphrase: passpharase});
@@ -73,13 +74,27 @@
         }
         return;
       }
+      
+      await refreshData();
+      getData();
 
     } catch (e:any) {
       toast({type:'error', desc: e.message});
       console.log('error', e);
     }
+    finally {
+      isProcessing = false;
+      destinationAddr = "";
+    }
   }
   
+ const refreshData = async () => {
+    walletData.update(item=>({...item, dataPacket:null }));
+    walletData.subscribe(val=>console.log(val));
+    const wallet = MetaStellarWallet.loadFromState($walletData);
+    await wallet.init();
+    walletData.set(wallet.exportState());
+  }
   const sendTransaction = async () => {
     isProcessing=true;
     const server = new Horizon.Server(stellar_rpc_endpoint);
@@ -110,6 +125,10 @@
                 errText:'error',
                 callback:claimeTransaction
               })
+            } else {
+              await refreshData();
+              getData();
+              destinationAddr = "";
             }
           }
         }
@@ -170,6 +189,12 @@
     }
     finally {
       isMinting = false;
+      itemCode = "" 
+      itemCode = ''
+      itemName = ''
+      itemDesc = '';
+      files = null;
+      isSubmitEnabled = false;
     }
       
   }
@@ -188,6 +213,9 @@
     console.log('isSubmitEnabled', isSubmitEnabled);
   }
 
+  const sendValidation = () => {
+    isSubmitEnabled = destinationAddr.trim() != '';
+  }
   const getData = async() =>{
     assets = await getNFTList();
   }
@@ -235,23 +263,28 @@
         </div>
         <div class="flex flex-col gap-3">
         <div>
-          <input type="text" bind:value={destinationAddr} placeholder='Destination' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+          <input type="text" bind:value={destinationAddr} on:input={sendValidation} placeholder='Destination' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
         </div>
         <div>
-          <Button type="button" on:click={sendTransaction} size="sm" color="blue" disabled={isProcessing}>{#if isProcessing}
-            <span class="mr-3"><Chasing size="15" color="white" unit="px" /></span>
-            {/if}send</Button>
-            <Button on:click={()=>{
-              view='list'
-            }} color="none">
-            back</Button>
+        {#if isSubmitEnabled}
+          <Button type="button" on:click={sendTransaction} size="sm" color="blue" disabled={isProcessing}>
+            {#if isProcessing}
+              <span class="mr-3"><Chasing size="15" color="white" unit="px" /></span>
+            {/if}Send</Button>
+        {:else}
+          <Button type="button" color="blue" disabled>Send</Button>
+        {/if}
+        <Button on:click={()=>{
+            view='list'
+          }} color="none">
+          back</Button>
         </div>
         </div>
       </div>
         </div>
       {/if}
     </TabItem>
-    <TabItem open title="Mint">
+    <TabItem  title="Mint">
       <div class="flex flex-col gap-4">
         <div>
           <input type="text" bind:value={itemCode} on:input={validateForm} placeholder='NFT Code' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg">
