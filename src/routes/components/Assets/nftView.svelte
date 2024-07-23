@@ -54,7 +54,7 @@
     ];
     
     const operationParam = {
-      amount: '1',
+      amount: "0.0000001",
       asset:assets,
       claimants:claimants
     }    
@@ -103,7 +103,7 @@
     
     const assets = new Asset(selectedNFTCode, selectedNFTIssuer);
     const operationParam = {
-      amount:'1',
+      amount:"0.0000001",
       destination: destinationAddr,
       asset:assets
     }
