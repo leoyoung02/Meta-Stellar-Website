@@ -165,7 +165,7 @@
         toast({type:'error', desc:`transaction failed: ${nftResult.error}`});
       }
     } catch (e:any) {
-      console.log('error', e);
+      console.log('error', e);  
       toast({type:'error', desc:`transaction failed: ${e}`});
     }
     finally {

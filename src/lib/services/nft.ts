@@ -116,7 +116,7 @@ export const resigterNFT = async ({
     display_decimals: 7,
   };
   try {
-    const res = await fetch(`${stellar_toml_server_url}/insert_nft`, {
+    const res = await fetch(`${stellar_toml_server_url}insert_nft`, {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -152,8 +152,8 @@ export const generateNFTOnStellar = async ({
   issuerKeypair,
 }: GenerateNFTOnStellarParams) => {
   console.log("==============generate nft==============");
-  console.log(`Issuer Public Key: ${issuerKeypair.publicKey()}`);
-  console.log(`Issuer Secret Key: ${issuerKeypair.secret()}`);
+  // console.log(`Issuer Public Key: ${issuerKeypair.publicKey()}`);
+  // console.log(`Issuer Secret Key: ${issuerKeypair.secret()}`);
 
   // Create the Asset so we can issue it on the network.
   const nftAsset = new StellarSdk.Asset(code, issuerKeypair.publicKey());

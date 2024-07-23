@@ -127,7 +127,9 @@ export async function getMetadata(baseURL: string, assetAccount: AssetAccount) {
         };
       }
 
-      const data: AssetRaw = convertDataToAssetRaw(result._embedded.records[0]);
+      const data: AssetRaw = convertDataToAssetRaw(
+        result?._embedded.records[0]
+      );
       const metaDataInfo = await fetchToml(
         data?._links?.toml?.href,
         assetAccount?.code
