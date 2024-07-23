@@ -127,7 +127,9 @@ export async function getMetadata(baseURL: string, assetAccount: AssetAccount) {
         };
       }
 
-      const data: AssetRaw = convertDataToAssetRaw(result._embedded.records[0]);
+      const data: AssetRaw = convertDataToAssetRaw(
+        result?._embedded.records[0]
+      );
       const metaDataInfo = await fetchToml(
         data?._links?.toml?.href,
         assetAccount?.code
@@ -168,7 +170,6 @@ export async function getMetadata(baseURL: string, assetAccount: AssetAccount) {
 
 export const getAirDropData = async () => {
   let walletData: any = getWalletData();
-
   try {
     const res = await fetch(
       `${CLAIMABLE_BALANCE_ENDPOINT}?claimant=${walletData.address}`
@@ -216,7 +217,7 @@ export const claimClaimableBalance = async ({
 }: {
   asset: string;
   balanceID: string;
-  amount: string,
+  amount: string;
   flag: boolean;
 }) => {
   let walletData: any = getWalletData();
@@ -232,7 +233,7 @@ export const claimClaimableBalance = async ({
   };
 
   try {
-    if(flag) {
+    if (flag) {
       const assets = new Asset(asset.split(":")[0], asset.split(":")[1]);
       txnBuilder.addOperation(Operation.changeTrust({ asset: assets }));
     }

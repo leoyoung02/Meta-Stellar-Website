@@ -7,7 +7,6 @@
     import ConnectButton from '../../components/connectButton.svelte';
     import { env } from "$lib/env";
 	import {Toast as toast} from "$lib/utils"
-    import NFTMint from "../components/Assets/nftMint.svelte";
     import NftView from '../components/Assets/nftView.svelte';
     import SendXML from '../components/XML/SendXml.svelte';
     import Token from '../components/Assets/token.svelte';
@@ -49,16 +48,16 @@
             <div class="">
                 <!-- <p class="text-center text-4xl">{xlmBalance} XLM</p> -->
                 <p class="text-center text-4xl">{formatWalletAddValue(import.meta.env.VITE_DEV ? ($walletData).dataPacket?.testnetXLMBalance : ($walletData).dataPacket?.mainnetXLMBalance)} XLM</p>
-                <h3 class="my-2 font-bold text-2xl text-center "> ballance</h3>
+                <h3 class="my-2 font-bold text-2xl text-center "> Ballance</h3>
             </div>
             <div class="mt-2">
                 <div class="text-center flex justify-center gap-2 px-4">
                     <p class="max-w-[90%] truncate">{formatWalletAddress(($walletData).address, 7,4)}</p> 
                     <p class="copy-address inline-block flex items-center" on:click={()=>onCopy(($walletData).address)}><FileCopyAltOutline/></p></div>
-                <h3 class="mt-4 font-bold text-2xl text-center ">address</h3>
+                <h3 class="mt-4 font-bold text-2xl text-center ">Address</h3>
             </div>
         </Card>
-        <div class="grid md:grid-cols-5 sm:grid-cols-3 mt-2 gap-3">
+        <div class="grid md:grid-cols-4 sm:grid-cols-2 mt-2 gap-3">
             <button on:click={()=>{setView('sendXLM')}} >
                 <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow>
                     <span>Send XLM</span>
@@ -72,11 +71,6 @@
             <button on:click={()=>{setView('token')}}>
                 <Card class="py-4 lg:px-12  min-h-[80px] justify-center"  shadow>
                     Token
-                </Card>
-            </button>
-            <button on:click={()=>{setView('mintNFT')}}>
-                <Card class="py-4 lg:px-12  min-h-[80px] justify-center"  shadow>
-                    Mint NFT
                 </Card>
             </button>
             <button on:click={()=>{setView('airDrop')}}>
@@ -93,8 +87,6 @@
                 <NftView/>
             {:else if currentView == 'token'}
                 <Token/>
-            {:else if currentView == 'mintNFT'}
-                <NFTMint />
             {:else if currentView == 'airDrop'}
                 <AirDrop />
             {/if}

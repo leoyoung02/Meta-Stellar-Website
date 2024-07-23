@@ -47,7 +47,10 @@
     async function connectSnap(){
         console.log("connectSnap");
         const flask_exist = await isFlask();
-        if(!flask_exist) return;
+        if(!flask_exist) {
+            flaskNotDetected = true;
+            return;
+        }
         let wallet = MetaStellarWallet.loadFromState($walletData);
         try {
             await wallet.init();

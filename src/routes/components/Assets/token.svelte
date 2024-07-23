@@ -1,15 +1,18 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import {MetaStellarWallet} from 'metastellar-sdk';
+  import {Chasing} from 'svelte-loading-spinners'
+
+  import { Tabs, TabItem } from 'flowbite-svelte'
   import {Card, TokenPoster} from '@metastellar/ui-library';
   import {TransactionBuilder, Operation, BASE_FEE, Horizon, Asset, Claimant} from 'stellar-sdk';
+  import {MetaStellarWallet} from 'metastellar-sdk';
 
   import {walletData} from '$lib/store';
   import {stellar_rpc_endpoint, passpharase} from '$lib/constants'
 	import {Toast as toast, Alert, assetType} from "$lib/utils"
   import { Button } from 'flowbite-svelte';
-  import { signTxn } from '$lib/services/token';
-    
+  import { getTokenList, signTxn } from '$lib/services/token';
+  let isProcessing:boolean = false;
   let assets:any; let view:string = 'list';
   let destinationAddr:string = '';
   let sendAmount:string = '0';
@@ -21,6 +24,7 @@
 
   let selectedTokenCode:string = '';
   let selectedTokenIssuer:string = '';
+  let isSubmitEnabled:boolean = false;
 
   const gotTodetail = (data:any) => {
     view= 'detail';
@@ -63,14 +67,19 @@
         }
         return;
       }
+      await refreshData();
+      getData();
 
     } catch (e:any) {
       toast({type:'error', desc: e.message});
       console.log('error', e);
+    } finally {
+      isProcessing = false;
     }
   }
 
   const sendTransaction = async () => {
+    isProcessing= true;
     const server = new Horizon.Server(stellar_rpc_endpoint);
     const account = await server.loadAccount($walletData.address);
     const txnBuilder = new TransactionBuilder(account, {fee:BASE_FEE, networkPassphrase: passpharase});
@@ -105,14 +114,20 @@
         return;
       }
       toast({type:'success', desc:'success claim.'});
+      await refreshData();
+      getData();
+      view = 'list';
 
     } catch (e:any) {
       toast({type:'error', desc: e.message});
       console.log('error', e);
+    } finally{
+      isProcessing = false;
     }
   }
 
   const claimClaimableBalanceTransaction= async() => {
+    isProcessing = true;
     const server = new Horizon.Server(stellar_rpc_endpoint);
     const account = await server.loadAccount($walletData.address);
     const txnBuilder = new TransactionBuilder(account, {fee:BASE_FEE, networkPassphrase: passpharase});
@@ -139,14 +154,19 @@
       }
 
       toast({type:'success', desc:'success received.'});
-
+      await refreshData();
+      getData();
     } catch (e:any) {
       toast({type:'error', desc: e.message});
       console.log('error', e);
     }
+    finally{
+      isProcessing = false;
+    }
   }
 
   const changeTrustTransaction = async () => {
+    isProcessing=true;
     const server = new Horizon.Server(stellar_rpc_endpoint);
     const account = await server.loadAccount($walletData.address);
     const txnBuilder = new TransactionBuilder(account, {fee:BASE_FEE, networkPassphrase: passpharase});
@@ -155,33 +175,55 @@
     txnBuilder.addOperation(Operation.changeTrust({asset:assets}));
     txnBuilder.setTimeout(3600);
     
-    const txn = txnBuilder.build().toXDR()
-    
-    signTxn(txn);
+    const txn = txnBuilder.build().toXDR();
+
+    try {
+      await signTxn(txn);
+      
+      await refreshData();
+      getData();
+    } catch (e:any) {
+      console.log('error', e);
+    } finally{
+      isProcessing = false;
+    }
+
+  }
+ const refreshData = async () => {
+    walletData.update(item=>({...item, dataPacket:null }));
+    walletData.subscribe(val=>console.log(val));
+    const wallet = MetaStellarWallet.loadFromState($walletData);
+    await wallet.init();
+    walletData.set(wallet.exportState());
+  }
+
+  const getData = async () => {
+    assets = await getTokenList();
+  }
+
+
+  const sendValidation = () =>{
+    isSubmitEnabled = destinationAddr.trim() != "" && sendAmount.toString().trim() != '0';
+    console.log('issubmitenabled', isSubmitEnabled);
+  }
+
+  const addAssetValidation = () => {
+    isSubmitEnabled = tokenCode.trim() != "" && tokenIssuer.toString().trim() != '0';
   }
 
   onMount(async ()=>{
-    let wallet = MetaStellarWallet.loadFromState($walletData);
-    assets = await wallet.getAssets();
-    console.log('assssssssssss', assets);
+    getData();
   })
 </script>
 <Card class="py-7 px-5 " shadow>
- {#if view === 'list'}
- <div>
-    <div class=" flex justify-between">
-      <h3 class="mb-4 text-center font-bold text-2xl"> Token </h3>
-      <div>
-      <Button on:click={()=>{
-        view = 'add_asset'
-      }} color="blue" size="sm">Add Asset</Button>
-      <Button on:click={()=>{
-        view = 'receive'
-      }} color="none" size="sm">Receive</Button>
-      </div>
-    </div>
-    <div class="grid">
-        {#if assets}
+  <div class=" flex justify-between">
+    <h3 class="mb-4 text-center font-bold text-2xl"> Token </h3>
+  </div>
+  <Tabs>
+    <TabItem open title="List">
+    {#if view === 'list'}
+      <div class="grid">
+        {#if assets?.length>0}
           {#each assets  as asset}
             {#if assetType(asset) == 'token'}  
             <TokenPoster
@@ -191,60 +233,81 @@
               class="my-2"
               shadow
               balance={asset.balance}
-            ></TokenPoster>
+            />
             {/if}
           {/each}
+        {:else}
+          <div class="py-2 text-center">No token yet</div>
         {/if}
-    </div>
-  </div>
- {:else if view == 'detail'}
-    <div>
-      <div class="flex justify-between">
-        <h3 class="mb-4 text-center font-bold text-2xl"> Send Token </h3>
+      </div>
+    {:else if view == 'detail'}
+      <div>
+        <div class="flex justify-between">
+          <h3 class="mb-4 text-center font-bold text-2xl"> Send Token </h3>
+          <div>
+            <Button on:click={()=>{
+              view='list'
+            }} color="green">back</Button>
+          </div>
+        </div>
+        
+        <div class="flex flex-col gap-3">
         <div>
-          <Button on:click={()=>{
-            view='list'
-          }} color="none">back</Button>
+          <input type="text" bind:value={destinationAddr} on:input={sendValidation} placeholder='Destination' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        </div>
+        <div>
+          <input type="number" bind:value={sendAmount} on:input={sendValidation} placeholder='amount' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        </div>
+        <div>
+        {#if isSubmitEnabled}
+          <Button type="button" on:click={sendTransaction} size="sm" color="blue" disabled={isProcessing}>
+           {#if isProcessing}
+                <span class="mr-3"><Chasing size="15" color="white" unit="px" /></span>
+                {/if}send</Button>
+        {:else}
+          <Button type="button" color="blue"  disabled>
+              Send
+          </Button>
+        {/if}
+        </div>
         </div>
       </div>
-      
-      <div class="flex flex-col gap-3">
-      <div>
-        <input type="text" bind:value={destinationAddr} placeholder='Destination' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
-      </div>
-      <div>
-        <input type="number" bind:value={sendAmount} placeholder='amount' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
-      </div>
-      <div>
-        <Button type="button" on:click={sendTransaction} size="sm" color="blue">send</Button>
-      </div>
-      </div>
-    </div>
-  {:else if view == 'add_asset'}
-    <div class="my-4">Add Asset</div>
+    {/if}
+  </TabItem>
+  <TabItem title="Add assets">
     <div class="flex flex-col gap-5">
       <div>
-        <input type="text" bind:value={tokenCode}  placeholder='code' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        <input type="text" bind:value={tokenCode} on:input={addAssetValidation}  placeholder='code' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
       </div>
       <div>
-        <input type="text" bind:value={tokenIssuer}  placeholder='issuer' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        <input type="text" bind:value={tokenIssuer}  on:input={addAssetValidation} placeholder='issuer' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
       </div>
       <div>
-        <Button on:click={changeTrustTransaction} color="blue" size="sm">Confirm</Button>
-        <Button on:click={()=>{view="list"}} color="none" size="sm">Back</Button>
+        {#if isSubmitEnabled}
+        <Button on:click={changeTrustTransaction} color="blue" size="sm" disabled={isProcessing}>
+           {#if isProcessing}
+                <span class="mr-3"><Chasing size="15" color="white" unit="px" /></span>
+                {/if}
+                Confirm</Button>
+        {:else}
+          <Button type="button" color="blue"   disabled>
+              Confirm
+          </Button>
+        {/if}
       </div>
     </div>
-    {:else}
-    <h3 class="my-4">Receive</h3>
-    <div class="flex flex-col gap-5">
+  </TabItem>
+  <!-- <TabItem title="Receive">
+     <div class="flex flex-col gap-5">
       <div>
-        <input type="text" bind:value={claimBalanceID}  placeholder='issuer' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
+        <input type="text" bind:value={claimBalanceID}  placeholder='Claimable Balance ID' class="w-full p-2 h-[48px] border border-slate-200 rounded-lg"/>
       </div>
       <div>
-        <Button on:click={claimClaimableBalanceTransaction} color="blue">receive</Button>
-        <Button on:click={()=>{view="list"}} color="none" size="sm">Back</Button>
+        <Button on:click={claimClaimableBalanceTransaction} color="blue"  disabled={isProcessing}> {#if isProcessing}
+                <span class="mr-3"><Chasing size="15" color="white" unit="px" /></span>
+                {/if}Receive</Button>
       </div>
     </div>
-  {/if}
-
+  </TabItem> -->
+  </Tabs>
 </Card>

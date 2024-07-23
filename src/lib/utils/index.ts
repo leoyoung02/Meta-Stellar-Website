@@ -59,7 +59,9 @@ export const Alert = ({
 
 export const getWalletData = () => {
   let data: any;
-  walletData.subscribe((val: any) => (data = val));
+  walletData.subscribe((val: any) => {
+    if (val) data = val;
+  });
   return data;
 };
 

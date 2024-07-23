@@ -7,27 +7,24 @@
 
   import {Card} from '@metastellar/ui-library';
   import { env } from "$lib/env";
+  import {walletData} from '$lib/store';
 
   // const stellar_rpc_endpoint = env.VITE_STELLAR_RPC_ENDPOINT;
   const network_passphrase = env.VITE_NETWORK_PASSPHRASE;
 
   let processing:boolean = false;
 
-  let sendToAddress:string = "GDPZOWVRHQV2SQ3N47CILKNU4NZQOXYDVXGKKJI32TVWIF7V7364G2QM";
-  let sendAmount:number = 5;
+  let sendToAddress:string = "";
+  let sendAmount:number;
+  let isSubmitEnabled:boolean = false;
 
   async function signTransaction() {
-      // if (!$connected) {
-      //     alert('plz connect to wallet');
-      //     return;
-      // }
-      
       if (sendToAddress == "") {
           alert('please input address to send');
           return;
       }
       
-      if (sendAmount == 0) {
+      if (sendAmount.toString() == "0") {
           alert('please input amount to send');
           return;
       }
@@ -101,40 +98,63 @@
       return true;
   }
   async function sendXNL() {
-      // const response = await signTransaction();
-      // debugger;
-      // console.log('transaction response', response);
-      // // getWalletBallance();
-      // processing = false;
-      await signTransaction();
-      processing = false;
+      try {
+        await signTransaction();
+        await updateWalletData();
+        initData();
+      } catch(e:any) {
+        console.log('send xml error', e);
+      } finally {
+
+        processing = false;
+      }
+  }
+
+  const updateWalletData = async () => {
+      walletData.update(item=>({...item, dataPacket:null }));
+      walletData.subscribe(val=>console.log(val));
+      const wallet = MetaStellarWallet.loadFromState($walletData);
+      await wallet.init();
+      walletData.set(wallet.exportState());
+  }
+
+  const initData = () => {
+    sendToAddress = "";
+    sendAmount = 0;
+  }
+
+   const validateForm = () => {
+    isSubmitEnabled = sendToAddress.trim() != "" && sendAmount.toString().trim() != "" && sendAmount.toString().trim() !== "0"
+    console.log('isSubmitEnabled', isSubmitEnabled);
   }
 
 </script>
 <Card class="py-7 px-5 "  shadow>
-  <h3 class="mb-4 text-center font-bold text-2xl">Send XLM</h3>
-  <div class="mb-2">
-    <Label class="my-2">Send To</Label>
-    <div>
-      <input type="text" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" placeholder="Enter public address " bind:value={sendToAddress}>
-    </div>
-  </div>
-  <div class="mb-2">
-    <Label class="my-5">Amount</Label>
-    <div>
-        <input type="number" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" bind:value={sendAmount}>
-    </div>
-  </div>
-  <div class="mb-2 mt-2">
-    <Button class="py-3 text-center w-full bg-blue-700 rounded-lg capitalize text-white hover:bg-blue-800" on:click={sendXNL} disabled={processing}>
-      <div class="text-center">
-        {#if processing}
-        <div class="inline-block">
-          <Chasing size="15" color="white" unit="px" />
-        </div>
-        {/if}
-        Send
+  <h3 class="mb-4 font-bold text-2xl">Send XLM</h3>
+  <div class="p-5 bg-gray-50 flex flex-col gap-5">
+      <div>
+        <input type="text" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" placeholder="Destination" bind:value={sendToAddress} on:input={validateForm}>
       </div>
-    </Button>
+      <div>
+          <input type="number" class="w-full p-3 h-[48px] border border-slate-200 rounded-lg" bind:value={sendAmount} placeholder="Amount" on:input={validateForm}>
+      </div>
+    <div >
+      {#if isSubmitEnabled}
+      <Button class="py-3 text-center w-full bg-blue-700 rounded-lg capitalize text-white hover:bg-blue-800" on:click={sendXNL} disabled={processing}>
+        <div class="text-center">
+          {#if processing}
+          <div class="inline-block">
+            <Chasing size="15" color="white" unit="px" />
+          </div>
+          {/if}
+          Send
+        </div>
+      </Button>
+      {:else}
+        <Button class="py-3 text-center w-full bg-blue-700 rounded-lg capitalize text-white hover:bg-blue-800" on:click={sendXNL} disabled>
+            Send
+        </Button>
+      {/if}
+    </div>
   </div>
 </Card>

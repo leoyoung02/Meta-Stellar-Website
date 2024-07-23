@@ -1,18 +1,25 @@
 import * as StellarSdk from "@stellar/stellar-sdk";
-import { Toast as toast } from "$lib/utils";
+import { MetaStellarWallet } from "metastellar-sdk";
+import { Toast as toast, getWalletData, assetType } from "$lib/utils";
 import {
   friend_bot_url,
   pinata,
   stellar_toml_server_url,
   passpharase,
   stellar_rpc_endpoint,
-  home_domain_url
+  home_domain_url,
 } from "$lib/constants";
 import type {
   NFTRegistrationParams,
   NFTFileUploadParams,
   GenerateNFTOnStellarParams,
 } from "$lib/types/nft";
+
+export const getNFTList = async () => {
+  const wallet = MetaStellarWallet.loadFromState(getWalletData());
+  const assets = await wallet.getAssets();
+  return assets.filter((asset: any) => assetType(asset) == "nft");
+};
 
 export async function funding(account: any) {
   console.log("==============funding==============");
@@ -109,7 +116,7 @@ export const resigterNFT = async ({
     display_decimals: 7,
   };
   try {
-    const res = await fetch(`${stellar_toml_server_url}/insert_nft`, {
+    const res = await fetch(`${stellar_toml_server_url}insert_nft`, {
       method: "post",
       headers: {
         Accept: "application/json",
@@ -145,8 +152,8 @@ export const generateNFTOnStellar = async ({
   issuerKeypair,
 }: GenerateNFTOnStellarParams) => {
   console.log("==============generate nft==============");
-  console.log(`Issuer Public Key: ${issuerKeypair.publicKey()}`);
-  console.log(`Issuer Secret Key: ${issuerKeypair.secret()}`);
+  // console.log(`Issuer Public Key: ${issuerKeypair.publicKey()}`);
+  // console.log(`Issuer Secret Key: ${issuerKeypair.secret()}`);
 
   // Create the Asset so we can issue it on the network.
   const nftAsset = new StellarSdk.Asset(code, issuerKeypair.publicKey());
