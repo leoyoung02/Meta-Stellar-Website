@@ -59,7 +59,7 @@
 <Card class="py-4" shadow>
   <h3 class="mb-4 font-bold text-2xl">AirDrop</h3>
   <div>
-    {#if airDropData}
+    {#if airDropData?.length >0}
       {#each airDropData  as item}
         <div class="flex justify-between my-4 ms-frame shadow p-3">
           <div class="flex gap-4">
@@ -82,7 +82,7 @@
         </div>
       {/each}
     {:else}
-      <p class="py-4 text-center bg-gray-50">No Data</p>
+      <p class="py-4 text-center bg-gray-50">No Airdrop yet</p>
     {/if}
   </div>
 </Card>
